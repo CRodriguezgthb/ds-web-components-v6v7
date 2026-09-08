@@ -1,0 +1,83 @@
+---
+export const prerender = false;
+
+import Layout from '../../../../../layouts/Layout.astro';
+import AdminNav from '../../../../../components/AdminNav.astro';
+import ComponentEditor from '../../../../../components/admin/ComponentEditor';
+import { createUserClient } from '../../../../../lib/supabase';
+import { loadPreviewSettingsCached, loadGlobalVariables } from '../../../../../lib/settings';
+
+const { adminSlug, componentId } = Astro.params;
+const accessToken = Astro.cookies.get('sb-access-token')?.value;
+
+if (!accessToken) {
+	return Astro.redirect('/login');
+}
+
+const db = createUserClient(accessToken);
+
+const { data: page } = await db
+	.from('pages')
+	.select('id, title, admin_slug')
+	.eq('admin_slug', adminSlug)
+	.maybeSingle();
+
+if (!page) {
+	return Astro.redirect('/admin/pages');
+}
+
+const { data: component } = await db
+	.from('components')
+	.select(
+		'id, ref, title, asp_code, less_code, js_code, mixins_code, variables, created_by_email, updated_at',
+	)
+	.eq('id', componentId)
+	.eq('page_id', page.id)
+	.maybeSingle();
+
+if (!component) {
+	return Astro.redirect(`/admin/pages/${page.admin_slug}`);
+}
+
+const [settings, globalVariables] = await Promise.all([loadPreviewSettingsCached(db), loadGlobalVariables(db)]);
+---
+
+<Layout title={`Editar ${component.title}`}>
+	<main>
+		<AdminNav current="pages" />
+		<!--
+			client:only is required, not a preference: CodeMirror needs a real
+			DOM and cannot be server-rendered.
+		-->
+		<ComponentEditor
+			client:only="react"
+			pageId={page.id}
+			pageTitle={page.title}
+			adminSlug={page.admin_slug}
+			settings={settings}
+			globalVariables={globalVariables}
+			component={{
+				id: component.id,
+				ref: component.ref,
+				title: component.title,
+				aspCode: component.asp_code ?? '',
+				lessCode: component.less_code ?? '',
+				jsCode: component.js_code ?? '',
+				mixinsCode: component.mixins_code ?? '',
+				variables: component.variables ?? {},
+				createdByEmail: component.created_by_email,
+				updatedAt: component.updated_at,
+			}}
+		>
+			<p slot="fallback">Cargando editor…</p>
+		</ComponentEditor>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 1400px;
+		margin: 2rem auto 0;
+		padding: 0 1rem;
+	}
+</style>

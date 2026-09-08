@@ -1,0 +1,542 @@
+// last updated 3/6/18
+///////////////////////////////////////
+
+
+// general default styles
+.slideshow-defaults {
+	.pause { display: none; }
+
+	.carousel-indicators {
+		display: none;
+
+		@media (min-width: @screen-sm-min){
+			display: block;
+		}
+	}
+
+	.carousel-control {
+		&.left {
+			// text-align: left;
+			left: round(@grid-gutter-width / 2);
+			@media (min-width: @screen-sm-min){
+				left: round(@grid-gutter-width);
+			}
+		}
+
+		&.right {
+			// text-align: right;
+			right: round(@grid-gutter-width / 2);
+			@media (min-width: @screen-sm-min){
+				right: round(@grid-gutter-width);
+			}
+		}
+	}
+
+	.fa {
+		display: block;
+	}
+}
+
+// assigns left and right icons as well as their font-size & dimension
+.carousel-nav-styler(@icon-left, @icon-right, @font-size, @width, @height) {
+	.carousel-control {
+		text-shadow: none;
+		width: auto;
+		font-size: @font-size;
+		height: @height;
+		width: @width;
+		line-height: @height;
+		text-align: center;
+		margin: auto 0;
+		filter: none;
+		background: none;
+		.fa {
+			display: block;
+			line-height: @height;
+			width: @width;
+		}
+		&.left {
+			.fa {
+				&:before {
+					content: @icon-left;
+				}
+			}
+		}
+		&.right {
+			.fa {
+				&:before {
+					content: @icon-right;
+				}
+			}
+		}
+	}
+}
+
+
+// sets shape, color and background color to .carousel-control
+.carousel-nav-button-styler(@shape, @color, @bg-color){
+	.carousel-control {
+		opacity: 1;
+		text-align: center;
+
+		.fa{
+			color: @color;
+			background: @bg-color;
+		}
+
+		& when (@shape = circle) {
+			.fa {
+				border-radius: 100%;
+				&:after {
+					border-radius: 100%;
+				}
+			}
+		}
+	}
+}
+
+
+// sets hover state for .carousel-control
+.carousel-nav-button-hover-styler(@color, @bg-color){
+	.carousel-control {
+		&:hover, &:active, &:focus {
+			.fa {
+				color: @color;
+				background: @bg-color;
+			}
+		}
+	}
+}
+
+// adds additional decorations to nav controls for carousel
+.carousel-nav-border-styler(@width, @color, @hover-color) {
+	.carousel-control {
+		.fa {
+			&:after {
+				content: "";
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				border: @width solid @color;
+				margin: auto;
+				z-index: 0;
+			}
+
+		}
+		&:hover, &:active, &:focus {
+			.fa {
+				&:after {
+					border-color: @hover-color;
+				}
+			}
+		}
+	}
+}
+
+// resets default opacity for slideshow
+.slideshow-default-opacity {
+
+	@media (min-width: @screen-md-min) { //arrows always need to show on mobile
+		.carousel-nav { display: none; }
+		&:hover, &:active, &:focus {
+			.carousel-nav { display: block; }
+			.carousel-control { opacity: .5; }
+		}
+		.carousel-control:hover {
+			opacity: 1;
+		}
+	}
+}
+
+// sets alignment for slideshow bullets
+.slideshow-indicators-position(@position, @spacing, @bottom) {
+	.carousel-indicators {
+		right: auto;
+		left: auto;
+		bottom: @bottom;
+		line-height: 0;
+		margin-bottom: 0;
+		pointer-events: none;
+
+		& when (@position = center) {
+			margin: auto;
+			width: 100%;
+		}
+
+		& when not (@position = center) {
+			width: auto;
+			.fit-to-container-edge(@position);
+		}
+
+		li {
+			margin-top: 0;
+			margin-right: 0;
+			margin-bottom: 0;
+			margin-left: @spacing;
+			border: none;
+			vertical-align: middle;
+			pointer-events: auto;
+
+			&:first-child {
+				margin-left: 0;
+			}
+		}
+	}
+}
+
+// featured nav buttons layout styler
+// .carousel-inner gets horiz margin from this also
+.finv-nav-layout(@nav-position, @vehicle-title-height, @icon-left, @icon-right, @font-size, @arrow-width, @arrow-height: @arrow-width) {
+	.carousel-control {
+		width: @arrow-width;
+		height: @arrow-height;
+		line-height: @arrow-height;
+		font-size: @font-size;
+		margin: auto 0;
+		filter: none;
+		background: none;
+		text-shadow: none;
+		.fa {
+			display: block;
+			line-height: @arrow-height;
+			width: @arrow-width;
+		}
+		&.left {
+			.fa {
+				&:before {
+					content: @icon-left;
+				}
+			}
+		}
+		&.right {
+			.fa {
+				&:before {
+					content: @icon-right;
+				}
+			}
+		}
+	}
+	& when (@nav-position = top) {
+		.carousel-nav {
+			top: -(@arrow-height + 10px); // 10px is margin-bottom of heading
+			right: 0;
+			width: auto;
+			position: absolute;
+
+			.carousel-control {
+				display: inline-block;
+				vertical-align: middle;
+				position: relative;
+			}
+		}
+	}
+	& when not (@nav-position = top) {
+		.carousel-control {
+			bottom: @vehicle-title-height;
+		}
+		& when (@nav-position = inside) {
+			.carousel-control {
+				&.left {
+					margin-left: 10px;
+				}
+				&.right {
+					margin-right: 10px;
+				}
+			}
+		}
+		& when not (@nav-position = inside) {
+			.carousel-control {
+				&.left {
+					margin-right: 10px;
+				}
+				&.right {
+					margin-left: 10px;
+				}
+			}
+			.finv-heading {
+				margin-left: @arrow-width + 10px;
+			}
+			.carousel-inner {
+				width: auto;
+				margin: 0 (@arrow-width + 10px);
+			}
+		}
+	}
+}
+
+//previously called .finv-content
+// unit title (.vehicle-title h3) styler
+.finv-slogan(@content, @color, @color-hover: @color) {
+	.vehicle-title h3 {
+		line-height: 1.1;
+		&:after {
+			content: @content;
+			display: block;
+			text-align: center;
+			color: @color;
+		}
+	}
+	.featured-content:hover {
+		.vehicle-title h3:after {
+			color: @color-hover;
+		}
+	}
+}
+
+
+///////////////////////////////
+//NEW MIXINS
+///////////////////////////////
+
+.carousel-fade(@speed) {
+	.carousel {
+	  .item {
+	    left: 0 !important;
+	    .transition(opacity @speed);
+	  }
+	  // Fade controls with items
+	  .next.left,
+	  .prev.right {
+	    opacity: 1;
+	    z-index: 1;
+	  }
+	  .active.left,
+	  .active.right {
+	    opacity: 0;
+	    z-index: 2;
+	  }
+	}
+}
+
+.carousel-icon-nudge(@top, @left-left, @right-right) {
+	.carousel-control {
+		.fa {
+			&:before {
+				position: relative;
+				top: @top;
+			}
+		}
+		&.left {
+			.fa {
+				&:before {
+					left: @left-left;
+				}
+			}
+		}
+		&.right {
+			.fa {
+				&:before {
+					right: @right-right;
+				}
+			}
+		}
+	}
+}
+
+.two-tone-nav(@color1, @color2, @angle) {
+	.carousel-control {
+		.fa {
+			background: @color1; /* Old browsers */
+			background: -moz-linear-gradient(@angle,  @color1 0%, @color1 50%, @color2 51%, @color2 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(@angle,  @color1 0%,@color1 50%, @color2 51%, @color2 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(@angle,  @color1 0%,@color1 50%, @color2 51%, @color2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		}
+		&:hover, &:active, &:focus {
+			.fa {
+				background: @color2; /* Old browsers */
+				background: -moz-linear-gradient(@angle,  @color2 0%, @color2 50%, @color1 51%, @color1 100%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(@angle,  @color2 0%,@color2 50%, @color1 51%, @color1 100%); /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(@angle,  @color2 0%,@color2 50%, @color1 51%, @color1 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			}
+		}
+	}
+}
+
+.include-data(@vehicle-title-height, @data-height) {
+	.carousel-promo {
+		.item {
+			.featured-content {
+				position: relative;
+				.vehicle-title {
+					padding-bottom: @data-height;
+					h3 {
+						padding-top: 10px;
+						padding-bottom: 0;
+						line-height: @vehicle-title-height;
+					}
+				}
+				.data {
+					opacity: 1;
+					display: block !important;
+					position: absolute;
+					top: auto;
+					bottom: -(@vehicle-title-height + @data-height + 10px); //10px is padding-top of vehicle-title>h3
+					width: 100%;
+					margin: auto;
+					padding: 0 15px;
+					ul > * {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+.include-data-item(@item, @color, @hover-color, @font-size, @no-label) {
+	.carousel-promo {
+		.item {
+			.featured-content {
+				.featuredVehicleAttr.@{item} {
+					display: block!important;
+					color: @color;
+					font-size: @font-size;
+					& when (@no-label = none) {
+						label {
+							display: none;
+						}
+						.value {
+							width: 100%;
+							text-align: center;
+						}
+					}
+				}
+				&:hover, &:active, &:focus {
+					.featuredVehicleAttr.@{item} {
+						color: @hover-color;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+
+// Edit to allow calling this mixin more than once 120717
+// change to inherit viewport before it? @num-sm: @num-xs, etc
+.dvSIZECONTROL(@num-xs, @num-sm: @num-xs, @num-md: @num-sm, @num-lg: @num-md, @num-xl: @num-lg, @dvElement: dvSIZECONTROL) {
+	.@{dvElement} {
+		position: fixed;
+		z-index: -1;
+		bottom: 0;
+		left: 0;
+		height: 1px;
+		width: ~"@{num-xs}px";
+
+		@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+			width: ~"@{num-sm}px";
+		}
+		@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+			width: ~"@{num-md}px";
+		}
+		@media (min-width: @screen-lg-min) and (max-width: @screen-lg-max) {
+			width: ~"@{num-lg}px";
+		}
+		@media (min-width: @screen-xl-min) {
+			width: ~"@{num-xl}px";
+		}
+	}
+}
+
+// assigns dimension as aspect-ratio to slideshow
+.slideshow-sizer(@ratio) {
+	.carousel {
+		padding-top: round(percentage(@ratio));
+		height: auto;
+	}
+	.carousel-inner {
+		position: absolute;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		margin: auto;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+// align arrows to edges of container
+.slideshow-nav-container {
+	.carousel-control {
+		&.left { .fit-to-container-edge(left); }
+		&.right { .fit-to-container-edge(right); }
+	}
+}
+
+
+// styles slideshow bullets
+.slideshow-indicators-styler(@default-bg, @active-bg, @dimension) {
+	.carousel-indicators {
+		> li {
+			width: @dimension;
+			height: @dimension;
+			border-radius: 50%;
+			background-color: @default-bg;
+
+			&.active {
+				background-color: @active-bg;
+			}
+		}
+	}
+}
+
+// puts borders on slideshow bullets
+.slideshow-indicators-border(@width, @style, @color, @color-active: @color){
+	.carousel-indicators {
+		> li {
+			border-width: @width;
+			border-style: @style;
+			border-color: @color;
+
+			&.active {
+				border-color: @color-active;
+			}
+		}
+	}
+}
+
+// default settings
+.finv-defaults {
+	text-transform: uppercase;
+	.finv-heading {
+		span {
+			.calc-text-color(@bg-secondary);
+		}
+	}
+	.vehicle-title {
+		text-align: center;
+	}
+	.carousel-control {
+		opacity: 1;
+	}
+}
+
+////////GENERAL STYLES
+
+//moved from main.less
+.image-container {
+	position: relative;
+	padding-top: 75%;
+
+	.image-container-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+		background-origin: content-box;
+		background-size: contain;
+		background-position: center top;
+		background-repeat: no-repeat;
+	}
+}

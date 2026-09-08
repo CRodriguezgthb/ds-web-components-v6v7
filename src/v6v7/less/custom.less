@@ -1,0 +1,71 @@
+@theme-folder: blackdiamondhd; //should be dealer shortname
+
+@import "platform/platform-core-v7.1.less"; //v7 platform core
+@import "platform/v7.1/inventory-list-xl.less"; //v7 XL inventory styles
+
+//Theme Folder
+@import "themes/@{theme-folder}/theme.less";
+
+
+// Custom Variables
+// --------------------------------------------------
+// 1903 Sans Condensed-Bold Font Call
+@font-face {
+	font-family: '1903SansCondensed-Bold';
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903SansCondensed-Bold.otf') format('opentype');
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903SansCondensed-Bold.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+}
+
+// 1903 Sans Bold Font Call
+@font-face {
+	font-family: '1903Sans-Bold';
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Sans-Bold.otf') format('opentype');
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Sans-Bold.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+// 1903 Sans Regular Font Call
+@font-face {
+	font-family: '1903Sans-Regular';
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Sans-Regular.otf') format('opentype');
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Sans-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+// 1903 Sans Italic Font Call
+@font-face {
+	font-family: '1903Sans-Italic';
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Sans-Italic.otf') format('opentype');
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Sans-Italic.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+// 1903 Serif Regular Font Call
+@font-face {
+	font-family: '1903Serif-Regular';
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Serif-Regular.otf') format('opentype');
+	src: url('//cdn.dealerspike.com/imglib/fonts/1903Fonts/1903Serif-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+// Image File paths and naming.
+@img-path:	"/images/@{theme-folder}-";
+
+
+// Custom Styles
+// --------------------------------------------------
+
+
+// fixes promos modal issue - nemo 2/11/16
+#main.Promotions-Sheet {z-index:auto;}
+
+// To be used by Launchers - Brand unit images added by MT 2-15
+//body.InventoryList .unitBrand img[src*="icon_Harley-Davidson.png"] {display:none;}
+//body.InventoryList .unitBrand img[src*="icon_Suzuki.png"] {display:none;}
+//body.InventoryList .unitBrand img[src*="icon_Ducati.png"] {display:none;}

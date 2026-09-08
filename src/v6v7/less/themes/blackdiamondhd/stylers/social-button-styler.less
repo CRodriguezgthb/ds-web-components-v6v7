@@ -1,0 +1,85 @@
+//////////////////////////
+// Social Icons Stylers //
+//////////////////////////
+
+// assigns property/value to social buttons on regular state
+.soc-icon-styler(@property, @color){
+	a{
+		.fa{
+			.transition(all .2s ease-in-out);
+			@{property}: @color;
+		}
+
+		& when (@color = default){
+			.soc-brand-colors(@property);
+		}
+	}
+}
+// assigns property/value to social buttons on hover state
+.soc-icon-styler-hover(@property, @color){
+	a{
+		&:hover, &:active, &:focus {
+			.fa{
+				@{property}: @color;
+			}
+
+			& when (@color = default){
+				.soc-brand-colors(@property);
+			}
+		}
+	}
+}
+
+// defines shape and size of social buttons
+.soc-icon-sizer(@shape, @dimension) {
+
+	//ensures icons are clickable on mobile
+	@min-sm-dimension: 30px;
+
+	a{
+		display: block;
+	}
+
+	.fa{
+		display: block;
+		overflow: hidden;
+		width: @dimension;
+		height: @dimension;
+		font-size: round(@dimension / 1.5);
+		text-align: center;
+
+		& when (@shape = circle) {
+			border-radius: 50%;
+		}
+
+		& when (@shape = square){
+			border-radius: 3px;
+		}
+
+		&:before{
+			line-height: @dimension;
+		}
+		& when (@dimension < @min-sm-dimension){
+			@media (max-width: @screen-sm-max){
+				width: @min-sm-dimension;
+				height: @min-sm-dimension;
+				font-size: round(@min-sm-dimension / 1.5);
+
+				&:before{
+					line-height: @min-sm-dimension;
+				}
+			}
+		}
+	}
+}
+
+// assigns social network's default color to the @property parameter
+.soc-brand-colors(@property){
+	&.social-facebook .fa { @{property}: @fb-color; }
+	&.social-twitter .fa { @{property}: @tw-color; }
+	&.social-instagram .fa { @{property}: @in-color; }
+	&.social-google .fa { @{property}: @gp-color; }
+	&.social-youtube .fa { @{property}: @yt-color; }
+	&.social-pinterest .fa { @{property}: @pin-color; }
+	&.social-rss .fa { @{property}: @rss-color; }
+}

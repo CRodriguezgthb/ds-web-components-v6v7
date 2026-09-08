@@ -1,0 +1,523 @@
+//last updated 3/6/18
+//////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//////SITEWIDE STYLES
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// adds XL breakpoint to container
+.container {
+    .container-wide;
+}
+
+body {
+	background-color: @bg-body;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: @brand-primary;
+	margin-top: 0;
+}
+
+a {
+	&:hover, &:focus, &:active {
+		text-decoration: none;
+		outline: none;
+	}
+}
+
+button, input {
+	outline: none;
+}
+
+//rewrite to set font color manually?
+input, textarea, select {
+	width: 100%;
+	border-width: 1px;
+	border-style: solid;
+	font-size: 16px; // minimum font size for iOS to display properly
+	outline: none;
+	padding-top: round(@grid-gutter-width / 4);
+	padding-right: round(@grid-gutter-width / 1.5);
+	padding-bottom: round(@grid-gutter-width / 4);
+	padding-left: round(@grid-gutter-width / 3);
+	resize: none;
+	border-radius: 0;
+
+	border-color: @internal-bg-variant-strong;
+	color: @internal-bg-text;
+	background-color: @internal-bg;
+	&:hover, &:active, &:focus {
+		color: @internal-bg-text;
+		background-color: @internal-bg-variant;
+	}
+}
+
+button, .btn {
+	.border-radius(0);
+	border: 0;
+
+	background-color: @internal-primary;
+	color: @internal-primary-text;
+
+	&:hover, &:focus, &:active {
+		color: @internal-primary-text;
+		background-color: @internal-primary-variant;
+	}
+}
+
+// mixin that calculates placeholder text color and opacity for input/textarea elements
+// parameters: opacity, background color and degree of change
+// second and third parameters should match .calc-background-and-text-by-value()'s params on input, textarea, select
+//listed above.
+.calc-placeholder-color(85, @internal-bg, 5%);
+
+input[type="checkbox"], input[type="radio"]{
+	width: auto;
+	display: inline-block;
+}
+
+.label {
+	color: @internal-bg-text;
+}
+
+.social-block {
+	.ul-zero-out;
+
+	vertical-align: middle;
+
+	// (shape, dimension)
+	.soc-icon-sizer(square, 30px);
+
+	//.fa{ font-size: 25px; }
+
+	// params ( css property, value)
+	.soc-icon-styler(color, @index-secondary);
+	.soc-icon-styler(background-color, transparent);
+
+	.soc-icon-styler-hover(color, @white);
+	.soc-icon-styler-hover(background-color, @index-primary);
+	.soc-icon-styler-hover(background-color, default);
+
+	li {
+		display: inline-block;
+		vertical-align: middle;
+		padding-left: 3px;
+
+		&:first-child{
+			padding-left: 0;
+		}
+
+		a {
+			display: block;
+
+			.fa, .im {
+				font-size: 20px;
+				// border-radius: 0;
+			}
+		}
+	}
+}
+
+//hides double underline on abbreviations in firefox
+abbr[title], abbr[data-original-title]{text-decoration:none;}
+
+//iconmonstr font icon reset
+.im {
+   font: normal normal normal 14px/1 'iconmonstr-iconic-font';
+   font-size: inherit;
+	vertical-align: middle;
+}
+
+//prevents google iframes from creating bar below footer
+iframe[name="google_conversion_frame"] {
+   position: fixed;
+   z-index: -10;
+}
+
+//skip link for accessibility (keyboard and screen reader users) (stdHeaderEnd)
+.top-skip-link {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+
+	&:focus {
+		left: 5px;
+		top: 5px;
+		z-index: 9999;
+		width: auto;
+		height: auto;
+		padding: 5px;
+		box-shadow: 1px 1px 3px #000;
+		background: @white;
+		color: #0000EE;
+		text-decoration: underline;
+		&:hover {
+			color: #000;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//////INTERNAL PAGE STYLES
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+[id="main"] {
+	.container;
+	position: relative;
+	z-index: 1;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	background-color: @internal-bg; //do not change - stylers will break
+	.calc-text-color(@internal-bg);
+	margin-bottom: 30px;
+}
+
+//first child of #main
+[id="content"] {
+	.clearfix();
+}
+
+
+.lead-button, .submitBlock li button {
+	display: block;
+	margin: 0 auto;
+	text-transform: uppercase;
+	font-family: @font-family-sans-serif;
+	font-size: @font-size-large;
+	padding-top: round(@grid-gutter-width / 2);
+	padding-right: round(@grid-gutter-width / 1);
+	padding-bottom: round(@grid-gutter-width / 2);
+	padding-left: round(@grid-gutter-width / 1);
+	text-align: center;
+
+	background-color: @internal-primary;
+	color: @internal-primary-text;
+	&:hover, &:active, &:focus {
+		color: @internal-primary-text;
+		background-color: @internal-primary-variant;
+	}
+
+	@media (min-width: @screen-sm-min) {
+		max-width: 300px;
+	}
+}
+
+
+// this prevents the thank you message audio from playing post form submission
+#tyFlash {
+  display: none!important;
+  visibility: hidden !important;
+}
+
+//in case of fixed background image, ensures that print view has proper z-index
+.print-detail {
+	position: relative;
+	z-index: 9;
+}
+
+// Modal Styles
+// --------------------------------------------------
+div.modal-dialog {
+	box-shadow: 0 3px 9px fade(@black, 50%);
+
+	background-color: @internal-bg;
+	color: @internal-bg-text;
+
+	div.modal-header {
+		background-color: @internal-bg-variant;
+		border: none;
+
+		button.close {
+			color: @internal-bg-text;
+			opacity: 1;
+			text-shadow: 0 1px 0 #000;
+
+			&:hover {
+				color: @internal-primary;
+				background-color: transparent;
+				opacity: 1;
+			}
+		}
+		.modal-title {
+			span.fa {
+				margin-right: @grid-gutter-width / 2;
+			}
+		}
+	}
+	div.modal-body {
+		div.modal-content {
+			border-radius: 0;
+			.box-shadow(none);
+
+			background-color: transparent;
+			border: none;
+			background-clip: initial;
+		}
+	}
+}// div.modal-dialog
+
+
+// Featured Inventory Size Control
+// defines num of visible featured units at each break point. 1px = 1 unit.
+.dvSIZECONTROL(1, 1, 2, 2, 2);
+
+
+// Showroom Styles
+// --------------------------------------------------
+.makes {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: @gray;
+
+	a {
+		.make-name {
+			color: #fff;
+		}
+		&:hover {
+			.make-name {
+				color: @brand-primary;
+			}
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////
+// Calendar and xListEvents Styles
+// --------------------------------------------------
+.calendar-styler(@internal-primary, @internal-bg);
+
+
+/////////////////////////////////////////////////
+// --xTestimonials ratings styles
+// --------------------------------------------------
+#main .TestimonialRating {
+	.fa-star {
+		color: #ffd700;
+	}
+	.fa-minus {
+		&.rate1 {
+			color: #ff1919;
+		}
+		&.rate2 {
+			color: #bc5f01;
+		}
+		&.rate3 {
+			color: #939301;
+		}
+		&.rate4 {
+			color: #589c01;
+		}
+		&.rate5 {
+			color: #01b101;
+		}
+	}
+}
+
+// ==================================================
+// FORM STYLES UPDATE: 031317 AK=====================
+// Requires Flexbox Mixins ==========================
+// ==================================================
+
+@error-color: #d62222; // @brand-primary;
+
+// Custom Select: Specifically for DS Form Structure
+// Place on <li>
+// @height-of-select includes borders (total height). @border-width should match default input styles in main.less
+.form-custom-select(@icon; @color; @font-size; @height-of-select; @border-width: 1px) {
+	.formField {
+		position: relative;
+		&:before {
+			content: @icon;
+			font-family: FontAwesome;
+			color: @color;
+			position: absolute;
+			right: 10px;
+			bottom: @border-width;
+			line-height: @height-of-select - (2 * @border-width);
+			font-size: @font-size;
+			pointer-events: none;
+			text-align: center;
+		}
+	}
+	.formRequired {
+		// Make sure asterisk not covered by large custom arrow
+		right: calc(@font-size + 10px);
+	}
+	select {
+		// Remove arrow
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		&::-ms-expand {
+			display: none; // IE10 / IE11
+		}
+	}
+}
+
+// CHANGES MIXINS FOR FORMS =========================
+.form-li-radio {
+	// place on <li> of radio button
+	// left-aligns placeholder & positions required(*)
+	.label {
+		// align label with other left-aligned text
+		display: inline-block;
+		padding-left: 0;
+	}
+	.formRequired {
+		// align * next to radios
+		position: static;
+		display: inline-block;
+		margin-left: 10px;
+	}
+}
+.form-li-dropdown {
+   // place on <li> of dropdown
+   // positions required(*) & calls custom select mixin
+   .formRequired {
+      // Asterisk positioning for dropdowns
+      top: auto;
+      bottom: 1.25em;
+      right: 25px;
+      pointer-events: none;
+   }
+   // .form-custom-select(@icon; @color; @font-size; @height-of-select; @border-width: 1px)
+   .form-custom-select('\f107'; @internal-primary; 18px; 40px);
+}
+.form-li-checkbox {
+	// place on <li> of checkbox
+	// shows label & adjusts alignment
+	> .formField { // override
+		.label {
+			display: inline-block;
+			padding-bottom: .2em;
+		}
+	}
+}
+
+// DEFAULT FORMS UPDATE =============================
+.xcontent form:not([name="main"]), // exclude inv list
+#modalBox form {
+	// Floats --> Flexbox so not wrapping on error
+	// excluded are .filteroptions &, .textbuttons due to safari wrapping issue
+
+	// ul:not(.submitBlock, .filteroptions &, .textbuttons) {
+	ul:not(.submitBlock) {
+		.display-flex;
+		.flex-wrap(wrap);
+		&:before,
+		&:after {
+			content: normal; // from .row; breaks flexbox wrapping in safari
+		}
+		li {
+			float: none !important;
+			.flex(0 1 auto);
+		}
+	}
+	.label {
+		// Radio/Checkbox labels & IE9 all
+		text-align: left;
+		font-weight: normal;
+	}
+	input.error,
+	select.error,
+	textarea.error {
+		border-color: @error-color;
+	}
+	input[type="radio"] {
+		margin-left: 10px; // separate yes/no radios
+		margin-right: 4px; // separate radios from loose text labels
+	}
+	.formError {
+		label {
+			font-size: smaller;
+			font-weight: normal;
+			padding-left: 10px;
+			&:before {
+				content: '\f071';
+				font-family: FontAwesome;
+				color: @error-color;
+				display: inline-block;
+				padding-right: 5px;
+				@media (min-width: @screen-sm-min) {
+					position: absolute;
+					top: 0;
+					line-height: 42px;
+					left: -2px;
+				}
+			}
+		}
+	}
+	// Default dropdown lists
+	.ulRateSurvey {
+		> li {
+			.form-li-dropdown;
+		}
+	}
+	#formLocations {
+		.form-li-dropdown;
+		.formRequired {
+			// Add Asterisk
+			&:after {
+				content: '*';
+			}
+		}
+	}
+	// Default checkbox lists
+	.ulSurveyHear {
+		> li {
+			.form-li-checkbox;
+		}
+	}
+	// Default Radio Yes/No inputs with label
+	#formAllowComments, // xsurvey
+	#formAllowContact, // xsurvey
+	#formServiced { // xservice_request
+		.form-li-radio;
+	}
+	.ulCareerInterest {
+		#formOther { // input has two labels
+			.label {
+				display: none;
+			}
+		}
+	}
+   //headers should inherit heading font weight, overrides global style setting them to 400
+   h3 {
+      font-weight: @headings-font-weight;
+   }
+}
+
+// ===========================================================
+// INV LIST: CUSTOM SELECT FILTERS ===========================
+// ===========================================================
+
+// FLEXIBLE CUSTOM SELECT
+// Place on direct parent of <select>
+.custom-select(@icon; @color; @font-size; @height-of-select; @border-width: 1px; @parent-padding-right: 0px) {
+	position: relative;
+	&:before {
+		content: @icon;
+		font-family: FontAwesome;
+		color: @color;
+		position: absolute;
+		right: @parent-padding-right + 10px;
+		top: @border-width;
+		line-height: @height-of-select - (2 * @border-width);
+		font-size: @font-size;
+		pointer-events: none;
+		text-align: center;
+	}
+	select {
+		// Remove arrow
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		&::-ms-expand {
+			display: none; // IE10 / IE11
+		}
+	}
+}

@@ -1,0 +1,330 @@
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+// DO NOT ALTER THESE STYLES AT ALL
+
+
+
+// v7.1 inventory styles
+
+
+// ==================================================================
+// CTAs =============================================================
+// ==================================================================
+#modalBox, // Modal buttons
+body.InventoryDetail, // V6 Detail page (Showroom)
+body.inventorydetails { // V7 Detail page
+    .unitLeadButtons {
+        overflow: hidden;
+        .textbutton {
+            margin-bottom: 1px;
+        }
+        a {
+            position: relative;
+            display: block;
+            background-color: @internal-bg-variant;
+            color: @internal-bg-text;
+            font-weight: 700;
+            &:hover, &:active, &:focus {
+                background-color: @internal-bg-variant-strong;
+            }
+            &:before {
+                display: none;
+            }
+        }
+        .textbuttonIcon,
+        .textbuttonArrow {
+            color: @internal-primary;
+        }
+        .textbuttonContent {
+            font-weight: 700;
+        }
+        ul > li.textbutton a > span.textbuttonArrow { // override
+            right: 0;
+            margin-top: -9px; // vertical alignment
+        }
+    }
+
+    // "Back" button - match CTAs
+    .backLink {
+        a {
+            background-color: @internal-bg-variant;
+            .buttontext {
+                color: @internal-primary;
+            }
+            .fa {
+                color: @internal-primary;
+            }
+            &:hover, &:active, &:focus {
+                background-color: @internal-bg-variant-strong;
+            }
+        }
+    }
+}
+
+// ==================================================================
+// V6 / SHOWROOM DETAIL =============================================
+// Styles modified from V6 template 1.0.0 ===========================
+// ==================================================================
+body.InventoryDetail {
+
+	//unit comments along the top
+	.unitText {
+		color: @internal-bg-text;
+		//more/less button
+		.more, .less {
+			color: @internal-primary;
+			&:hover, &:active, &:focus {
+				color: @internal-bg-text;
+			}
+		}
+	}
+
+	.unitTitle {
+		h1 {
+			color: @internal-primary;
+		}
+	}
+
+	//unit price
+	.unitPrice {
+		//"Selling Price"
+		h3 {
+			color: fade(@internal-bg-text, 50%);
+		}
+		//price
+		h2 {
+			color: @internal-primary;
+		}
+	}
+
+	//KOPY'S STYLES
+	#invUnitSlider {
+		.image_overlay {
+			position: absolute;
+			display: none;
+			top: 0;
+			right: 15px;
+			z-index: 2;
+			background-color: @internal-primary;
+
+			&.visible {
+				display: block;
+				padding: @grid-gutter-width / 2 @grid-gutter-width;
+				opacity: 0.8;
+
+				p {
+					font-size: @font-size-h3;
+					margin: 0;
+					text-transform: uppercase;
+					color: @internal-primary-text;
+
+					@media (max-width: @screen-xs-max) {
+						font-size: @font-size-h4;
+					}
+				}
+			}
+		}
+		&:hover {
+			.image_overlay.visible {
+				display: none;
+			}
+		}
+	}
+
+	//PANEL STYLES
+
+	//top level parent
+	.invUnitInfo {
+		background-color: @internal-bg-variant;
+
+        //desktop views - tabs along the top
+        .nav-tabs { // nested to keep styles from cascading into header/footer
+            background-color: @internal-bg;
+            border-bottom: none;
+
+            > li {
+                padding-right: 1px; //mimics border
+                border-bottom: 1px solid @internal-bg;
+                &.active {
+                    border-bottom-color: @internal-bg-variant;
+                    .panel-heading {
+                        a {
+                            background-color: @internal-bg-variant;
+                            color: @internal-primary;
+                        }
+                    }
+                }
+
+                .panel-heading {
+                    background-color: @internal-bg-variant;
+                    border: none;
+                    border-radius: 0;
+
+                    a {
+                        outline: none;
+                        color: @internal-primary;
+                    }
+                }
+            }
+        }
+	}
+
+
+	//bottom section
+	.invUnitInfoTable {
+		.panel {
+			border-width: 0;
+
+			//mobile view panel tab
+			.panel-heading {
+				background-color: @internal-bg;
+
+				a {
+					color: @internal-primary;
+
+					&:hover, &:focus, &:active {
+                        color: @internal-bg-text;
+					}
+				}
+			}
+
+			.panel-body {
+				border-top: none !important;
+				h3 {
+					color: @internal-primary;
+				}
+			}
+
+			&.unitDetailsVideosGallery {
+				.videoContent {
+					color: @internal-bg-text;
+					li {
+						border-left-width: 1px;
+						border-left-style: dotted;
+						border-color: @internal-bg-text;
+					}
+				}
+				.videoContainer a .videoImage img:hover {
+					outline: 1px solid @internal-primary;
+				}
+
+			}
+
+            &.unitDetailsGallery {
+                // Photo gallery
+                ul > li {
+                    // fix images getting cut off ~700px
+                    @media (max-width: @screen-xs-max) {
+                        width: 50%;
+                        height: auto;
+                    }
+                }
+            }
+
+			&.unitSpecifications {
+				li {
+					label, span {
+						border-bottom: 1px solid fade(@internal-bg-variant-strong, 80%);
+					}
+				}
+				.unitSpecHeader {
+					label {
+						color: @internal-primary;
+					}
+				}
+			}
+			&.unitPaymentCalculator,
+            &.unitShippingCalculator {
+				ul {
+					label {
+						color: fade(@internal-bg-text, 75%);
+					}
+				}
+				.disclaimer {
+					color: fade(@internal-bg-text, 50%);
+				}
+			}
+		}
+	}
+
+	//left side of panel in desktop
+	#unitDetails {
+		background-color: @internal-bg-variant;
+	}
+
+	//right side of panel in desktop
+	.unitHighlights {
+		background-color: @internal-bg-variant;
+		border-left: 1px solid @internal-bg;
+
+		a {
+			color: @internal-primary;
+		}
+	}
+
+	.invUnitRecommendations {
+		a {
+			h3 {
+				color: @internal-bg-text;
+			}
+
+			&:hover, &:active, &:focus {
+				h3 {
+					opacity: 0.7;
+				}
+			}
+		}
+	}
+
+
+	//header that shows when no available images
+	.noImages {
+		background-color: @internal-bg-variant;
+		h3 {
+			color: @internal-bg-text;
+		}
+	}
+
+	//images slideshow
+	a.carousel-control {
+		background: @internal-bg-variant;
+		color: @internal-bg-text;
+
+		&:hover, &:active, &:focus {
+			background-color: @internal-bg-variant-strong;
+		}
+	}
+}

@@ -1,0 +1,936 @@
+//
+// Calendar Core
+// --------------------------------------------------
+
+
+
+// establishes @grid-gutter-width equivalent for xcalendar page
+@cal-grid-gutter: 10px;
+
+.eventCalendar {
+	
+	#content {
+		position: relative;
+	}
+
+	hr {
+		border: none;
+	}
+
+	#calendar {
+	
+		padding: round(@cal-grid-gutter * 1.5) 0;
+		
+		// Calendar header - Month and btns
+		.fc-header {
+			margin-bottom: @cal-grid-gutter;
+			
+			
+			tr {
+				padding-bottom: round(@cal-grid-gutter * 1.5);
+				td {
+					
+					&.fc-header-left {
+						@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+							display: block;
+						}
+					
+						h2 {
+							font-size: round(@font-size-base * 2.15); // placed in platform file intentionally - nemo
+							line-height: round(@font-size-base * 2.15); // placed in platform file intentionally - nemo
+							margin-bottom:0;
+						}
+					}
+					
+					&.fc-header-center {
+						display: none;
+					}
+					
+					&.fc-header-right {
+						@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+							display: block;
+							width: auto;
+						}
+						
+						> span {
+							border-radius: 0!important;
+							text-align:center;
+							margin-bottom:0;
+							
+							// two main states of top lvl btns for 
+							&.fc-state-default {}
+							&.fc-state-hover, &.fc-state-down, &.fc-state-active, &.fc-state-disabled {}
+							
+							&.fc-button-listbt {}
+							&.fc-button-calendarbt {}
+							
+							&.fc-button-month {
+								@media (min-width: @screen-sm-min) {
+									margin-left: round(@cal-grid-gutter / 2);
+								}
+								
+							}
+							&.fc-button-basicWeek {}
+							&.fc-button-basicDay {
+								@media (min-width: @screen-sm-min) {
+									margin-right: round(@cal-grid-gutter / 2);
+								}
+							}
+							
+							&.fc-button-prevYear {}
+							&.fc-button-prev {}
+							&.fc-button-today {}
+							&.fc-button-next {}
+							&.fc-button-nextYear {}
+							
+						}
+					}
+				}
+					
+				@media (max-width: @screen-xs-max) {
+					display: block;
+					
+					td {
+						display: block;
+						
+						&.fc-header-left {
+							h2 {
+								font-size: round(@font-size-base * 1.6);
+							}
+						}
+						&.fc-header-right {
+							.clearfix;
+							width: auto;
+						
+							> span {
+								display: block;
+								float:left;
+								margin-left:0;
+								margin-right:0;
+								margin-bottom: @cal-grid-gutter;
+								border-radius: 0!important;
+								text-align:center;
+								
+								&.fc-button-listbt, &.fc-button-calendarbt {
+									width: percentage(1/2);
+									overflow-x: hidden;
+								}
+								
+								&.fc-button-month, &.fc-button-basicWeek, &.fc-button-basicDay {
+									width: percentage(1/3);
+								}
+
+								&.fc-button-prevYear, &.fc-button-prev, &.fc-button-today, &.fc-button-next, &.fc-button-nextYear {
+									width: percentage(1/5);
+								}
+								
+							}
+						}
+					}
+				}
+			}
+		}// .fc-header
+		
+		
+		.fc-content {
+		
+			&.listView {
+				.fc-view.fc-list {
+					display: block;
+				}
+				
+				.fc-view.fc-grid {
+					display: none;
+				}
+			}
+			
+			.fc-view {
+				
+				// calendar grid view
+				&.fc-grid {}
+				
+				// list view styles on xcalendar
+				&.fc-list {
+					display: none;
+					
+					// list view -- event container
+					.dvListviewEvent {
+						// heading for list view event
+						.dvHeader {
+							padding: round(@cal-grid-gutter / 2);
+							
+							a {
+								font-size: round(@font-size-base * 1.14);
+							}
+						}
+					}
+				}
+				
+				// holds absolutely positioned events, widget calculates placement on resize.
+				.fc-event-container {
+				
+					// container for individual events
+					.fc-event {
+							
+							border: none; // border for event on grid view
+							cursor: pointer;
+						
+							// hides event image and details on calendar view for xs view.
+							@media (max-width: @screen-xs-max) {
+								padding-top: round(@cal-grid-gutter * 2);
+								* { display: none;}
+							}
+						
+						.fc-event-inner {
+							padding: round(@cal-grid-gutter / 2);
+							
+							//holds event image
+							.iconWrapper {
+								display: block; // hides grid view image
+							
+								padding-bottom: round(@cal-grid-gutter / 2);
+								
+								min-height:48px;
+								
+								img {
+									&.eventImage {}
+									&.ICON {}
+								}
+							}
+							
+							// lists event time (duration)
+							.fc-event-time {
+								display: inline;
+							}
+							
+							// lists event title
+							.fc-event-title {}
+						}
+					}
+				} // .fc-event-container
+				
+				// table - actual visual calendar
+				.fc-border-separate {
+				
+					thead {
+					
+						tr {
+							
+							// ***unknown purpose***
+							&.fc-first {}
+							&.fc-last {}
+							
+							th {
+							
+								// general day heading styles
+								&.fc-day-header {}
+								
+								
+								// ***unknown purpose***
+								.fc-widget-header {}
+								
+								// first column in calendar
+								&.fc-first {}
+								
+								// last column in calendar
+								&.fc-last {}
+								
+								//
+								// days of the week
+								//
+								
+								&.fc-mon {}
+								&.fc-tue {}
+								&.fc-wed {}
+								&.fc-thu {}
+								&.fc-fri {}
+								&.fc-sat {}
+								&.fc-sun {}
+							}
+						}
+					} // thead
+					
+					tbody {
+						
+						tr {
+							
+							&.fc-week {
+								td {
+									
+									// first column in calendar
+									&.fc-first {}
+									
+									// last column in calendar
+									&.fc-last {}
+									
+									// past/future styles
+									&.fc-past {}
+									&.fc-future {}
+								
+									&.fc-widget-content {}
+									
+									// days of this week's <tr>
+									&.fc-day {
+									
+										&.fc-mon {}
+										&.fc-tue {}
+										&.fc-wed {}
+										&.fc-thu {}
+										&.fc-fri {}
+										&.fc-sat {}
+										&.fc-sun {}
+									}
+									
+									> div {
+										
+										// day cell's number
+										.fc-day-number {}
+										
+										
+										// day cell's content
+										// -- when a day has an event, this container matches the events dimentions from .fc-event-container
+										.fc-day-content {
+											> div {}
+										}
+									
+									}
+								}
+							} // .fc-week 
+						}
+					} // tbody
+				}
+				
+				// &.fc-view-month {} // .fc-view-month -- month view
+			 	// &.fc-view-basicWeek {} // .fc-view-basicWeek -- week view
+				// &.fc-view-basicDay {} // .fc-view-basicDay -- day view
+				
+			} // .fc-view
+			
+		} // .fc-content
+	}
+	
+	#dvTemplates, .dvTemplates {
+		display: none;
+	}
+}//.xcalendar
+
+//
+// styles for both xcalendar and xlistevents styles
+//
+.dvListviewEvent {
+	margin-top: @cal-grid-gutter;
+	padding: @cal-grid-gutter;
+	
+	// box specific styles
+	&.content {}
+	
+	// social icons
+	.dvSocial {
+		float: right;
+		
+		padding-top: round(@cal-grid-gutter * .8);
+		padding-right: round(@cal-grid-gutter * .7);
+		padding-left: round(@cal-grid-gutter * .7);
+		
+		.addthis_toolbox  {
+			
+			a {}
+			.atclear {}
+		}
+	}
+	
+	// heading for list view event
+	.dvHeader {
+		
+		a {
+			font-size: round(@font-size-base * 1.14);
+		}
+	}
+	
+	// date for list view event
+	.dvDate {
+		margin-top: @cal-grid-gutter;
+		margin-bottom: @cal-grid-gutter;
+	}
+	
+	// category for list view event
+	.dvCategory {}
+	
+	// image for list view event
+	.dvImage {
+		
+		a {}
+		
+	}
+	
+	// event location
+	.dvLocation {
+		.Name {}
+		.Address {}
+		.City {}
+		.Zip {}
+		.Country {}
+	}
+	
+	// list view event content -- description
+	.dvContent {
+		margin-top: @cal-grid-gutter;
+	}
+	
+	// list view event footer
+	.dvFooter {}
+	
+}
+
+
+//
+// Modal styles for clicked events on calendar view
+//
+
+// overlay for modal that opens when a calendar view event item is clicked
+#overlayBlock {
+	display: none; 
+	height: 100%; 
+	width: 100%;
+	position: fixed;
+	top:0; 
+	right:0; 
+	bottom:0; 
+	left:0;
+	z-index:999;
+}
+
+// modal that opens when a calendar view event item is clicked
+#eventDetails {
+	display: none;
+	position: fixed; 
+	top: 5%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	max-width: 600px;
+	width: 90%;
+	max-height: 90%;
+	overflow: hidden;
+	padding: @cal-grid-gutter;
+	z-index: 1000;
+	
+	// closes event details modal
+	.close {
+		float: right;
+		z-index: 1001;
+		display: block;
+		cursor:pointer;	
+		margin: round(@cal-grid-gutter * .5 );
+		padding: round( @cal-grid-gutter / 2);
+		
+	}
+	
+	// heading for event details modal 
+	h3 {
+		margin: 0 0 @cal-grid-gutter;
+		padding: round(@cal-grid-gutter / 2);
+		
+		&.grabber {
+			cursor: move;
+		}
+		
+		a {}
+	}
+	
+	// modal event details content area
+	> .content{
+		
+		.dvDetailView {
+			overflow: auto;
+			
+			.dvHeader {}
+			
+			// social section on event details modal
+			.dvSocial {
+				
+				@media (min-width: @screen-sm-min) {
+					float: right;
+				}
+				
+				.addthis_toolbox {
+					a {}
+					.atclear {}
+				}
+			}
+			
+			// modal event details date
+			.dvDate {}
+			
+			// modal event details category
+			.dvCategory {}
+			
+			// modal event details image
+			.dvImage {
+				padding: @cal-grid-gutter;
+				
+				img {
+					.img-responsive;
+					width: auto;
+					height: auto;
+					
+				}
+			}
+			
+			// modal event details location
+			.dvLocation {
+				.Name {}
+				.Address {}
+				.City {}
+				.State {}
+				.Zip {}
+				.Country {}
+			}
+			
+			// modal event details content area
+			.dvContent {}
+			
+			// modal event details footer
+			.dvFooter {}
+		}
+	}
+}
+
+//
+// qtip styles -- shown when hovering over event on calendar view.
+//
+
+.qtip {
+	z-index: 12;
+	
+	.close {
+		cursor: pointer;
+	}
+	
+	@media (max-width: @screen-xs-max) { 
+		display: none !important; // prevents from displaying event info on xs view, when hovering over event in grid view
+	}
+	
+	// decorative triangle that shows when hovering over event on grid view
+	.qtip-tip {
+		z-index: 1;
+		background: none !important; // remove importance later
+		width: 50px;
+		height: 25px !important; // importance needed to make triangle touch event (.fc-event-inner)
+		
+		&:before {
+			content:"";
+			display: block;
+			border-left: 25px solid transparent;
+			border-right: 25px solid transparent;
+		}
+		
+		&[rel='bottomMiddle']:before {
+			border-bottom: 25px solid #fff; // color is declared as a fallback to the inherit below. the inherited color is injected inline to the parent element through js.
+			border-bottom-color: inherit;
+		}
+		&[rel='topMiddle']:before {
+			border-top: 25px solid #fff; // color is declared as a fallback to the inherit below. the inherited color is injected inline to the parent element through js.
+			border-top-color: inherit;
+		}
+		
+		canvas {
+			display: none;
+		}
+	}
+	
+	.qtip-wrapper {
+		border-radius:0;
+		
+		a {
+			color:#000;
+			font-weight:bold;
+		}
+		
+		.qtip-contentWrapper {
+			padding: @cal-grid-gutter;
+			
+			.qtip-content {
+				padding: 0 !important; // remove importance later
+				
+				.content {
+					
+					.dvHeader {
+						padding: round(@cal-grid-gutter / 2);
+						
+						a {
+							color: inherit;
+						}
+					}
+					
+					.dvDate {
+						margin-top: round( @cal-grid-gutter / 2);
+						margin-bottom: round( @cal-grid-gutter / 2);
+					}
+					
+					.dvCategory  {} // hidden by default
+					
+					.dvImage {
+						img {
+							.img-responsive;
+							width: auto;
+							height: auto;
+						}
+					}
+					
+					.dvShortDescription  {}
+					
+					.dvLocation { //  hidden by default
+						.Name {}
+						.Address {}
+						.City {}
+						.Zip {}
+						.Country {}
+					} 
+					
+					.dvFooter {
+						.dvSocial {
+							padding: round(@cal-grid-gutter / 2) 0;
+							
+							.addthis_toolbox {}
+						}
+						
+					}
+					
+					> input {}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+//
+// styles for an event's full details page
+//
+
+.xListEvents {
+	.dvListviewCategory  {
+		box-shadow: none;
+		border: none;
+		border-radius: 0;
+		
+		// event's calendar name and calendar image
+		.dvCalendarName {
+			a {
+				&:first-child {}
+				
+				img {}
+			}
+		}
+		
+		// event's category name container
+		.dvCategoryTitle {
+			box-shadow: none;
+			-moz-border-radius: 0;
+			-webkit-border-radius: 0;
+			border-radius: 0;
+			margin: 0;
+		}
+		
+		// event full details
+		.dvListviewEvent {
+			border: none;
+			margin-top: 0;
+			padding: @cal-grid-gutter;
+			
+			.dvHeader {
+				
+				margin:0;
+				
+				a {}
+			}
+			
+			.dvDate {
+				
+			}
+			
+			.dvImage {
+				img {
+					.img-responsive;
+					width: auto;
+					height: auto;
+				}
+			}
+			
+			.dvContent {}
+			
+			.dvFooter {}
+		}
+	}
+}
+
+// structure styles for new list view which sorts by date.
+.event-by-date {
+	.event-by-date-header {
+		padding-bottom: round(@cal-grid-gutter * 1.0);
+		
+		.event-by-date-search { // form	
+				text-align: center;
+				width: auto;
+				margin: 0 auto;
+				padding: 0 round(@cal-grid-gutter * 1.0);
+				
+			> div {
+			
+				@media (min-width: @screen-sm-min){
+					display: inline-block;
+				}
+				
+				> div {
+					display: inline-block;
+					
+					select {
+						font-size: 16px; // minimum font size for iOS to display properly
+						padding: round(@cal-grid-gutter * 0.8) round(@cal-grid-gutter * 1.0);
+						cursor: pointer;
+					}
+					
+					.submit-event-by-date-search {
+						padding: round(@cal-grid-gutter * 0.8);
+					}
+				}
+				
+				&.ui-grid-a {
+						
+					> div {
+						padding-left: round(@cal-grid-gutter * 1.0);
+					
+						&:first-child {
+							padding-left: 0;
+						}
+					}
+				}
+				
+				&:not(.date-to) {
+					font-size: 0; // for inline-block spacing.
+				}
+				
+				&.start-date {}
+				
+				&.date-to {
+					line-height: 40px;
+					
+					@media (min-width: @screen-sm-min){
+						line-height: inherit;
+					}
+				}
+				
+				&.end-date {}
+				
+				&.search-dates {
+					padding-top: round(@cal-grid-gutter * 1.0);
+					
+					@media (min-width: @screen-sm-min){
+						padding-top: 0;
+					}
+				}
+			}
+		}
+	}
+
+	.event-by-date-pagination {
+		.clearfix;
+		padding: 0 round(@cal-grid-gutter * 1.5);
+	
+		> span {
+			> a {
+				display: inline-block;
+				width: 30px;
+				text-align: center;
+				
+				@media (min-width: @screen-sm-min){
+					width: auto;
+					text-align: left;
+				}
+			}
+		}
+		
+		a {
+			cursor: pointer;
+			font-size: 20px;
+			line-height: 30px; 
+			padding: 0;
+			
+			@media (min-width: @screen-sm-min){
+				font-size: 14px;
+				padding:  0 round(@cal-grid-gutter * 0.5);
+				line-height: inherit;
+			}
+		}
+	}
+	
+	// top of page pagination
+	.event-by-date-search + .event-by-date-pagination { 
+		> span {
+			> a {
+				margin-top: round(@cal-grid-gutter * 0.6);
+			}
+		}
+	}
+	
+	// bottom of page pagination
+	.event-by-date-results + .event-by-date-pagination { 
+		padding-top: round(@cal-grid-gutter * 1.0);
+		
+		> span {
+			display: block;
+			
+			@media (min-width: @screen-sm-min){
+				float: left;
+				line-height: inherit;
+			}
+		}
+		
+		> a {
+			display: block;
+			margin-top: round(@cal-grid-gutter * 1.0);
+			
+			@media (min-width: @screen-sm-min){
+				float: right;
+				margin-top: 0;
+			}
+		}
+	} 
+
+	.event-by-date-results {}
+
+	.event-month {
+		.clearfix;
+		margin-top: round(@cal-grid-gutter * 1.0);
+		
+		border-style: solid;
+		border-top-width: 0;
+		border-right-width: 0;
+		border-bottom-width: 1px;
+		border-left-width: 0;
+		
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	.event-month-title {
+		.clearfix;
+		font-size: 30px;
+		font-weight: 700;
+		padding-left: round(@cal-grid-gutter * 1.0);
+		padding-right: round(@cal-grid-gutter * 1.0);
+	}
+	
+	.event-item {
+		.clearfix; 
+		
+		padding: round(@cal-grid-gutter * 0.6) round(@cal-grid-gutter * 1.0) 0;
+		border-style: solid;
+		border-top-width: 1px;
+		border-right-width: 1px;
+		border-bottom-width: 0;
+		border-left-width: 1px;
+		
+		&:first-child {
+			border-top: none;
+		}
+		
+		&.has-image {
+			padding-top: round(@cal-grid-gutter * 1.5);
+			
+			.event-info {
+				> h3 {
+					float: none;
+					
+					@media (min-width: @screen-md-min){
+						float: left;
+						margin-bottom: round(@cal-grid-gutter * 1.0);
+					}
+				}
+				
+				.event-desc {
+					.addthis_toolbox {
+						float: none;
+						padding-top: 0;
+						padding-left: 0;
+						padding-bottom: round(@cal-grid-gutter * 1.0);
+					
+						@media (min-width: @screen-md-min){
+							float: right;
+							padding-top: round(@cal-grid-gutter * 1.2);
+							padding-left: round(@cal-grid-gutter * 0.8);
+							padding-bottom: 0;
+						}
+					}
+				}
+			}
+		}
+		
+		.event-image {
+			
+			@media (min-width: @screen-sm-min){
+				float: left;
+				padding-right: round(@cal-grid-gutter * 1.5);
+				padding-bottom: round(@cal-grid-gutter * 1.5);
+				width: 35%;
+			}
+			@media (min-width: @screen-lg-min){
+				width: 20%;
+			}
+			
+			a {
+				img {
+					.img-responsive;
+					margin: 0 auto;
+				}
+			}
+		}
+		
+		.event-info {
+			overflow: hidden;
+			
+			> h3 {
+				margin-bottom: round(@cal-grid-gutter * 0.5);
+				
+				@media (min-width: @screen-sm-min){
+					float: left;
+					margin-bottom: round(@cal-grid-gutter * 1.0);
+				}
+			}
+			
+			.event-desc {
+				.clearfix;
+				
+				.addthis_toolbox {
+					padding-bottom: round(@cal-grid-gutter * 1.0);
+				
+					@media (min-width: @screen-sm-min){
+						float: right;
+						padding-top: round(@cal-grid-gutter * 1.2);
+						padding-left: round(@cal-grid-gutter * 0.8);
+						padding-bottom: 0;
+					}
+				}
+				
+				.short-desc {
+					.clearfix;
+					
+					&:before {
+						clear: both;
+					}
+				}
+			}
+			
+			.event-time {
+				padding-bottom: round(@cal-grid-gutter * 1.5);
+			}
+		}
+	}
+}

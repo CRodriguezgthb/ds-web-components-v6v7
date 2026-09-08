@@ -1,0 +1,377 @@
+////////////////////////////////
+// event calendar page styler //
+////////////////////////////////
+
+// Customize xlistevents filters
+body.xlistevents {
+	.event-by-date-search {
+		> div {
+			margin-right: 15px;
+			&.start-date,
+			&.date-to {
+				margin-right: 5px;
+			}
+		}
+		.ui-block-a,
+		.ui-block-b {
+			// .custom-select(@icon; @color; @font-size; @height-of-select; @border-width: 1px; @parent-padding-right: 0px);
+			.custom-select('\f107'; @brand-primary; 18px; 40px; 1px; 0px);
+			> select {
+			   padding-right: 25px !important;
+		   	}
+		}
+		.search-dates {
+			.ui-block-a {
+				// No arrow for button
+				&:before {
+					content: none;
+				}
+			}
+			input[type="button"].submit-event-by-date-search {
+				border: none;
+				height: 40px;
+				background-color: @internal-primary;
+				color: contrast(@internal-primary, @black, @white);
+				&:hover, &:active, &:focus {
+					background-color: @internal-primary-variant;
+					color: contrast(@internal-primary-variant, @black, @white);
+				}
+			}
+		}
+	}
+}
+
+// calls both stylers for all calendar pages.
+.calendar-styler(@contrast-color, @background-color) {
+	.eventCalendar-styler(@background-color);
+	.event-by-date-list-view(@contrast-color, @background-color)
+}
+
+// styles default calendar grid view, category list view and event details view.
+.eventCalendar-styler(@background-color){
+	#calendar {
+		.fc-content {
+			.calc-text-color(@background-color);
+		}
+		.fc-today {
+			.calc-background-lighten-or-darken(@background-color);
+		}
+		.fc-header {
+			tr {
+				td {
+					&.fc-header-right {
+						> span {
+							font-size: round(@font-size-base * 1.14);
+							line-height: @grid-gutter-width;
+							display: inline-block;
+							* {
+								display: inline-block;
+								line-height: round(@font-size-base * 1.86);
+							}
+							&.fc-state-default {
+								background: none; // overrides default calendar style
+								text-shadow: none; // overrides default calendar style
+								box-shadow: none; // overrides default calendar style
+								.calc-background-xtra-lighten-or-darken(@background-color);
+								.calc-border-color(@background-color);
+								border-width: 1px;
+								border-style: solid;
+								.calc-text-color(@background-color);
+
+								font-weight: 400;
+							}
+							&.fc-state-hover, &.fc-state-down, &.fc-state-active, &.fc-state-disabled {
+								.calc-background-lighten-or-darken(@background-color);
+								opacity: .75;
+							}
+						}
+					}
+				}
+			}
+		}
+		.fc-border-separate {
+			th, td {
+				.calc-border-color(@background-color);
+			}
+		}
+		// events list view
+		.fc-list {
+			.dvListviewEvent {
+				.calc-background-and-text-by-value(@background-color, 2.5%);
+				&:nth-child(even) {
+					.calc-background-and-text-by-value(@background-color, 7%);
+				}
+				.dvHeader {
+					a {
+						color: inherit;
+					}
+				}
+			}
+		}
+	}
+	.qtip {
+		.qtip-wrapper {
+			box-shadow: 0 0 5px @black;
+			.qtip-contentWrapper {
+				border: none !important; // importance is necessary here
+				.calc-background-and-text-by-value(@background-color, 4%) !important; // importance is necessary here
+				.qtip-content {
+					background: none !important; // importance is necessary here
+					.content {
+						.calc-background-and-text-by-value(@background-color, 4%);
+
+						.dvSocial {
+							.btnOpenDetails {
+								.calc-background-and-text-by-value(@background-color, 4%);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	// event details modal styles
+	#overlayBlock {
+		background-color: @black;
+		filter: alpha(opacity=50);
+		background-color: fade(@black, 50);
+	}
+	#eventDetails {
+		background-color: @background-color;
+		box-shadow: 0 0 15px fade(@white, 10);
+
+		.close {
+			opacity: 1; // overwrites default calendar styles
+			.calc-background-and-text-by-value(@background-color, 10%);
+			text-shadow: none;
+			font-weight: 400;
+			&:hover, &:active, &:focus {
+				.calc-background-and-text-by-value(@background-color, 5%);
+			}
+		}
+		h3 {
+			a {
+				line-height: round(@line-height-computed * 1.5);
+			}
+		}
+		.content {
+			.calc-background-and-text-by-value(@background-color, 0);
+		}
+	}
+	// list events page styles
+	.xListEvents {
+
+		.dvListviewCategory {
+			.calc-background-and-text-by-value(@background-color, 4%);
+
+			.dvListviewEvent {
+				&:nth-child(even) {
+					background-color: @background-color;
+					.calc-text-color(@background-color);
+				}
+			}
+			.dvHeader {
+				font-size: round(@font-size-base * 1.14);
+
+				a {
+					color: inherit;
+				}
+			}
+		}
+	}
+}
+
+// styles new calendar list view which sorts by date.
+// this page is unique and does not inherit other calendar pages' styles.
+.event-by-date-list-view(@contrast-color, @background-color) {
+	.event-by-date {
+		.event-by-date-header {
+			.event-by-date-search { // form
+				.submit-event-by-date-search {
+					&:hover, &:active, &:focus {
+						.calc-hover-color(darken(@background-color, 10%));
+					}
+				}
+				> div {
+					&.date-to {
+						.calc-text-color(@background-color);
+					}
+				}
+			}
+		}
+		.event-by-date-pagination {
+			> span {
+				> a {
+					&.active {
+						.calc-background-lighten-or-darken(@background-color);
+						color: @contrast-color;
+					}
+				}
+			}
+		}
+		.event-month {
+			.calc-border-color(@background-color);
+		}
+		.event-month-title {
+			background-color: @contrast-color;
+			.calc-text-color(@contrast-color);
+		}
+		.event-item {
+			.calc-border-color(@background-color);
+			&:nth-of-type(odd) {
+				background-color: @background-color;
+			}
+			&:nth-of-type(even) {
+				.calc-background-lighten-or-darken(@background-color);
+			}
+			.event-info {
+				.event-loc, .event-time {
+					> span:first-child {
+						color: @contrast-color;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+////////////////////////////
+// calendar widget styler //
+////////////////////////////
+.events-styler(@date-dimension, @bg-color, @highlight-color) {
+	& when (iscolor(@bg-color)) {
+		.events-styles(@date-dimension, @bg-color, @highlight-color);
+		#homeEvents {
+			background-color: @bg-color;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+	} & when (iskeyword(@bg-color)) {
+		.events-styles(@date-dimension, @bg-secondary, @highlight-color);
+	}
+}
+
+.events-styles(@date-dimension, @bg-color, @highlight-color) {
+    #homeEvents {
+        ul {
+            padding-left: 0;
+            margin-bottom: 0;
+
+        	li {
+            	list-style: none;
+	        	padding: 10px 0;
+				min-height: (@date-dimension + 20px) ~"\9";
+
+    	    	a {
+        	    	display: block;
+					position: relative;
+        		}
+    		}
+    	}
+    }
+    .eventDate, .eventInfo {
+        display: inline-table;
+        vertical-align: top;
+    }
+	.dateWrap {
+		display: table-cell;
+		vertical-align: middle;
+	}
+    .eventDate {
+        width: @date-dimension;
+        height: @date-dimension;
+		position: absolute \9;
+		left: 0 \9;
+		top: 0 \9;
+        text-align: center;
+
+        span {
+            display: block;
+            font-weight: bold;
+			line-height: 1;
+
+            &.eventMonth {
+                font-size: @font-size-small;
+                text-transform: uppercase;
+            }
+            &.eventDay {
+                font-size: @font-size-h2;
+            }
+        }
+    }
+    .eventInfo {
+        width: ~"calc((100%) - (@{date-dimension}))";
+		width: 100% \9;
+        padding-left: 10px;
+		padding-left: (@date-dimension + 10px) ~"\9";
+
+        h4 {
+			line-height: 1;
+            margin: 0;
+
+            @media (max-width: @screen-xs-max){
+				font-size: 20px;
+            }
+        }
+        p {
+			font-size: 14px;
+            margin: 0;
+        }
+    }
+	.eventDate {
+		background-color: @highlight-color;
+
+		span {
+			&.eventMonth {
+				color: @black;
+				& when (lightness(@highlight-color) < 35%) {
+					color: @white;
+				}
+			}
+			&.eventDay {
+				color: @white;
+				& when (lightness(@highlight-color) > 75%) {
+					color: @black;
+				}
+			}
+		}
+	}
+	.eventInfo {
+		h4 { .calc-text-color(@bg-color); }
+        p {
+			color: darken(@white, 20%);
+			& when (lightness(@bg-color) > 50%){
+				color: lighten(@black, 20%);
+			}
+		}
+	}
+	#homeEvents {
+		a:hover {
+			.eventDate {
+				background-color: @white;
+				.eventMonth { color: @black; }
+				.eventDay { color: @highlight-color; }
+
+				& when (lightness(@bg-color) > 50%){
+					background-color: @black;
+					.eventMonth { color: @highlight-color; }
+					.eventDay { color: @white; }
+
+					& when (lightness(@highlight-color) < 35%) {
+						.eventMonth { color: @white; }
+					}
+				}
+			}
+			.eventInfo {
+				h4, strong { color: @highlight-color; }
+				p {
+					color: @white;
+					& when (lightness(@bg-color) > 50%){
+						color: @black;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+// border-radius with vendor prefixes
+.border-radius(@i) {
+	-webkit-border-radius: @i;
+	-moz-border-radius: @i;
+	border-radius: @i;
+}
+@bg-secondary: #fff;
+
+// border mixin that calculates border color by value defined in second parameter based on background color of the element
+.calc-border-color-by-value(@background-color, @degree-of-shading) {
+	& when (lightness(@background-color) <= 50%) {
+		border-color: lighten(@background-color, @degree-of-shading);
+	} & when (lightness(@background-color) > 50%) {
+		border-color: darken(@background-color, @degree-of-shading);
+	}
+}
+// takes background color and %rate of shading, determines whether to lighten or darken and also sets text color
+.calc-background-and-text-by-value(@parents-background-color,@degree-of-shading) {
+	& when (lightness(@parents-background-color) > 50%) {
+		background-color: darken(@parents-background-color, @degree-of-shading);
+		.calc-text-color(darken(@parents-background-color, @degree-of-shading));
+	} & when (lightness(@parents-background-color) <= 50%) {
+		background-color: lighten(@parents-background-color, @degree-of-shading);
+		.calc-text-color(lighten(@parents-background-color, @degree-of-shading));
+	}
+}
+// calculates text color based on background color
+.calc-text-color(@background-color) {
+	& when (lightness(@background-color) > 50%) {
+		color: @black;
+	} & when  (lightness(@background-color) <= 50%) {
+		color: @white;
+	}
+}
+// calculates text color based on background color and adds opacity
+.calc-text-color(@background-color, @fade) {
+	& when (lightness(@background-color) > 50%) {
+		color: @black;
+		color: fade(@black, @fade);
+	} & when (lightness(@background-color) <= 50%) {
+		color: @white;
+		color: fade(@white, @fade);
+	}
+} 

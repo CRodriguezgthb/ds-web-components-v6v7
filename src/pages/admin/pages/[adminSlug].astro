@@ -1,0 +1,180 @@
+---
+export const prerender = false;
+
+import { actions } from 'astro:actions';
+import Layout from '../../../layouts/Layout.astro';
+import AdminNav from '../../../components/AdminNav.astro';
+import { createUserClient } from '../../../lib/supabase';
+
+const { adminSlug } = Astro.params;
+const accessToken = Astro.cookies.get('sb-access-token')?.value;
+
+if (!accessToken) {
+	return Astro.redirect('/login');
+}
+
+const db = createUserClient(accessToken);
+
+const { data: page } = await db
+	.from('pages')
+	.select('id, title, slug, admin_slug, description')
+	.eq('admin_slug', adminSlug)
+	.maybeSingle();
+
+if (!page) {
+	return Astro.redirect('/admin/pages');
+}
+
+const { data: components } = await db
+	.from('components')
+	.select('id, ref, title, created_by_email, updated_at')
+	.eq('page_id', page.id)
+	.order('created_at', { ascending: false });
+
+const errorCode = Astro.url.searchParams.get('error');
+---
+
+<Layout title={`Page: ${page.title}`}>
+	<main class="page-detail">
+		<header>
+			<h1>{page.title}</h1>
+			<a href="/admin/pages">&larr; Volver a Pages</a>
+		</header>
+		<AdminNav current="pages" />
+
+		<p class="slug">Pública: <a href={`/${page.slug}`} target="_blank">/{page.slug}</a></p>
+		{page.description && <p>{page.description}</p>}
+
+		{errorCode && <p class="error">Ocurrió un error, intenta de nuevo.</p>}
+
+		<div class="components-header">
+			<h2>Componentes</h2>
+			<a class="new" href={`/admin/pages/${page.admin_slug}/components/new`}>Nuevo componente</a>
+		</div>
+
+		{components && components.length === 0 && <p>Todavía no hay componentes.</p>}
+
+		<ul class="component-list">
+			{components?.map((component) => (
+				<li>
+					<div class="component-info">
+						<span class="component-title">{component.title}</span>
+						<span class="component-meta">
+							<code>&lt;CodeComponent id="{component.ref}" /&gt;</code>
+							{component.created_by_email && <> · {component.created_by_email}</>}
+							{' · '}
+							{new Date(component.updated_at).toLocaleDateString('es-MX', {
+								dateStyle: 'medium',
+							})}
+						</span>
+					</div>
+					<div class="actions">
+						<a href={`/admin/pages/${page.admin_slug}/components/${component.id}`}>Editar</a>
+						<!--
+							Posts straight to the action, so this delete keeps
+							working with JavaScript disabled. The editor island
+							calls the same action with a FormData.
+						-->
+						<form
+							method="POST"
+							action={actions.components.remove}
+							onsubmit="return confirm('¿Eliminar este componente?')"
+						>
+							<input type="hidden" name="id" value={component.id} />
+							<button type="submit">Eliminar</button>
+						</form>
+					</div>
+				</li>
+			))}
+		</ul>
+	</main>
+</Layout>
+
+<style>
+	.page-detail {
+		max-width: 720px;
+		margin: 2rem auto;
+		padding: 0 1rem;
+	}
+	header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.slug a {
+		color: #6b7280;
+	}
+	.error {
+		color: #b91c1c;
+	}
+	.components-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 1.5rem;
+	}
+	.new {
+		color: white;
+		background: #111827;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		text-decoration: none;
+		font-weight: 600;
+	}
+	.component-list {
+		list-style: none;
+		padding: 0;
+		margin: 1rem 0 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+	.component-list li {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.6rem 1rem;
+		border: 1px solid #e5e7eb;
+		border-radius: 6px;
+	}
+	.component-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		min-width: 0;
+	}
+	.component-title {
+		font-weight: 600;
+	}
+	.component-meta {
+		color: #6b7280;
+		font-size: 0.75rem;
+		overflow-wrap: anywhere;
+	}
+	.component-meta code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		background: #f3f4f6;
+		border-radius: 3px;
+		padding: 0.05rem 0.3rem;
+	}
+	.actions {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+	.actions form {
+		display: inline;
+	}
+	.actions button {
+		background: none;
+		border: none;
+		color: #b91c1c;
+		cursor: pointer;
+		font: inherit;
+		padding: 0;
+	}
+	.actions a {
+		color: #111827;
+	}
+</style>

@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import Layout from '../../layouts/Layout.astro';
+import AdminNav from '../../components/AdminNav.astro';
 
 const user = Astro.locals.user;
 ---
@@ -14,6 +15,7 @@ const user = Astro.locals.user;
 				<button type="submit">Cerrar sesión</button>
 			</form>
 		</header>
+		<AdminNav />
 		<p>Sesión iniciada como {user?.email}</p>
 		<a href="/admin/users/new">Crear cuenta de admin</a>
 	</main>

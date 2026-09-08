@@ -1,0 +1,118 @@
+//////////////////////////////
+// CTA and parent container //
+//////////////////////////////
+// contains the CTA buttons
+.textbuttons {
+	ul {
+		margin-bottom: 0;
+		padding-left: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		list-style: none;
+	}
+	li {
+		display: none;
+		list-style: none;
+		padding: 0;
+		&.textbutton {
+			display: block;
+		}
+		a {
+			position: relative;
+		}
+	}
+}
+
+////////////////////////
+// default btn styles //
+////////////////////////
+.textbutton a {
+	display: block;
+	padding: 10px;
+	.fluid-property(font-size, 12, 14);
+	line-height: 26px;
+}
+.actions {
+	margin-top: auto;
+	.Actionables.unitLeadButtons {
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-top: 0px;
+	}
+	.textbuttons {
+		.ulCallToAction {
+			margin-top: 0px;
+			padding-left: 0px;
+			padding-right: 0px;
+			.textbutton {
+				background-color: transparent;
+				a {
+					.calc-background-lighten-or-darken(@bg-secondary);
+				}
+			}
+		}
+	}
+	.details-button {
+		display: block;
+		position: relative;
+		text-transform: uppercase;
+		font-weight: 700;
+		padding: 10px;
+		line-height: 26px;
+		background-color: @brand-primary;
+		.calc-text-color(@brand-primary);
+	}
+	.ulCallToAction li.textbutton, .details-button {
+		a {
+		}
+	}
+}
+.unit-cta {
+	.textbuttons  {
+		padding-right: 10px;
+		ul.ulCallToAction {
+			li a {
+			}
+		}
+	}
+	.details-button {
+		.calc-background-lighten-or-darken(@bg-secondary);
+		text-transform: uppercase;
+		font-weight: 700; 
+		font-family: @font-family-title-v7;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		padding: 10px;
+		&:hover {
+			.calc-background-xtra-lighten-or-darken(@bg-secondary);
+			color: @brand-primary;
+		}
+	}
+}
+
+.textbuttonIcon, .details-button::before {
+	float: left;
+	.faIcon;
+	text-align: center;
+	margin-right: 7px;
+}
+
+.textbuttonContent {
+	display: block;
+	font-family: @font-family-title-v7;
+	.ellipsis;
+}
+
+.textbuttonArrow {
+	float: right;
+	.faIcon;
+	&:before {
+		content: '\f0da';
+	}
+}
+
+.details-button::before {
+	content: '\f085';
+}
+
+@import "call-to-action-btns-icons.less";

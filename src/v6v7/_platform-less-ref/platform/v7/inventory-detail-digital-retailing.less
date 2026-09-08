@@ -1,0 +1,298 @@
+//
+// V7 Inventory Detail - Digital Retailing Styles
+// These styles are only included when CONFIG_ENABLE_DIGITAL_RETAILING=True
+// --------------------------------------------------
+
+// Payment Genie widget injected content - V7 VDP (matching V6 theme)
+body.InventoryDetails .drs-ovgn11 {
+	background-color: white !important;
+	border-radius: 17px 17px 0px 0px !important;
+}
+
+// Digital Retailing Widget Mobile Positioning
+// Mobile widget hidden by default - JavaScript will control visibility
+body.digital-retailing-enabled.inventorydetails {
+	// Match the background color variable used by #modalBox .unitLeadButtons
+	@inv-bg-variant: contrast(@bg-secondary, lighten(@bg-secondary, 9%), darken(@bg-secondary, 6%));
+	
+	.digital-retailing-mobile {
+		display: none;
+	}
+	
+	// Price box text alignment
+	.price-box {
+		text-align: left !important;
+	}
+	
+	// Unit price styling
+	.unitPrice-flex-container {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		white-space: nowrap;
+		inline-size: fit-content;
+		
+		h3 {
+			margin: 0 !important;
+			padding-right: 0px !important;
+		}
+		
+		h2 {
+			margin: 0 !important;
+			text-align-last: left !important;
+			padding-left: 0px !important;
+		}
+	}
+	
+	// Mobile-only centering
+	.mobile-widget-center {
+		display: flex !important;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		max-width: 95vw;
+		margin: 0 auto;
+	}
+	
+	// Digital Retailing link/button styles (matching V6 theme)
+	.digitalRetailing-list,
+	a.digitalRetailing-list {
+		font-size: 12px;
+		cursor: pointer;
+	}
+	
+	// Payment Genie widget - ensure white background on VDP
+	.drs-ovgn11 {
+		background-color: white !important;
+		border-radius: 17px 17px 0px 0px !important;
+	}
+	
+	// RiderWidget button - match body.inventorydetails .price a color as background
+	// Uses the same background color as .price a (which uses @brand-primary), font family, font style, font weight, and font size as unitLeadButtons
+	.rider-widget-button,
+	[data-testid="RiderWidget__Button"] {
+		background-color: @brand-primary !important; // Match body.inventorydetails .price a color
+		font-family: @font-family-title-v7 !important; // Match .textbuttonContent font family	 
+		font-weight: bold; // Match default font weight from #modalBox .unitLeadButtons		// Dynamically calculate font size to match #modalBox .unitLeadButtons ul>li.textbutton a>span.textbuttonContent (17px when @font-size-base is 14px)
+		font-size: round(@font-size-base)!important; // ~17px when base is 14px
+		border: 0;
+		border-radius: 999px;
+		box-sizing: border-box;
+		color: contrast(@brand-primary, @black, @white);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 40px;
+		padding: 8px 20px;
+		text-decoration: none;
+		width: 100%;
+		
+		// Remove focus styles
+		&:focus,
+		&:focus-visible,
+		&:focus-within {
+			box-shadow: none;
+			outline: none;
+		}
+	}
+
+	// RiderWidget payment summary (Show Payment = On)
+	.rider-widget-payment {
+		background-color: white;
+		border: 1px solid @inv-bg-variant-strong;
+		border-radius: 20px 20px 0 0;
+		padding: 12px 14px;
+		color: @inv-bg-text;
+	}
+
+	.rider-widget-payment,
+	.rider-widget-payment-summary,
+	.rider-widget-payment-summary-monthly-label,
+	.rider-widget-payment-summary-monthly-amount,
+	.rider-widget-payment-summary-monthly-amount-value,
+	.rider-widget-payment-summary-monthly-amount-label,
+	.rider-widget-payment-summary-description {
+		text-align: left;
+	}
+
+	.rider-widget-payment-summary {
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+		align-items: center;
+	}
+
+	.rider-widget-payment-summary > * {
+		text-align: left;
+	}
+
+	.rider-widget-payment-summary-monthly {
+		width: 50%;
+		text-align: center;
+	}
+
+	.rider-widget-payment-summary-description {
+		width: 50%;
+	}
+
+	.rider-widget-payment-summary-monthly-label {
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 1.45;
+		letter-spacing: -0.02em;
+		text-transform: none;
+		color: rgb(52, 144, 20);
+		white-space: nowrap;
+	}
+
+	.rider-widget-payment-summary-monthly-amount {
+		font-size: 22px;
+		font-weight: 700;
+		color: @black;
+		display: inline-flex;
+		align-items: baseline;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.rider-widget-payment-summary-monthly-amount-value {
+		font-size: 24px;
+		font-weight: 700;
+		color: @black;
+	}
+
+	[data-testid="RiderWidget__MonthlyPayment"] {
+		font-weight: 800;
+	}
+
+	.rider-widget-payment-summary-monthly-amount-label {
+		font-size: 14px;
+		font-weight: normal;
+		color: @black;
+	}
+
+	.rider-widget-payment-summary-description {
+		margin-top: 6px;
+		font-size: 12px;
+		color: @black;
+		font-weight: normal;
+
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+			margin: 0;
+			padding-left: 16px;
+			list-style-position: outside;
+		}
+
+		li {
+			margin-left: 16px;
+			white-space: nowrap;
+			float: none !important;
+			display: list-item;
+		}
+	}
+
+	.rider-widget:has(.rider-widget-payment) .rider-widget-button,
+	.rider-widget:has(.rider-widget-payment) [data-testid="RiderWidget__Button"],
+	.rider-widget:has(.rider-widget-payment) button,
+	.rider-widget:has(.rider-widget-payment) .rider-widget-button-css-0,
+	a.rider-widget:has(.rider-widget-payment) .rider-widget-button,
+	a.rider-widget:has(.rider-widget-payment) [data-testid="RiderWidget__Button"],
+	a.rider-widget:has(.rider-widget-payment) button,
+	a.rider-widget:has(.rider-widget-payment) .rider-widget-button-css-0 {
+		margin-top: 0;
+		min-height: 44px;
+		padding: 10px 22px;
+		border-radius: 0 0 20px 20px !important;
+	}
+
+	.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) .rider-widget-button,
+	.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) [data-testid="RiderWidget__Button"],
+	.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) button,
+	a.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) .rider-widget-button,
+	a.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) [data-testid="RiderWidget__Button"],
+	a.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) button {
+		border-radius: 4px !important;
+		min-height: 52px;
+		padding: 10px 20px;
+	}
+
+	@media (min-width: 768px) {
+		.rider-widget:not(:has(.rider-widget-payment)),
+		a.rider-widget:not(:has(.rider-widget-payment)),
+		[data-testid="RiderWidget"]:not(:has(.rider-widget-payment)) {
+			display: block;
+			margin-left: -2px !important;
+			margin-right: auto !important;
+		}
+	}
+	
+	// RiderWidget description - match body.inventorydetails .unitHighlights ul>li span.spnUnitValue styles
+	[data-testid="RiderWidget__Description"] {
+		font-family: @font-family-text-v7 !important; // Match spnUnitValue font family: 'Open Sans', Helvetica, Arial, sans-serif
+		font-style: normal !important; // Match default font style
+		font-weight: normal !important;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		text-align: left;
+		width: 100%;
+		
+		// Apply font size and font family to all span elements inside nested li elements
+		li span {
+			font-family: @font-family-text-v7 !important;
+			font-size: @font-size-base !important; // Use base font size for nested li span elements
+			font-weight: normal !important;
+		}
+	}
+	
+	// Responsive font sizes (matching V6 theme)
+	@media (max-width: 1199px) {
+		.digitalRetailing-list,
+		a.digitalRetailing-list {
+			font-size: 9px;
+		}
+	}
+	
+	@media (max-width: 767px) {
+		.digitalRetailing-list,
+		a.digitalRetailing-list {
+			font-size: 14px;
+		}
+		.digitalRetailingWrapper{
+			display: flex !important;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			margin: 0 auto;
+		}
+
+		.mobile-widget-center .rider-widget,
+		.mobile-widget-center a.rider-widget {
+			text-align: center;
+		}
+
+		.mobile-widget-center [data-testid="RiderWidget__Button"],
+		.mobile-widget-center .rider-widget-button {
+			width: 100%;
+			display: flex;
+			padding: 8px 20px;
+		}
+
+		.rider-widget {
+			text-align: center;
+			width: 100%;
+			max-width: 360px;
+			margin: 0 auto;
+		}
+
+		.rider-widget [data-testid="RiderWidget__Button"],
+		.rider-widget .rider-widget-button {
+			width: 100%;
+			display: flex;
+			padding: 8px 20px;
+		}
+	}
+}

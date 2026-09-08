@@ -1,0 +1,457 @@
+////////////////////////////////////////////////////////////////////
+///////////////////		 TEXT	 	////////////////////////////////
+////////////////////////////////////////////////////////////////////
+// calculates text color based on background color
+.calc-text-color(@background-color) {
+	& when (lightness(@background-color) > 50%) {
+		color: @black;
+	} & when  (lightness(@background-color) <= 50%) {
+		color: @white;
+	}
+}
+
+// calculates text color based on background color and adds opacity
+.calc-text-color(@background-color, @fade) {
+	& when (lightness(@background-color) > 50%) {
+		color: @black;
+		color: fade(@black, @fade);
+	} & when (lightness(@background-color) <= 50%) {
+		color: @white;
+		color: fade(@white, @fade);
+	}
+}
+
+// calcs text color and %rate of shading (lighten or darken)
+.calc-text-by-value(@text-color, @degree-of-shading) {
+	&  when (lightness(@text-color) > 50%) {
+		color: darken(@text-color, @degree-of-shading);
+	} &  when (lightness(@text-color) <= 50%) {
+		color: lighten(@text-color, @degree-of-shading);
+	}
+}
+
+// Calculates Placeholder Text Color
+.calc-placeholder-color(@opacity, @background-color, @deg-change) {
+	& when (lightness(@background-color) > 50%) {
+		::-webkit-input-placeholder { /* WebKit browsers */
+			.calc-text-color(darken(@background-color, @deg-change), @opacity);
+		}
+		:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		   .calc-text-color(darken(@background-color, @deg-change), @opacity);
+		}
+		::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   .calc-text-color(darken(@background-color, @deg-change), @opacity);
+		}
+		:-ms-input-placeholder { /* Internet Explorer 10+ */
+		   .calc-text-color(darken(@background-color, @deg-change), @opacity);
+		}
+	} & when (lightness(@background-color) <= 50%) {
+		::-webkit-input-placeholder { /* WebKit browsers */
+			.calc-text-color(lighten(@background-color, @deg-change), @opacity);
+		}
+		:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		   .calc-text-color(lighten(@background-color, @deg-change), @opacity);
+		}
+		::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   .calc-text-color(lighten(@background-color, @deg-change), @opacity);
+		}
+		:-ms-input-placeholder { /* Internet Explorer 10+ */
+		   .calc-text-color(lighten(@background-color, @deg-change), @opacity);
+		}
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////
+/////////////////		BACKGROUND STUFF	 	////////////////////
+////////////////////////////////////////////////////////////////////
+
+// calculates background color (to @black or @white) for child element
+// example of this is .icon-bar in header.less
+.calc-background-as-BW(@parents-background-color) {
+	& when (lightness(@parents-background-color) > 50%){
+		background-color: @black;
+	} & when (lightness(@parents-background-color) <= 50%){
+		background-color: @white;
+	}
+}
+
+// calcs background color and %rate of shading (lighten or darken)
+.calc-background-by-value(@parents-background-color,@degree-of-shading) {
+	& when (lightness(@parents-background-color) > 50%) {
+		background-color: darken(@parents-background-color, @degree-of-shading);
+	} & when (lightness(@parents-background-color) <= 50%) {
+		background-color: lighten(@parents-background-color, @degree-of-shading);
+	}
+}
+
+// assigns background-image as well as background-size: cover
+// ie8/9 compatible
+.background-size-cover(@img){
+    background: url('@{img-path}@{img}');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+////////////////////////////////////////////////////////////////////
+///////////////		BACKGROUND COLOR AND TEXT COLOR	 	////////////
+////////////////////////////////////////////////////////////////////
+
+// takes background color and %rate of shading, determines whether to lighten or darken and also sets text color
+.calc-background-and-text-by-value(@parents-background-color,@degree-of-shading) {
+	& when (lightness(@parents-background-color) > 50%) {
+		background-color: darken(@parents-background-color, @degree-of-shading);
+		.calc-text-color(darken(@parents-background-color, @degree-of-shading));
+	} & when (lightness(@parents-background-color) <= 50%) {
+		background-color: lighten(@parents-background-color, @degree-of-shading);
+		.calc-text-color(lighten(@parents-background-color, @degree-of-shading));
+	}
+}
+
+// takes background color and %rate of shading, determines whether to lighten or darken and also sets text color
+.calc-background-by-deg-and-text-with-fade(@parents-background-color,@degree-of-shading, @fade) {
+	& when (lightness(@parents-background-color) > 50%) {
+		background-color: darken(@parents-background-color, @degree-of-shading);
+		.calc-text-color(darken(@parents-background-color, @degree-of-shading), @fade);
+	} & when (lightness(@parents-background-color) <= 50%) {
+		background-color: lighten(@parents-background-color, @degree-of-shading);
+		.calc-text-color(lighten(@parents-background-color, @degree-of-shading), @fade);
+	}
+}
+
+
+
+// calculates whether to darken/lighten background color by 6% based on parent's background color
+.calc-background-lighten-or-darken(@parents-background-color) {
+	& when (lightness(@parents-background-color) > 50%){
+		background-color: darken(@parents-background-color, 6%);
+		.calc-text-color(darken(@parents-background-color, 6%));
+	} & when (lightness(@parents-background-color) <= 50%){
+		background-color: lighten(@parents-background-color, 6%);
+		.calc-text-color(lighten(@parents-background-color, 6%));
+	}
+}
+
+// calculates whether to darken/lighten background color by 12% based on parent's background color
+.calc-background-xtra-lighten-or-darken(@parents-background-color) {
+	& when (lightness(@parents-background-color) > 50%){
+		background-color: darken(@parents-background-color, 12%);
+		.calc-text-color(darken(@parents-background-color, 12%));
+	} & when (lightness(@parents-background-color) <= 50%){
+		background-color: lighten(@parents-background-color, 12%);
+		.calc-text-color(lighten(@parents-background-color, 12%));
+	}
+}
+
+// intentionally made in place of BS default gradient mixin
+.gradient-simple-vertical(@top-bg, @bottom-bg) {
+	background: @bottom-bg; /* Old browsers */ // color for text calculated against bottom color
+	background: -moz-linear-gradient(top,  @top-bg 0%, @bottom-bg 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@top-bg), color-stop(100%,@bottom-bg)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  @top-bg 0%,@bottom-bg 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  @top-bg 0%,@bottom-bg 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  @top-bg 0%,@bottom-bg 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  @top-bg 0%,@bottom-bg 100%); /* W3C */
+}
+
+.gradient-two-tone-vertical(@top-bg, @bottom-bg) {
+	background: @bottom-bg; /* Old browsers */
+	background: -moz-linear-gradient(top,  @top-bg 0%, @top-bg 50%, @bottom-bg 50%, @bottom-bg 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@top-bg), color-stop(50%,@top-bg), color-stop(50%,@bottom-bg), color-stop(100%,@bottom-bg)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* W3C */
+}
+
+////////////////////////////////////////////////////////////////////
+///////////////////		BORDER STUFF	 	////////////////////////
+////////////////////////////////////////////////////////////////////
+
+// border mixin that calculates border color by 10% based on background color of the element
+.calc-border-color(@background-color) {
+	& when (lightness(@background-color) <= 50%) {
+		border-color: (lighten(@background-color, 10%));
+	} & when (lightness(@background-color) > 50%) {
+		border-color: (darken(@background-color, 10%));
+	}
+}
+
+// border mixin that calculates border color by value defined in second parameter based on background color of the element
+.calc-border-color-by-value(@background-color, @degree-of-shading) {
+	& when (lightness(@background-color) <= 50%) {
+		border-color: lighten(@background-color, @degree-of-shading);
+	} & when (lightness(@background-color) > 50%) {
+		border-color: darken(@background-color, @degree-of-shading);
+	}
+}
+
+// calculates text color based on background color
+.calculate-border-color-as-BW(@background-color) {
+	& when (lightness(@background-color) > 50%) {
+		border-color: @black;
+	} & when (lightness(@background-color) <= 50%) {
+		border-color: @white;
+	}
+}
+
+// calculates text color based on background color and adds fade
+.calculate-border-color-as-BW(@background-color, @fade) {
+	&  when (lightness(@background-color) > 50%) {
+		border-color: @black;
+		border-color: fade(@black, @fade);
+	} & when (lightness(@background-color) <= 50%) {
+		border-color: @white;
+		border-color: fade(@white, @fade);
+	}
+}
+
+// calculates border color, width and style
+.calc-border(@width, @style, @background-color) {
+	border-width: @width;
+	border-style: @style;
+	.calc-border-color(@background-color);
+}
+
+// calculates border color (with fade), width and style
+.calc-border(@width, @style, @background-color, @fade) {
+	border-width: @width;
+	border-style: @style;
+	.calc-border-color(@background-color, @fade);
+}
+
+// for hover and focus: calculates background color and adjusts text color if necessary
+.calc-hover-color(@background-color) {
+	& when (lightness(@background-color) <= 50%) {
+		@new-background-color: lighten(@background-color, 6%);
+		&:hover, &:active, &:focus {
+			background-color: @new-background-color;
+			.calc-text-color(@new-background-color);
+		}
+	} & when (lightness(@background-color) > 50%) {
+		@new-background-color: darken(@background-color, 6%);
+		&:hover, &:active, &:focus {
+			background-color: @new-background-color;
+			.calc-text-color(@new-background-color);
+		}
+	}
+}
+
+// border-radius with vendor prefixes
+.border-radius(@i) {
+	-webkit-border-radius: @i;
+	-moz-border-radius: @i;
+	border-radius: @i;
+}
+
+////////////////////////////////////////////////////////////////////
+///////////////		xtestimonials styler	 	////////////////////
+////////////////////////////////////////////////////////////////////
+.rating-styler(@contrast-color, @i: 1) when ( @i <= 5 ) {
+	@e: percentage((( @i * 12) + 40)/100);
+	@color: fade(@contrast-color, @e);
+
+	.TestimonialRating {
+		span.rate@{i} {
+			&:before{
+				color: @color;
+			}
+		}
+	}
+	.rating-styler(@contrast-color, @i + 1);
+}
+
+////////////
+// iFrame //
+////////////
+
+.responsive-iframe(@width, @height){
+    position: relative;
+    padding-bottom: 100% * (@height/@width);
+    height: 0;
+    overflow: hidden;
+
+    iframe{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+///////////////////////////
+// various layout mixins //
+///////////////////////////
+
+// sets element to container edge without being inside .container
+.fit-to-container-edge(@side) {
+	@media (min-width: @screen-sm-min) {
+		margin-@{side}: 50%;
+		@{side}: -720px / 2;
+	}
+
+	@media (min-width: @screen-md-min) {
+		@{side}: -940px / 2;
+	}
+
+	@media (min-width: @screen-lg-min) {
+		@{side}: -1140px / 2;
+	}
+
+	@media (min-width: @screen-xl-min) {
+		@{side}: -1500px / 2;
+	}
+}
+
+///////////////////////////////////////////////////////////
+////////////// Alignment/Layout stylers ///////////////////
+///////////////////////////////////////////////////////////
+
+// zeros out ul margin, padding and list-style
+.ul-zero-out() {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+
+//general element normalizer
+.elem-zero-out {
+   margin: 0;
+   padding: 0;
+   font-size: inherit;
+   color: inherit;
+}
+
+.calculate-aspect-ratio(@aspect-ratio) {
+   &:before {
+      content:"";
+      position: relative;
+      display: block;
+      padding-top: @aspect-ratio;
+   }
+}
+
+// assigns vertical align to immediate children
+// as well as necessary display types for table-cell to work
+.vertical-align-children(@align) {
+	display: table;
+	width: 100%;
+	height: auto;
+
+	> * {
+		display: table-cell;
+		vertical-align: @align;
+	}
+}
+
+
+// forces collapse elements to display as open on assigned viewport
+// place as immediate parent of trigger and collapse
+// requires default bootstrap HTML layout to work properly
+// param is min viewport for element to display open
+.showOpenCollapse(@vp) {
+	@media (min-width: @vp) {
+		[data-toggle="collapse"] {
+			pointer-events: none;
+		}
+
+		.collapse {
+			display: block;
+			height: auto !important; // reconfigure - remove importance?
+		}
+	}
+}
+
+
+// zero's out the .panel's default stylings
+// bug in this version of bootstrap requires usage of this class for the accordion to work properly.
+.panel-zero-out() {
+	margin: 0;
+	padding:0;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: none;
+}
+
+// F I N V  L I B R A R Y  M I X I N S --------------------------------------------------
+// Requires two elements: text-sized and line-width-sized (usually container-width)
+// Place on larger line-width-sized element
+.horizontal-lines(@side-gap; @border) {
+    display: block;
+    overflow: hidden;
+    > * {
+        display: inline-block;
+        position: relative;
+        &:before,
+        &:after {
+            // horizonal lines
+            content: '';
+            position: absolute;
+            top: ~"calc(50% - 1px)";
+            height: 0px;
+            border-bottom: @border;
+            width: 1000px; // arbitrary; make sure covers container
+        }
+        &:before {
+            right: ~"calc(100% + @{side-gap})";
+        }
+        &:after {
+            left: ~"calc(100% + @{side-gap})";
+        }
+    }
+}
+
+// Place on most-nested text-width element
+.vertical-lines(@side-gap; @border; @width: 13px; @height: 18px; @angle: 0deg) {
+    position: relative;
+    display: inline-block;
+    &:before,
+    &:after {
+        // vertical/diagonal lines
+        content: '';
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        .skew(@angle);
+        margin-top: auto;
+        margin-bottom: auto;
+        display: inline-block;
+        width: @width;
+        height: @height;
+        // NOTE: diagonal lines look less intense due to partial pixels; adjust color accordingly
+        border-left: @border;
+        border-right: @border;
+        pointer-events: none;
+    }
+    &:before {
+        left: -@side-gap;
+    }
+    &:after {
+        right: -@side-gap;
+    }
+}
+
+.wiggle-fix() {
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: translateZ(0) scale(1.0, 1.0);
+	transform: translate3d(0, 0, 0);
+	-webkit-transform-style: preserve-3d;
+}
+
+.rotate(@deg) {
+	-ms-transform: rotate(@deg);
+	-webkit-transform: rotate(@deg);
+	transform: rotate(@deg);
+}
+
+.skew(@deg) {
+	-ms-transform: skew(@deg);
+	-webkit-transform: skew(@deg);
+	transform: skew(@deg);
+}
+
+// end FINV library mixins

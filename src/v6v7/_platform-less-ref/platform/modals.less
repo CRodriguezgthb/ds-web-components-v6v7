@@ -1,0 +1,166 @@
+//
+// Modals Core
+// --------------------------------------------------
+
+.modal {
+	img {
+		max-width: 100%;
+	}
+	.modal-title {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.modal-content {
+		.clearfix;
+		
+		position: relative;
+		
+		h1 {
+			display: none;
+		}
+		
+		ul {
+			li.textbutton  {
+				a {
+					display: block;
+					padding: @grid-gutter-width/3;
+					font-size: round(@font-size-base * 1.2);
+					
+					.textbuttonIcon {
+					
+					}
+					.textbuttonContent {
+						text-transform: uppercase;
+						padding: 0 @grid-gutter-width/3;
+						
+					}
+					.textbuttonArrow {
+					
+					}
+					a:hover {
+						opacity: .85;
+					}
+				}
+			}
+		}
+	}
+	
+	&#modalGallery {
+		.modal-content {
+			.image_overlay {
+				display: none;
+			}
+			
+			&:hover {
+				.carousel-nav {
+					display: block;
+				}
+			}
+			
+			.carousel-indicators-buttons {
+				margin-bottom: 0;
+				bottom: 0;
+			}
+		}
+	}// &#modalGallery
+	&#modalVideo {
+	
+		.modal-content {
+			.embed-responsive;
+			
+			padding-bottom: 75%;
+			
+			iframe {
+				.embed-responsive-item;
+			}
+		}
+		
+		&.widescreen {
+			.modal-content{
+				padding-bottom: 56.25%;
+			}
+		}
+	}// &#modalVideo
+}// .modal
+
+
+// headings for #modalBox
+.modal-header {
+	h2 {
+		#modalBox.COMPLETED & {
+			display: none;
+			
+			&.modal-completed {
+				display: block;
+			}
+		}
+		#modalBox &.modal-completed {
+			display: none;
+		}
+	}
+}
+	
+
+// Modal Buttons
+#modalBox .unitLeadButtons,
+body[class*="inventorydetail"] .unitLeadButtons,
+body[class*="InventoryDetail"] .unitLeadButtons {
+	.make-row();
+	.clearfix;
+	
+	margin-top: @grid-gutter-width / 2;
+	
+	ul {
+		.make-xs-column(12);
+		
+		margin-bottom: 0;
+		
+		> li {
+			display: none;
+		}
+		
+		> li.textbutton {
+			list-style: none;
+			display: block;
+			
+			&:last-child {
+				a {
+					border-bottom-width: 0;
+				}
+			}
+			
+			a {
+				display: block;
+				padding: round(@grid-gutter-width / 3) round(@grid-gutter-width / 2);
+				position: relative;
+				
+				@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+					padding: @grid-gutter-width / 4 @grid-gutter-width / 3;
+				}
+				
+				> span.textbuttonIcon {
+					font-size: 25px;
+					margin-right: @grid-gutter-width / 2;
+					min-width: 25px;
+					text-align: center;
+				}
+				> span.textbuttonContent {
+					font-size: 17px;
+					text-transform: uppercase;
+				}
+				> span.textbuttonArrow {
+					position: absolute;
+					top: 50%;
+					right: @grid-gutter-width / 2;
+					font-size: 18px;
+					margin-top: -@font-size-base / 2;
+					
+					@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+						right: @grid-gutter-width / 3;
+					}
+				}
+			}
+		}// li.textbutton
+	}
+}// .unitLeadButtons

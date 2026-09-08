@@ -1,0 +1,143 @@
+// ==================================================================
+// V7.1 Inventory List: XL/1500px ===================================
+// ==================================================================
+
+body.v7-inventory-list #main {
+    @media (min-width: @screen-xl-min) {
+        width: @container-xl;
+    }
+}
+.v7-inventory-list {
+    @media (min-width: @screen-xl-min) {
+        // LAYOUT
+        .v7list-sidebar {
+            width: @sidebar-width-wide;
+        }
+        .v7list-header {
+            float: right;
+            width: ~"calc(100% - @{sidebar-width-wide} - 20px)";
+        }
+        .v7list-subcontent {
+            width: ~"calc(100% - @{sidebar-width-wide} - 20px)";
+        }
+
+        // SIDEBAR
+        .filters__list {
+            .v7-filter-list-wrap(filters__item);
+        }
+        .filter__text {
+            padding-right: 3px; // spacing between items
+        }
+        .filter-group__content--slider {
+            .ticks-wrapper {
+                .cls-1 {
+                    stroke-width: 5px;
+                }
+            }
+        }
+        .v7list-help__icon {
+            font-size: 20px;
+        }
+        .v7list-help__text {
+            max-width: none;
+        }
+
+        // RESULTS
+        .v7list-results {
+    		&.listview {
+    			@media (min-width: @screen-xl-min) {
+    				.v7-unit-list-view-xl;
+    			}
+    		}
+        }
+        .v7list-results__item {
+            .flex(1 1 25%);
+            max-width: 25%;
+        }
+    }
+
+    .v7-unit-list-view-xl() {
+        .v7list-results__item {
+            .flex(1 1 100%);
+        }
+        .v7list-vehicle__info-column {
+            &--buttons {
+                .flex(0 0 300px);
+                max-width: 300px;
+            }
+        }
+        .v7list-vehicle__image-group {
+            position: relative;
+            width: 265px;
+        }
+        .v7list-vehicle__sub-images {
+            position: absolute;
+            top: 55px;
+            right: -125px;
+            width: 110px;
+        }
+        .vehicle__image {
+            &--small {
+                width: 100%;
+                .border-radius(6px);
+                padding-top: 56%;
+                &:first-child {
+                    margin-bottom: 7px;
+                }
+                &:not(:first-child) {
+                    margin-left: 0;
+                }
+                &:hover, &:active, &:focus {
+                    &:before {
+                        border-color: fade(@inv-bg-text, 50%);
+                    }
+                }
+                &:before {
+                    .border-radius(4px);
+                    border: 1px solid @inv-bg-variant-strong;
+                }
+            }
+        }
+        .vehicle-image__overlay {
+            .border-radius(6px);
+        }
+        .v7list-vehicle__heading {
+            .single-line-truncate;
+            font-size: 26px;
+        }
+        .v7list-vehicle__share {
+            line-height: 26px;
+        }
+        .v7list-vehicle__info {
+            width: ~"calc(100% - 265px)";
+            padding-left: 15px;
+            &--no-sub-images {
+                .v7list-vehicle__info-row {
+                    margin-left: 0; // space for images
+                }
+            }
+        }
+        .v7list-vehicle__info-row {
+            margin-left: 125px; // space for images
+        }
+        .vehicle-specs__item {
+            // show first 14 items
+            &:nth-child(-n+14) {
+                display: block;
+            }
+            // 7-across
+            .flex(1 1 14.28%);
+            max-width: percentage(1/7);
+            &:nth-child(6n+1) {
+                &:before {
+                    display: block;
+                }
+            }
+            &:nth-child(7n+1) {
+                &:before {
+                    display: none;
+                }
+            }
+        }
+    }
+}

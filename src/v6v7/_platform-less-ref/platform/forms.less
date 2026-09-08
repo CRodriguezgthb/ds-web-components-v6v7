@@ -1,0 +1,453 @@
+//
+// Forms Core
+// --------------------------------------------------
+
+//Displays input field's placeholder snippets when in EDITING mode
+body {
+	&.EDITING {
+		.formField {
+			.label.placeholder {
+				display: inline-block;
+			}
+		}
+	}
+	&.modal-open {
+		overflow: hidden;
+		position: absolute !important;
+		width: 100%;
+	}
+}
+
+// Form Header & Footer
+.form-header, .form-footer {
+	width: percentage(10/12);
+	margin: 0px auto;
+
+	@media (max-width: @screen-xs-max) {
+		width: 100%;
+	}
+
+
+	padding-bottom: @grid-gutter-width / 2;
+
+	#requiredMessageBlock {
+		text-align:center;
+	}
+}
+
+// Base Form Layout
+form {
+	width: percentage(10/12);
+	margin: 0px auto;
+
+	@media (max-width: @screen-xs-max) {
+		width: 100%;
+	}
+
+	h3 {
+		font-weight: 400;
+	}
+
+	ul {
+		.make-row;
+		.clearfix;
+		.single-column;
+
+		margin-bottom: 0;
+		padding-left: 0;
+
+		> li {
+			list-style: none;
+			padding-bottom: @grid-gutter-width / 4;
+
+			&.formSubject {
+				display: none;
+			}
+
+			> .formField {
+				position: relative;
+
+				.label {
+					display: none;
+					white-space: normal;
+
+					// IE8 workaround for placeholder='' support
+					display: block\9;
+					font-size: @font-size-large;
+
+					@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+						display: none; // IE10 renders the IE8/9 specific styles above
+					}
+				}
+
+				.formRequired {
+					position: absolute;
+					top:0;
+					bottom:0;
+					right: 10px;
+					height: 1px;
+					line-height: 1px;
+					margin-top: auto;
+					margin-bottom: auto;
+				}
+			}// .formField
+		}
+	}
+}
+
+// Submit and Reset Btns
+.submitBlock {
+	text-align:center;
+	margin: 0 -(@grid-gutter-width / 2);
+	padding-top: (@grid-gutter-width / 2);
+
+	li {
+		display: inline-block;
+		float: none;
+
+		@media (min-width: @screen-sm-min) {
+			width: auto;
+		}
+	}
+
+	button {
+		width: 230px;
+		display: block;
+		padding: 0;
+
+		.modal & {
+			width: 220px;
+		}
+	}
+}
+
+
+
+// hides reset button when NOLOCALSTORAGE is set
+.NOLOCALSTORAGE form, form.NOLOCALSTORAGE {
+	.resetButton {
+		display: none;
+	}
+}
+
+
+// Column Layouts
+.single-column {
+	> li {
+		.make-xs-column(12);
+	}
+}
+.double-column {
+	> li {
+		.make-xs-column(12);
+		.make-sm-column(6);
+	}
+}
+.tri-column {
+	> li {
+		.make-xs-column(12);
+		.make-sm-column(6);
+		.make-md-column(4);
+	}
+}
+.quad-column {
+	> li {
+		.make-xs-column(12);
+		.make-md-column(6);
+		.make-md-column(3);
+	}
+}
+
+// Page Forms Layouts
+.xcareers {
+	form {
+		ul {
+			&.ulCareerInterest {
+				> li {
+					.label {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+}// .xcareers
+
+.xcontact {
+	form {
+		ul {
+			&.ulContact {
+				#formAddress, #formCity, #formState, #formZip {
+					display: none;
+				}
+			}
+		}
+	}
+}// .xcontact
+
+.xdonations {
+	form {
+		ul {
+			&.ulDonations {
+				#formTaxReceipt {
+					.label {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+}// .xdonations
+
+.xget_quote {
+	form {
+		ul {
+			&.ulContact, &.ulExtraPhones ,&.ulVehicleInfo {
+				.double-column;
+			}
+
+			&.ulContact {
+				#formAddress, #formCity, #formState, #formZip {
+					display: none;
+				}
+			}
+
+			&.ulVehicleInfo {
+				#formVIN, #formMiles {
+					display: none;
+				}
+			}
+		}
+	}
+}// .xget_quote
+
+.xinquiry {
+	form {
+		ul {
+			&.ulContact {
+				#formAddress, #formCity, #formState, #formZip {
+					display: none;
+				}
+			}
+		}
+	}
+}// .xinquiry
+
+.xmotorclothes {
+	form {
+		ul {
+			&.ulContact {
+				.double-column;
+			}
+		}
+	}
+}// .xmotorclothes
+
+#newsletter-signup-form {
+	#newsletter-subscribe {
+		display: none;
+	}
+}
+
+.xparts_request {
+	form {
+		ul{
+			&.ulContact, &.ulTypeOfVehicle, &.ulVehicleInfo {
+				.double-column;
+			}
+		}
+	}
+}// .xparts_request
+
+.xrentals {
+	form {
+		ul{
+			&.ulRentalsContactExtra, &.ulContact {
+				.double-column;
+			}
+		}
+	}
+}// .xrentals
+
+.xrentalavailability {
+	form {
+		ul{
+			&.ulRentalDates {
+				.double-column;
+			}
+
+			&.ulContact {
+				#formAddress, #formCity, #formState, #formZip {
+					display: none;
+				}
+			}
+		}
+	}
+}// .xrentalavailability
+
+.xsched_ride {
+	form {
+		ul {
+			&.ulContact, &.ulExtraPhones ,&.ulSchedRide {
+				.double-column;
+			}
+
+			&.ulContact {
+				#formAddress, #formCity, #formState, #formZip {
+					display: none;
+				}
+			}
+		}
+	}
+}// .xsched_ride
+
+.xsendtofriend {
+	form {
+		ul {
+			&.ulContact {
+				#formTelephone, #formAddress, #formCity, #formState, #formZip {
+					display: none;
+				}
+			}
+		}
+	}
+}// .xsendtofriend
+
+.xservice_request {
+	form {
+		ul{
+			&.ulContact, &.ulTypeOfVehicle, &.ulVehicleInfo  {
+				.double-column;
+			}
+
+			&.ulPriorService {
+				#formServiced {
+					.label {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+}// .xservice_request
+
+.modal-dialog {
+	form[name='xsurvey'] {
+		ul {
+			&.ulSurveyPermission, &.ulRateSurvey, &.ulSurveyHear {
+				> li {
+					// Headers for checkbox fields on xsurvey
+					.label {
+						display: inline-block;
+					}
+				}
+			}
+
+			&.ulContact {
+				#formTelephone, #formAddress, #formZip {
+					display: none;
+				}
+			}
+
+			&.ulSurveyHear {
+				.double-column;
+			}
+		}
+		#formAllowContact,
+		#formAllowComments {
+			.label {
+				display: block;
+				padding-left: 0;
+				padding-right: 0;
+				text-align: left;
+			}
+		}
+	}
+}
+.xsurvey {
+	form {
+		ul {
+			&.ulRateSurvey, &.ulContact {
+				.double-column;
+			}
+
+			&.ulSurveyPermission, &.ulRateSurvey, &.ulSurveyHear {
+				> li {
+					// Headers for checkbox fields on xsurvey
+					.label {
+						display: inline-block;
+					}
+				}
+			}
+
+			&.ulContact {
+					#formTelephone, #formAddress, #formZip {
+						display: none;
+					}
+			}
+
+			&.ulSurveyHear {
+				.tri-column;
+			}
+		}
+	}
+}// .xsurvey
+
+.xnew_rider_inquiry {
+	form {
+		ul {
+			&.ulInterestedIn, &.ulContact {
+				.double-column;
+			}
+			&.ulInterestedIn {
+				> li {
+					// Headers for checkbox fields on xsurvey
+					.label {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+}// .xnew_rider_inquiry
+
+.xtrade_value, .xconsignment {
+	form {
+		ul {
+			&.ulContact, &.ulTypeOfVehicle, &.ulTradeInVehicle, &.ulVehicleInfo {
+				.double-column;
+			}
+
+			&.ulContact {
+				#formAddress, #formCity, #formState, #formZip {
+					display: none;
+				}
+			}
+
+			&.ulVehicleInfo {
+				#formVIN, #formMiles {
+					display: none;
+				}
+			}
+		}
+	}
+}// .xtrade_value, .xconsignment
+
+
+.xvin_check {
+	.ulContact, .ulVehicleInfo {
+		.double-column;
+	}
+}
+
+#formPickUp, #formDropOff {
+	.placeholder {
+		display: block;
+	}
+}
+
+body.xstorage {
+	[id='formAddress'], [id='formCity'], [id='formState'], [id='formZip'] {
+		display: none;
+	}
+}

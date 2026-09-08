@@ -1,0 +1,126 @@
+// FLEXBOX BUTTON STYLER
+// last updated 2/28/18
+
+// MIXINS
+.cta-bg-image(@cta-bg-name, @cta-bg-filetype, @n, @i: 1) when (@i =< @n) {
+   &:nth-child(@{i}) {
+      >a {
+         &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-image: url('@{img-path}@{cta-bg-name}@{i}.@{cta-bg-filetype}');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+         }
+      }
+   }
+   .cta-bg-image(@cta-bg-name, @cta-bg-filetype, @n, (@i + 1));
+}
+
+.cta-space-between(@xs, @sm: @xs, @md: @sm, @lg: @md, @xl: @lg) {
+   margin-left: -(@xs/2);
+   margin-right: -(@xs/2);
+   @media (min-width: @screen-sm-min) {
+      margin-left: -(@sm/2);
+      margin-right: -(@sm/2);
+   }
+   @media (min-width: @screen-md-min) {
+      margin-left: -(@md/2);
+      margin-right: -(@md/2);
+   }
+   @media (min-width: @screen-lg-min) {
+      margin-left: -(@lg/2);
+      margin-right: -(@lg/2);
+   }
+   @media (min-width: @screen-xl-min) {
+      margin-left: -(@xl/2);
+      margin-right: -(@xl/2);
+   }
+
+   >li {
+      >a {
+         left: (@xs/2);
+         right: (@xs/2);
+         @media (min-width: @screen-sm-min) {
+            left: (@sm/2);
+            right: (@sm/2);
+         }
+         @media (min-width: @screen-md-min) {
+            left: (@md/2);
+            right: (@md/2);
+         }
+         @media (min-width: @screen-lg-min) {
+            left: (@lg/2);
+            right: (@lg/2);
+         }
+         @media (min-width: @screen-xl-min) {
+            left: (@xl/2);
+            right: (@xl/2);
+         }
+      }
+   }
+}
+
+.cta-transition(@mouse-in, @mouse-out, @speed-curve) {
+	li {
+		-webkit-transform-style: preserve-3d;
+		> a {
+			-webkit-backface-visibility: hidden;
+			transition: all @mouse-out @speed-curve;
+
+			*, &:before, &:after {
+				transition: all @mouse-out @speed-curve;
+			}
+
+			&:hover, &:active, &:focus {
+				transition: all @mouse-in @speed-curve;
+
+				*, &:before, &:after {
+					transition: all @mouse-in @speed-curve;
+				}
+			}
+		}
+	}
+}
+
+// BASE STYLER
+.cta-base-styler() {
+   overflow: hidden;
+   > ul {
+      position: relative;
+      .ul-zero-out;
+
+      .display-flex;
+      .flex-wrap(wrap);
+      .flex-justify-content(center);
+
+      >li {
+         position: relative;
+         >a {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+
+            .display-flex;
+
+            > div {
+               .flex(1 0 auto);
+               position: relative;
+               z-index: 1;
+               width: 100%;
+               > * {
+                  .elem-zero-out;
+               }
+            }
+         }
+      }
+   }
+}

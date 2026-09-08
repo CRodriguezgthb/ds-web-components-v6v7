@@ -1,0 +1,89 @@
+// Bootstrap 3 shim for 1500px sites
+// These specific styles cannot be updated globally because they would create issues on sites that do not have the XL breakpoint
+// The rest of the other bootstrap responsive mixins have been updated globally whenever possible
+
+
+// Original Source:
+// src\less\bootstrap-v3.2.0\responsive-utilities.less
+
+.visible-xl {
+  .responsive-invisibility();
+}
+
+.visible-xl-block,
+.visible-xl-inline,
+.visible-xl-inline-block {
+  display: none !important;
+}
+
+
+.visible-lg {
+  @media (min-width: @screen-lg-min) {
+    .responsive-visibility();
+  }
+  @media (min-width: @screen-xl-min) {
+     .responsive-invisibility();
+  }
+}
+.visible-lg-block {
+  @media (min-width: @screen-lg-min)  {
+    display: block !important;
+  }
+  @media (min-width: @screen-xl-min) {
+     .responsive-invisibility();
+  }
+}
+.visible-lg-inline {
+  @media (min-width: @screen-lg-min)  {
+    display: inline !important;
+  }
+  @media (min-width: @screen-xl-min) {
+     .responsive-invisibility();
+  }
+}
+.visible-lg-inline-block {
+  @media (min-width: @screen-lg-min)  {
+    display: inline-block !important;
+  }
+  @media (min-width: @screen-xl-min) {
+     .responsive-invisibility();
+  }
+}
+
+.visible-xl {
+  @media (min-width: @screen-xl-min) {
+    .responsive-visibility();
+  }
+}
+.visible-xl-block {
+  @media (min-width: @screen-xl-min)  {
+    display: block !important;
+  }
+}
+.visible-xl-inline {
+  @media (min-width: @screen-xl-min)  {
+    display: inline !important;
+  }
+}
+.visible-xl-inline-block {
+  @media (min-width: @screen-xl-min)  {
+    display: inline-block !important;
+  }
+}
+
+// cannot properly override global mixin -
+// instead can pass param on how to display element above LG
+.hidden-lg(@display-above: block) {
+   @media (min-width: @screen-lg-min) and (max-width: @screen-lg-max) {
+      display: none!important;
+   }
+   @media (min-width: @screen-xl-min) {
+      display: @display-above!important;
+   }
+}
+
+.hidden-xl {
+  @media (min-width: @screen-xl-min) {
+    .responsive-invisibility();
+  }
+}
