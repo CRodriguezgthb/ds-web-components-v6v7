@@ -1,0 +1,129 @@
+// ==================================================================
+// V7.1 Inventory Variables =========================================
+// ==================================================================
+
+
+// MAJOR INVENTORY COLORS ===========================================
+// Edit these
+
+// Main Page
+@inv-primary:                 @brand-primary;//#F58220;// #182954;//  //@brand-primary;//goldenrod;// LightBlue;//  @brand-primary;
+@inv-bg:                      @bg-secondary;//#111; // #333;// @bg-secondary;
+
+// Filter Sidebar
+@filter-primary:              @inv-primary;//#ffa600;//#E0A326;//
+@filter-bg:                   @inv-bg-variant; //#0D111D;// @inv-bg-variant;// #f5f5f5; //#6A6A6A; #0E0E0E;//
+
+
+
+// CALCULATED INVENTORY COLORS ======================================
+// Edit only if required
+
+
+// Main Page --------------------------------------------------------
+@inv-bg-variant:              contrast(@inv-bg, darken(@inv-bg, 6%), lighten(@inv-bg, 9%));
+@inv-bg-variant-strong:       contrast(@inv-bg, darken(@inv-bg, 12%), lighten(@inv-bg, 18%));
+
+@inv-bg-text:                 contrast(@inv-bg, #2d2d2d, @white);
+@inv-bg-text-variant:         contrast(@inv-bg-text, lighten(@inv-bg-text, 18%), darken(@inv-bg-text, 18%));
+@inv-bg-text-subtle:          contrast(@inv-bg-text, lighten(@inv-bg-text, 30%), darken(@inv-bg-text, 30%));
+
+.define-inv-primary-variant(contrast(@inv-primary, black, white); contrast(contrast(@inv-bg, lighten(@inv-primary, 8%), darken(@inv-primary, 8%)), black, white));
+@inv-primary-text:            contrast(@inv-primary, @black, @white);
+@inv-primary-variant-text:    contrast(@inv-primary-variant, @black, @white);
+
+// Calculate Primary Color Variant:
+// No text color change on hover; keeps some contrast with bg
+.define-inv-primary-variant(black; black) {
+    // If hovered & unhovered text are SAME while contrasting off bg, contrast off bg
+    @inv-primary-variant: contrast(@inv-bg, lighten(@inv-primary, 8%), darken(@inv-primary, 8%));
+}
+.define-inv-primary-variant(white; white) {
+    // If hovered & unhovered text are SAME while contrasting off bg, contrast off bg
+    @inv-primary-variant: contrast(@inv-bg, lighten(@inv-primary, 8%), darken(@inv-primary, 8%));
+}
+.define-inv-primary-variant(white; black) {
+    // If hovered & unhovered text are DIFFERENT while contrasting off bg, contrast off text
+    @inv-primary-variant: contrast(@inv-primary-text, lighten(@inv-primary, 8%), darken(@inv-primary, 8%));
+}
+.define-inv-primary-variant(black; white) {
+    // If hovered & unhovered text are DIFFERENT while contrasting off bg, contrast off text
+    @inv-primary-variant: contrast(@inv-primary-text, lighten(@inv-primary, 8%), darken(@inv-primary, 8%));
+}
+
+
+// Filter Sidebar ---------------------------------------------------
+
+// If bg color has luminosity > 5%, @theme is "white"
+@filter-theme:                 contrast(contrast(@filter-bg, black, white, 5%));
+
+.define-filter-colors(@filter-theme);
+@filter-bg-text:               contrast(@filter-bg, #2d2d2d, @white);
+
+.define-filter-primary-variant(contrast(@filter-primary, black, white); contrast(contrast(@filter-bg, lighten(@filter-primary, 8%), darken(@filter-primary, 8%)), black, white));
+@filter-primary-text:          contrast(@filter-primary, @black, @white);
+@filter-primary-variant-text:  contrast(@filter-primary-variant, @black, @white);
+
+.define-filter-colors(#ffffff) {
+    // Light Theme
+    @filter-bg-variant:           darken(@filter-bg, 5%);
+    @filter-bg-variant-strong:    contrast(@filter-bg, darken(@filter-bg, 15%), lighten(@filter-bg, 12%));
+
+    @filter-bg-text-variant:      contrast(@filter-bg-text, lighten(@filter-bg-text, 20%), darken(@filter-bg-text, 15%));
+    @filter-bg-text-subtle:       contrast(@filter-bg-text, lighten(@filter-bg-text, 30%), darken(@filter-bg-text, 25%));
+
+    @filter-range-handle:         #2D2D2D; // and checkbox bg
+}
+.define-filter-colors(#000000) {
+    // Dark Theme
+    @filter-bg-variant:           lighten(@filter-bg, 10%);
+    @filter-bg-variant-strong:    contrast(@filter-bg, darken(@filter-bg, 15%), lighten(@filter-bg, 20%));
+
+    @filter-bg-text-variant:      contrast(@filter-bg-text, lighten(@filter-bg-text, 28%), darken(@filter-bg-text, 10%));
+    @filter-bg-text-subtle:       contrast(@filter-bg-text, lighten(@filter-bg-text, 40%), darken(@filter-bg-text, 20%));
+
+    @filter-range-handle:         @filter-bg-text-subtle;
+}
+
+// Calculate Primary Color Variant:
+// No text color change on hover; keeps some contrast with bg
+.define-filter-primary-variant(black; black) {
+    // If hovered & unhovered text are SAME while contrasting off bg, contrast off bg
+    @filter-primary-variant: contrast(@filter-bg, lighten(@filter-primary, 8%), darken(@filter-primary, 8%));
+}
+.define-filter-primary-variant(white; white) {
+    // If hovered & unhovered text are SAME while contrasting off bg, contrast off bg
+    @filter-primary-variant: contrast(@filter-bg, lighten(@filter-primary, 8%), darken(@inv-primary, 8%));
+}
+.define-filter-primary-variant(white; black) {
+    // If hovered & unhovered text are DIFFERENT while contrasting off bg, contrast off text
+    @filter-primary-variant: contrast(@filter-primary-text, lighten(@filter-primary, 8%), darken(@filter-primary, 8%));
+}
+.define-filter-primary-variant(black; white) {
+    // If hovered & unhovered text are DIFFERENT while contrasting off bg, contrast off text
+    @filter-primary-variant: contrast(@filter-primary-text, lighten(@filter-primary, 8%), darken(@filter-primary, 8%));
+}
+
+
+
+// SIZES ============================================================
+
+// Min height to clear gridview overlay contents; edit if adding info to overlay
+@v7-grid-overlay-height:       335px; // minimum 312px for grid overlay
+
+
+// ==================================================================
+// DO NOT TOUCH =====================================================
+// ==================================================================
+
+// Additional Breakpoints -------------------------------------------
+@screen-xxs-max: 575px;
+@screen-xs-min: 576px;
+
+// Filter Sidebar Widths --------------------------------------------
+@sidebar-width-narrow: 235px;
+@sidebar-width-wide: 350px;
+
+// Font Families ----------------------------------------------------
+@inv-font-title: "Roboto Condensed", "Arial Narrow", Arial, Helvetica, sans-serif;
+@inv-font-body: "Roboto", Arial, Helvetica, sans-serif;

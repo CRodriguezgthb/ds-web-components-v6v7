@@ -1,0 +1,911 @@
+//
+// Inventory List Core
+// --------------------------------------------------
+
+@-moz-document url-prefix() {
+	// Inventory List Firefox specific styles
+	body.InventoryList.xFacebookInventoryList {
+		#dvSearch {
+			#iSearch {
+				height: @grid-gutter-width - 2;
+				box-sizing: content-box;
+				padding-top: 0px;
+				padding-bottom: 0px;
+			}
+		}
+	}
+}
+
+body.InventoryList.xFacebookInventoryList {
+	// Inventory List Font Default
+	
+	#main.xinvlist {
+		form {
+			font-family: 'Roboto Condensed', sans-serif;
+			
+			h1, h2, h3, h4, h5, h6 {
+				font-family: 'Roboto Condensed', sans-serif;
+			}
+		}
+	}
+	
+	[data-snippetid="featuredbanner"], [data-snippetid="featuredbannerbelowh1"], [data-snippetid="pagefooter"] {
+		.clearfix;
+	}
+	.MessageDisplayed div#VehBody {
+		display: none;
+	}
+	.paginationWrapper.MessageDisplayed{
+		visibility:hidden;
+	}
+	form[name="main"] {
+		width: auto;
+		padding: 0 (@grid-gutter-width / 2);
+		.clearfix();
+	}
+	
+	// Filter Section
+	#filtering {
+		padding-top: @grid-gutter-width * 0.5;
+		padding-bottom: @grid-gutter-width * 0.5;
+	}
+	#InvSearchContainer {
+		.make-row();
+		.clearfix;
+		
+		padding-bottom: @grid-gutter-width / 3;
+		
+		#dvFilters {
+			.make-sm-column(12);
+			.make-md-column(9);
+			
+			> div {
+				.make-row();
+				.clearfix;
+				
+				#dvSortBy {
+					.make-xs-column(12);
+					.make-sm-column(4);
+					
+					padding-right: 40px + @grid-gutter-width / 2;
+					position: relative;
+					
+					@media (max-width: @screen-sm-max) {
+						padding-bottom: @grid-gutter-width / 3;
+					}
+					
+					select {
+						height: @grid-gutter-width;
+						padding: 0;
+						width: 100%;
+					}
+					button {
+						.btn;
+						
+						position: absolute;
+						top: 0;
+						right: @grid-gutter-width / 2;
+						height: @grid-gutter-width;
+						width: 40px;
+						
+						.buttontext {
+							.sr-only();
+						}
+						.fa {
+							font-size: 16px;
+						}
+					}
+				}// #dvSortBy
+				#paginationWrapperTop {
+					.make-xs-column(7.4);
+					.make-sm-column(4);
+					
+					@media (max-width: @screen-xs-max) {
+						padding-right:0;
+						
+						#next {
+							margin-left: round(@grid-gutter-width / 6);
+						}
+					}
+					
+					button {
+						.btn;
+						
+						height: @grid-gutter-width;
+						
+						.PrevText, .NextText {
+							.sr-only();
+						}
+						.fa {
+							font-size: 16px;
+						}
+					}
+					span.pagenumbering {
+						height: @grid-gutter-width;
+						
+						@media (max-width: @screen-xs-max) {
+						
+							.pageText, .Units {
+								display: none;
+							}
+						}
+					}
+				}// #paginationWrapperTop
+				#InvFilterControls {
+					.make-xs-column(4.5);
+					.make-sm-column(4);
+					
+					@media (max-width: @screen-xs-max) {
+						float: right;
+						padding-left:0;
+					}
+					
+					text-align: right;
+					
+					button {
+						.btn;
+
+						height: @grid-gutter-width;
+						
+						.fa {
+							font-size: 16px;
+							margin-left: 5px;
+						}
+						
+						@media (max-width: @screen-xs-max) {
+							.MoreOptionsText, .ResetText {
+								.sr-only();
+							}
+							.fa {
+								margin-left: 0;
+							}
+						}
+					}
+				}//#InvFilterControls
+			}
+		}// #dvFilters
+	}// #InvSearchContainer
+	
+	#ShowAllUnits {
+		margin-bottom: @grid-gutter-width / 2;
+	}
+	
+	#dvSearch {
+		.make-sm-column(12);
+		.make-md-column(3);
+		
+		padding-right: 40px + @grid-gutter-width / 2;
+		position: relative;
+		
+		@media (max-width: @screen-sm-max) {
+			padding-bottom: @grid-gutter-width / 3;
+		}
+		
+		input {
+			height: @grid-gutter-width;
+			width: 100%;
+		}
+		button {
+			.btn;
+			
+			position: absolute;
+			top: 0;
+			right: @grid-gutter-width / 2;
+			height: @grid-gutter-width;
+			width: 40px;
+		}
+		
+		.ClearText {
+			display: none;
+		}
+		.fa {
+			font-size: 16px;
+		}
+		
+		#dvSearchErr{
+			display: none;
+			
+			&.err {
+				display: block;
+			}
+		}
+		
+	}// #dvSearch
+	
+	#InvToolbar {
+		overflow: hidden;
+		white-space: nowrap;
+		
+		ul {
+			.make-row();
+			.clearfix;
+			
+			> li {
+				.make-xs-column(6);
+				.make-sm-column(4);
+				.make-md-column(3);
+				
+				&.DS-HIDDEN {
+					display: none;
+				}
+				&.DS-DISABLED {
+					opacity: 0.6;
+				}
+
+				select {
+					height: @grid-gutter-width;
+					padding: 0;
+					width: 100%;
+				}
+			}
+		}
+	}// #InvToolbar
+
+	// Vehicle Row
+	.vehicle_row {
+		.make-row();
+		.clearfix;
+		
+		padding-top: @grid-gutter-width * 0.66;
+		padding-bottom: @grid-gutter-width * 0.66;
+		position: relative;
+		
+		@media (max-width: @screen-sm-max) {
+			padding-top: @grid-gutter-width / 3;
+			padding-bottom: @grid-gutter-width / 3;
+		}
+		
+	}// .vehicle_row
+		
+	.unitImage {
+		.make-xs-column(8);
+		.make-xs-column-offset(2);
+		.make-sm-column(3);
+		.make-sm-column-offset(0);
+		
+		@media (max-width: @screen-sm-max) {
+			padding-bottom: @grid-gutter-width / 2;
+		}
+		
+		@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+			padding-bottom: @grid-gutter-width * 0.5 + 25px + @grid-gutter-width / 3;
+		}
+		
+		> div {
+			.make-row();
+			.clearfix;
+			
+			.unitImgCol {
+				.make-xs-column(12);
+				
+				position: relative;
+				
+				img.unitImg {
+					.img-responsive;
+				}
+				
+				.unitImgOverlay {
+					position: absolute;
+					top: 0;
+					right: 0;
+					z-index: 2;
+				}
+			}
+		}
+		> a {
+			.clearfix;
+			
+			display: block;
+			padding: @grid-gutter-width / 4 @grid-gutter-width / 2;
+			
+			> .fa {
+				float: left;
+				font-size: 25px;
+				height: 25px;
+				margin-right: @grid-gutter-width / 3;
+				width: 25px;
+			}
+			> .buttontext {
+				float: left;
+				height: 25px;
+				line-height: 25px;
+				vertical-align: middle;
+			}
+			> .videoContent {
+				.sr-only;
+			}
+		}
+		
+		.img-overlay-container {
+			div.image_overlay {
+				display: none;
+				
+				&.visible {
+					position: absolute;
+					display: block;
+					right: @grid-gutter-width / 2;
+					top: 0;
+					opacity: 0.8;
+					padding: @grid-gutter-width / 3 @grid-gutter-width / 2;
+					
+					@media (max-width: @screen-sm-max) {
+						left: @grid-gutter-width / 2;
+						padding-left: 0;
+						padding-right: 0;
+						text-align: center;
+					}
+					
+					p {
+						margin: 0;
+						text-transform: center;
+					}
+				}
+			}
+			
+			&:hover {
+				div.image_overlay {
+					display: none;
+				}
+			}
+		}
+	}// .unitImage
+	.images-2 {
+		.unitImage {
+			.make-sm-column(12);
+			.make-sm-column-offset(0);
+			.make-md-column(4);
+			
+			> div {
+				.make-row();
+				.clearfix;
+				
+				.unitImgCol {
+					.make-sm-column(6);
+					
+					&:nth-child(2) {
+						.hidden-xs;
+					}
+				}
+			}
+		}// .unitImage
+		
+		.unitDesc {
+			.make-sm-column(12);
+			.make-md-column(6);	
+		}
+	}// .images-2
+	.images-0 {
+		.imageRow {
+			position: relative;
+			margin: 0;
+			padding-bottom: 75%;
+
+			.img-overlay-container {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				
+				.thumbImage {
+					position: absolute;
+					left: 0;
+					display: block;
+					width: 100%;
+					text-align: center;
+				}
+				.img_overlay {
+					right: 0;
+				}
+			}
+		}
+	}//.images-0
+		
+	// Unit Data Block
+	.unitDataBlock {
+		.make-xs-column(12);
+		.make-sm-column(9);
+		
+		position: static;
+		padding-bottom: @grid-gutter-width * 0.5 + 25px + @grid-gutter-width / 2;
+				
+		@media (max-width: @screen-xs-max) {
+			padding-bottom: @grid-gutter-width + 50px + @grid-gutter-width / 3;
+		}
+		
+		.textbuttons {
+			.make-sm-column(12);
+			.make-md-column(9);
+			
+			position: absolute;
+			bottom: @grid-gutter-width * 0.66;
+			right: 0;
+			
+			@media (max-width: @screen-sm-max) {
+				bottom: @grid-gutter-width / 3;
+			}
+			
+			ul {
+				.make-row();
+				.clearfix;
+				
+				padding: 0;
+				position: relative;
+				height: @grid-gutter-width * 0.5 + 25px;
+				overflow: hidden;
+				white-space: nowrap;
+				
+				@media (max-width: @screen-xs-max) {
+					height: @grid-gutter-width + 50px;
+				}
+				
+				> li {
+					.make-xs-column(12);
+					.make-sm-column(3);
+					.make-sm-column-pull(3);
+					
+					display: none;
+					list-style: none;
+					padding: 0;
+					
+					&.textbutton {
+						display: block;
+					}
+					&.invViewDetails {
+						.make-sm-column-push(9);
+					}
+					
+					&.disabled {
+						display: none; // hides this CTA button post respective form's submission
+					}
+					
+					> a {
+						.clearfix;
+						
+						display: block;
+						padding:  @grid-gutter-width / 4 @grid-gutter-width / 3;
+						
+						> .fa {
+							float: left;
+							font-size: 25px;
+							height: 25px;
+							margin-right: @grid-gutter-width / 3;
+							width: 25px;
+							
+							
+						}
+						> .buttontext {
+							float: left;
+							height: 25px;
+							line-height: 25px;
+							vertical-align: middle;
+						}
+						> .textbuttonArrow {
+							display: none;
+						}
+					}
+				}	
+			}
+		}// .textbuttons
+	}// .unitDataBlock
+	
+	.invUnitHeader {
+		.make-row();
+		.clearfix;
+		 
+		.unitTitle {
+			.make-sm-column(7);
+			.make-md-column(8);
+			.make-lg-column(9);
+			
+			h2 {
+				font-size: @font-size-h4;
+				margin: 0;
+			}
+		}
+		.unitPrice {
+			.make-sm-column(5);
+			.make-md-column(4);
+			.make-lg-column(3);
+			
+			h3 {
+				font-size: @font-size-h4;
+				margin: 0;
+				text-align: right;
+				
+				@media (max-width: @screen-xs-max) {
+					text-align: left;
+				}
+			}
+			
+			.dvPriceGroup {
+				label {
+					display: inline-block;
+					width: 50%;
+					margin-bottom: 0;
+					padding: @grid-gutter-width / 10 0 @grid-gutter-width / 10 @grid-gutter-width / 3;
+				}
+				span {
+					display: inline-block;
+					width: 50%;
+					padding: @grid-gutter-width / 10 @grid-gutter-width / 3 @grid-gutter-width / 10 0;
+					text-align: right;
+					
+					&.InvLowestPrice {
+						width: 100%;
+						padding-right: 0;
+						text-align: center;
+					}
+				}
+			}
+		}
+		.unitComment {
+			.hidden-xs;
+			.make-sm-column(12);
+			
+			padding-bottom: round(@grid-gutter-width / 3);
+			padding-top: @grid-gutter-width / 6;
+			
+			@media (max-width: @screen-sm-max) {
+				padding-bottom: @grid-gutter-width / 1.5;
+			}
+			
+			.InventoryComment {
+				height: 22px;
+				line-height: 22px;
+				overflow: hidden; 
+				white-space: nowrap; 
+				text-overflow: ellipsis;
+			}
+		}
+	}// .invUnitHeader
+			
+	.invUnitInfo {
+		.make-row();
+		.clearfix;
+		
+		margin-top: @grid-gutter-width / 2;
+		
+		@media (max-width: @screen-xs-max) {
+			margin-top: 0;
+		}
+		
+		.VehicleDetail {
+			.make-sm-column(9);
+			.make-lg-column(10);
+			
+			@media (max-width: @screen-xs-max) {
+				padding-top: @grid-gutter-width / 3;
+				padding-bottom: @grid-gutter-width / 3;
+			}
+			
+			.unitSpecs {
+				.make-row();
+				.clearfix;
+				
+				padding-left: 0;
+				
+				> li {
+					.make-sm-column(6);
+					
+					list-style: none;
+					padding-bottom: 0;
+					
+					> .unitLabel {
+						display: inline-block;
+						min-width: 40%;
+						vertical-align: top;
+						
+						&:after {
+							content: " :";
+							display: inline-block;
+						}	
+					}
+					> .unitValue {
+						display: inline-block;
+						max-width: 60%;
+						min-width: 40%;
+					}
+				}
+			}// .unitSpecs
+		}// .VehicleDetail
+		
+		.unitBrand {
+			.hidden-xs;
+			.make-sm-column(3);
+			.make-lg-column(2);
+			
+			> img {
+				display: block;
+				margin: 0 auto;
+			}
+		}// .unitBrand
+	}// .invUnitInfo
+	
+	#paginationWrapperBottom {
+		.nav {
+			float: right;
+			padding-top: @grid-gutter-width / 3;
+			padding-bottom: @grid-gutter-width / 3;
+			text-align: right;
+		}
+		
+		span.pagenumbering {
+			height: @grid-gutter-width;
+		}
+		button {
+			.btn;
+			
+			height: @grid-gutter-width;
+			
+			.PrevText, .NextText {
+				.sr-only();
+			}
+			.fa {
+				font-size: 16px;
+			}
+		}
+	}// #paginationWrapperBottom
+	
+	// Ascending/Descending Filter
+	#filtering {
+		.ascendingOrder {
+			display: none;
+		}
+		.descendingOrder {
+			display: inline;
+		}
+	}
+	
+	&.SORT-ASC {
+		#filtering {
+			.ascendingOrder {
+				display: inline;
+			}
+			.descendingOrder {
+				display: none;
+			}
+		}
+	}
+	
+	// More Options Drop Down
+	#filtering {
+		#InvSearchContainer {
+			.lesstext, .fa-caret-up {
+				display: none;
+			}
+			.moretext, .fa-caret-down {
+				display: inline;
+			}
+		}
+		
+		#InvToolbar {
+			height: @grid-gutter-width;
+			
+		}
+	}
+	
+	&.ALLOPTIONS {
+		#filtering {
+			#InvSearchContainer {
+				.moretext, .fa-caret-down {
+					display: none;
+				}
+				.lesstext, .fa-caret-up {
+					display: inline;
+				}
+			}
+			
+			#InvToolbar {
+				height: auto;
+			}
+		}
+	}
+}// body.InventoryList
+
+#dvCompareModels {
+	display: none;
+}
+#INV-VEHGROUPS {
+	display: none;
+}
+
+
+// two image row 'DS1RVLayout'
+body.InventoryList.xFacebookInventoryList {
+	.vehicle_row.DS1RVLayout {
+		.invUnitHeader  {
+			margin:0;
+			padding-bottom: 15px;
+			
+			.unitTitle {
+				.make-sm-column(9);
+			}
+			
+			.unitPrice  {
+				@media (min-width: @screen-sm-min){
+					width: 25%;
+					padding: 0 15px;
+					float: right;
+				}
+			}
+			
+			.unitComment {
+				.make-sm-column(9);
+				border: none;
+				padding-bottom: 0;
+				padding-top:0;
+			}
+			
+			&:after {
+				content:" ";
+				display: block;
+				width: auto;
+				margin-left: 15px;
+				margin-right: 15px;
+				border-bottom-width: 1px;
+				border-bottom-style: solid;
+				border-bottom-color: @gray-dark;
+				padding-top: 15px;
+			}
+		}
+		
+		&.images-1, &.images-0 {
+			
+			.unitImage {
+				.make-xs-column(12);
+				.make-sm-column(12);
+				.make-md-column(2.5);
+				padding-bottom: 15px;
+				z-index: 2;
+			}
+			
+			.invUnitInfo {
+				margin:0;
+				padding-bottom: 15px;
+				.make-sm-column(12);
+				.make-md-column(9.5);
+				
+				@media (min-width: @screen-md-min){
+					padding-left: 7.5px;
+				}
+				
+				> * {
+					padding-left: 0;
+				}
+				
+				.VehicleDetail {
+					padding-right: 15px;
+				}
+			}
+			.invUnitInfo {
+				
+			}
+		}
+		
+		&.images-2 {
+			
+			.unitImage {
+				.make-xs-column(12);
+				.make-sm-column(12);
+				.make-md-column(5);
+				padding-bottom: 15px;
+				z-index: 2;
+			}
+			
+			.unitImgCol  {
+				
+				&.InventoryPic2 {
+					.clearfix;
+					
+					img {
+						@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max){
+							float: right;
+						}
+					}
+					
+					@media (min-width: @screen-md-min){
+						padding-left: 7.5px;
+						padding-right: 15px;
+					}
+				}
+			}
+			
+			.invUnitInfo {
+				margin:0;
+				padding-bottom: 15px;
+				.make-sm-column(12);
+				.make-md-column(7);
+				
+				@media (min-width: @screen-md-min){
+					padding-left: 0;
+				}
+				
+				> * {
+					padding-left: 0;
+				}
+				
+				.VehicleDetail {
+					padding-right: 15px;
+				}
+				
+			}
+		}
+		
+		.unitImage {
+			margin: 0;
+			
+			@media (max-width: @screen-xs-max){
+				.clearfix;
+			}
+			
+			> a{ // button appears below unit images
+				.hidden-xs;
+				.hidden-sm;
+				position: absolute;
+				bottom: -40px;
+				margin:0;
+				left:15px;
+				
+				@media (min-width: @screen-md-min){
+					width: 173.25px;
+				}
+				
+				@media (min-width: @screen-lg-min){
+					width: 215px;
+				}
+			}
+		}
+		
+		.unitDataBlock {
+			width: auto;
+			float: none;
+			padding:0;
+			.clearfix;
+			
+			> * {
+				z-index: 1;
+			}
+			
+			.imageRow {
+				.row;
+			}
+			
+			.unitImgCol  {
+				@media (min-width: @screen-md-min){
+					padding-left: 15px;
+					padding-right: 7.5px;
+				}
+			
+				img {
+					margin: 0 auto;
+					
+					@media (min-width: @screen-sm-min){ 
+						margin: auto;
+					}
+				}
+			}
+			
+			.unitDesc {display: none;} // this element should not be here.
+			
+			.unitCTAs {
+				.clearfix;
+				clear: both;
+				
+				.textbuttons {
+					position: static;
+					float: none;
+					width: auto;
+					
+					@media (min-width: @screen-md-min){
+						padding-left: 217px;
+					}
+					
+					@media (min-width: @screen-lg-min){
+						padding-left: 260px;
+					}
+				}
+			}
+		}
+	}
+}

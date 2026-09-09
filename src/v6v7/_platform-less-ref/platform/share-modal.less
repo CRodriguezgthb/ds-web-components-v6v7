@@ -1,0 +1,345 @@
+
+//
+// NOTE: RELIES ON PRESENCE OF FLEXBOX-MIXINS.LESS
+//
+
+@share-modal-bg:                      @bg-secondary;
+@share-modal-bg-variant:              contrast(@share-modal-bg, darken(@share-modal-bg, 6%), lighten(@share-modal-bg, 9%));
+@share-modal-bg-variant-strong:       contrast(@share-modal-bg, darken(@share-modal-bg, 12%), lighten(@share-modal-bg, 18%));
+
+@share-modal-bg-text:                 contrast(@share-modal-bg, #2d2d2d, @white);
+@share-modal-bg-text-variant:         contrast(@share-modal-bg-text, lighten(@share-modal-bg-text, 18%), darken(@share-modal-bg-text, 18%));
+@share-modal-bg-text-subtle:          contrast(@share-modal-bg-text, lighten(@share-modal-bg-text, 30%), darken(@share-modal-bg-text, 30%));
+
+
+@share-modal-primary:                 @brand-primary;
+
+.define-share-modal-primary-variant(contrast(@share-modal-primary, black, white); contrast(contrast(@share-modal-bg, lighten(@share-modal-primary, 8%), darken(@share-modal-primary, 8%)), black, white));
+@share-modal-primary-text:            contrast(@share-modal-primary, @black, @white);
+@share-modal-primary-variant-text:    contrast(@share-modal-primary-variant, @black, @white);
+
+// Calculate Primary Color Variant:
+// No text color change on hover; keeps some contrast with bg
+.define-share-modal-primary-variant(black; black) {
+    // If hovered & unhovered text are SAME while contrasting off bg, contrast off bg
+    @share-modal-primary-variant: contrast(@share-modal-bg, lighten(@share-modal-primary, 8%), darken(@share-modal-primary, 8%));
+}
+.define-share-modal-primary-variant(white; white) {
+    // If hovered & unhovered text are SAME while contrasting off bg, contrast off bg
+    @share-modal-primary-variant: contrast(@share-modal-bg, lighten(@share-modal-primary, 8%), darken(@share-modal-primary, 8%));
+}
+.define-share-modal-primary-variant(white; black) {
+    // If hovered & unhovered text are DIFFERENT while contrasting off bg, contrast off text
+    @share-modal-primary-variant: contrast(@share-modal-primary-text, lighten(@share-modal-primary, 8%), darken(@share-modal-primary, 8%));
+}
+.define-share-modal-primary-variant(black; white) {
+    // If hovered & unhovered text are DIFFERENT while contrasting off bg, contrast off text
+    @share-modal-primary-variant: contrast(@share-modal-primary-text, lighten(@share-modal-primary, 8%), darken(@share-modal-primary, 8%));
+}
+
+
+
+.share-modal-button(@bg-color) {
+	position: relative;
+	border: none;
+	border-radius: 4px;
+	background-color: @bg-color;
+	font-weight: 700;
+	padding-left: 10px;
+	padding-right: 10px;
+    text-align: center;
+	&:before {
+		// gradient
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		border-radius: 4px;
+		.share-modal-button-gradient(@bg-color);
+	}
+}
+
+.share-modal-button-primary() {
+	border: none;
+	background-color: @share-modal-primary;
+	color: @share-modal-primary-text;
+	text-shadow: 1px 1px 1px fade(contrast(@share-modal-primary-text), 30%);
+	text-transform: uppercase;
+	&:hover, &:active, &:focus {
+		background-color: @share-modal-primary-variant;
+		color: @share-modal-primary-variant-text;
+	}
+}
+.share-modal-button-secondary() {
+	border: 1px solid @share-modal-bg-variant-strong;
+	background-color: @share-modal-bg;
+	color: @share-modal-bg-text;
+	&:hover, &:active, &:focus {
+		background-color: @share-modal-bg-variant;
+		color: @share-modal-bg-text;
+	}
+}
+.share-modal-button-gradient(@bg-color) {
+	& when (lightness(@bg-color) >= 15%) {
+		// bottom shadow
+		@color: black;
+		background: linear-gradient(to bottom, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 2%) 75%,fade(@color, 8%) 100%);
+	}
+	& when  (lightness(@bg-color) < 15%) {
+		// top highlight
+		@color: white;
+		background: linear-gradient(to top, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 2%) 75%,fade(@color, 8%) 100%);
+	}
+}
+
+
+
+// --- begin styles
+
+.share-modal {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    border-radius: 3px;
+    box-shadow: 0 2px 10px #000;
+    background-color: @share-modal-bg;
+    font-family: "Roboto Condensed", Arial, Helvetica, sans-serif;
+    color: @share-modal-bg-text;
+}
+.share-modal__header {
+    position: relative;
+    .display-flex;
+    .flex-align-items(center);
+    .flex-justify-content(space-between);
+    padding: 35px 35px 10px;
+    &:before {
+        // line
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 35px;
+        right: 0;
+        border-bottom: 1px solid @share-modal-bg-variant-strong;
+    }
+    &:after {
+        // shape
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 35px;
+        width: 20px; // appx width of header icon
+        height: 5px;
+        transform: skew(-30deg);
+        background-color: @share-modal-bg-variant-strong;
+    }
+}
+.share-modal__heading {
+    // reset
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    // end reset
+    .flex(1 1 auto);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
+    color: @share-modal-bg-text;
+    font-family: "Roboto Condensed", Arial, Helvetica, sans-serif;
+}
+.share-modal__heading-icon {
+    transform: translateY(-0.1em);
+    vertical-align: middle;
+    padding-right: 5px;
+    font-size: 20px;
+    color: @share-modal-bg-text-subtle;
+}
+
+.share-modal__close-btn {
+    transition: color .25s ease-in-out,
+        border-color .25s ease-in-out;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid @share-modal-bg-text-subtle;
+    text-align: center;
+    font-size: 14px;
+    color: @share-modal-bg-text-subtle;
+    &:hover, &:active, &:focus {
+        border-color: @share-modal-bg-text;
+        color: @share-modal-bg-text;
+    }
+    .fa {
+        display: inline-block;
+        vertical-align: top;
+        line-height: 32px;
+    }
+}
+.share-modal__content {
+    padding: 25px 35px 40px;
+}
+
+
+// Share Modal
+.share-modal__copy-url {
+    margin-bottom: 25px;
+}
+.share-modal__copy-input-wrapper {
+    display: block;
+    position: relative;
+}
+.share-modal__copy-overlay {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 30px;
+    margin: auto 0;
+    background-color: fade(@share-modal-primary, 90%);
+    padding-left: 10px;
+    padding-right: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 29px; // odd # for FF
+    text-shadow: 1px 1px 1px fade(contrast(@share-modal-primary-text), 30%);
+    color: @share-modal-primary-text;
+
+    transition: all .4s ease-in-out;
+    visibility: hidden;
+    opacity: 0;
+
+    &.is-visible {
+        transition: all 0s ease-in-out;
+        visibility: visible;
+        opacity: 1;
+    }
+    &:before,
+    &:after {
+        // banner angles
+        content: '';
+        position: absolute;
+        left: -10px;
+        border-right: 10px solid fade(@share-modal-primary, 90%);
+    }
+    &:before {
+        top: 0;
+        border-top: 15px solid transparent;
+    }
+    &:after {
+        bottom: 0;
+        border-bottom: 15px solid transparent;
+    }
+}
+.share-modal__copy-input {
+    transition: all .25s ease-in-out;
+    height: 50px;
+    border-radius: 3px;
+    border: 1px solid @share-modal-bg-variant-strong;
+    background-color: @white;
+    padding: 0 15px;
+    color: @black;
+    &:hover, &:active, &:focus {
+        background-color: darken(@white, 15%);
+        color: @black;
+    }
+}
+.share-modal__copy-button {
+    transition: all .25s ease-in-out;
+    .share-modal-button(@share-modal-primary); // bg color for gradient
+    .share-modal-button-primary;
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    font-weight: 700;
+    line-height: 40px;
+    .share-modal__copy-icon {
+        font-size: smaller;
+        text-shadow: none;
+        color: fade(@share-modal-primary-text, 70%);
+    }
+}
+.share-modal__social-list {
+    list-style-type: none;
+    margin: 0 -5px;
+    padding: 0;
+    display: flex;
+    .flex-align-items(center);
+    .flex-justify-content(space-between);
+    @media (max-width: 575px) {
+        .flex-wrap(wrap);
+    }
+}
+.share-modal__social-item {
+    .flex(1 1 50%);
+    margin-bottom: 10px;
+    @media (min-width: 567px) {
+        .flex(1 1 auto);
+        margin-bottom: 0;
+    }
+}
+.share-modal__social-link {
+    transition: background-color .25s ease-in-out,
+        color .25s ease-in-out;
+    .share-modal-button(@share-modal-bg);
+    .share-modal-button-secondary;
+    cursor: pointer;
+    display: block;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 36px;
+    line-height: 70px;
+    color: @share-modal-bg-text-variant;
+    &:hover, &:active, &:focus {
+        color: @share-modal-bg-text;
+    }
+}
+
+/*
+
+====== Zoom effect ======
+
+*/
+.mfp-zoom-in {
+    /* start state */
+    .mfp-with-anim {
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+        transform: scale(0.8);
+    }
+    &.mfp-bg {
+        opacity: 0;
+        transition: all 0.3s ease-out;
+    }
+    /* animate in */
+    &.mfp-ready {
+        .mfp-with-anim {
+            opacity: 1;
+            transform: scale(1);
+        }
+        &.mfp-bg {
+            opacity: 0.5;
+        }
+    }
+    /* animate out */
+    &.mfp-removing {
+        .mfp-with-anim {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        &.mfp-bg {
+            opacity: 0;
+        }
+    }
+}
+
+.mfp-close {
+    color: #fff!important; //override magnific styles
+}

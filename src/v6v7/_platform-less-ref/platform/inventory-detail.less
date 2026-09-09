@@ -1,0 +1,1881 @@
+//
+// Inventory Detail Core
+// --------------------------------------------------
+
+// Generic V6 version of V7 @inv-bg-variant variables
+// Moved from global variables as that file is not included in V7 while this file is
+@bg-secondary-variant: contrast(@bg-secondary, darken(@bg-secondary, 6%), lighten(@bg-secondary, 9%));
+@bg-secondary-variant-strong: contrast(@bg-secondary, darken(@bg-secondary, 12%), lighten(@bg-secondary, 18%));
+
+body.InventoryDetail {
+	// Inventory Detail Font Default
+	#main.InvDetailResponsive, #main.ShowRoomDetailResponsive {
+		#template {
+			font-family: 'Roboto Condensed', sans-serif;
+
+			h1, h2, h3, h4, h5, h6 {
+				font-family: 'Roboto Condensed', sans-serif;
+			}
+		}
+	}
+
+	// Inventory Unit Header
+	.invUnitHeader {
+		.make-row();
+		.clearfix;
+	}
+
+	.unitTitle {
+		.make-xs-column(12);
+		.clearfix;
+
+		h1 {
+			display: inline;
+			font-size: @font-size-h3;
+			margin: 0;
+		}
+
+		.backLink {
+			display: inline;
+			padding-right: @grid-gutter-width / 2;
+
+			a {
+				display: inline-block;
+				font-size: @font-size-h4;
+				padding: @grid-gutter-width / 6 @grid-gutter-width / 3;
+
+				span {
+					opacity: 0.75;
+					&.fa {
+						@media (min-width: @screen-md-min) {
+							margin-right: 5px;
+						}
+					}
+					&.buttontext {
+						.hidden-xs();
+						.hidden-sm();
+					}
+				}
+
+				&:hover {
+					span {
+						opacity: 1;
+					}
+				}
+			}
+		}// .backLink
+	}// .unitTitle
+
+	.unitText {
+		.make-xs-column(12);
+		.make-md-column(8);
+
+		margin-top: @grid-gutter-width / 3;
+	}
+
+	.BreadCrumbs {
+		.make-xs-column(12);
+
+		margin-top: @grid-gutter-width / 3;
+
+		.fa {
+			padding-left: @grid-gutter-width / 6;
+			padding-right: @grid-gutter-width / 6;
+
+			&:last-child {
+				display: none;
+			}
+		}
+	}// .BreadCrumbs
+
+	// Main Slide Show & Inventory Unit Right Column
+	.rowBlock {
+		.make-row();
+		.clearfix;
+
+		margin-top: @grid-gutter-width;
+	}
+
+	.vdp-media__content {
+		// columns also added to markup to prevent issues with compilation
+		.make-xs-column(12); 
+		.make-md-column(8);
+	}
+
+	// Media Tabs (DealerPic)
+	.has-360--true {
+		&.vdp-media__tabs {
+			display: inherit !important; // override inline css that prevents a flicker on load
+		}
+		.vdp-media__pane {
+			background-color: @bg-secondary-variant;
+		}
+	}
+	.has-360--false {
+		.vdp-media__dealerpic {
+			display: none;
+		}
+	}
+	.vdp-media__tabs {
+		margin: 0;
+		padding-left: 15px;
+		padding-right: 15px;
+		list-style-type: none;
+		font-size: 16px;
+	}
+	.vdp-media__tab-item {
+		display: inline-block;
+		margin-right: 1px;
+		&.active {
+			.vdp-media__tab {
+				border-bottom-color: transparent;
+				font-weight: bold;
+				&:hover, &:active, &:focus {
+					background-color: @bg-secondary-variant;
+				}
+			}
+		}
+	}
+	.vdp-media__tab {
+		display: block;
+		border-bottom: 1px solid @bg-secondary;
+		background-color: @bg-secondary-variant;
+		padding: 10px 15px;
+		color: contrast(@bg-secondary);
+		&:hover {
+			background-color: @bg-secondary-variant-strong;
+		}
+	}
+	.vdp-media__pane {
+		// Styles required for layout also added in style block to prevent compilation issues
+		width: 100%;
+		padding-left: 15px;
+		padding-right: 15px;
+		&:not(.active) {
+			height: 0; // to prevent interference with content sizing
+			overflow: hidden;
+		}
+		&.active {
+			overflow: auto;
+			padding-top: 15px;
+			padding-bottom: 15px;
+		}
+	}
+
+	// Main Slide Show
+	#invUnitCarousel {
+		&:hover {
+			.image_overlay {
+				display: none !important;
+			}
+
+			.carousel-nav {
+				display: block;
+			}
+		}
+
+		// Carousel
+		.item {
+			padding-bottom: 75%;
+		}
+
+		&.paused {
+			a.pause {
+				right: @grid-gutter-width * 1.5 + 4px;
+
+				.fa-pause {
+					display: none;
+				}
+				.fa-play {
+					display: block;
+				}
+			}
+		}
+
+		.image_overlay {
+			position: absolute;
+			display: none;
+			top: 0;
+			right: 0;
+			z-index: 2;
+
+			&.visible {
+				display: block;
+				padding: @grid-gutter-width / 2 @grid-gutter-width;
+				opacity: 0.8;
+
+				p {
+					font-size: @font-size-h3;
+					margin: 0;
+					text-transform: uppercase;
+				}
+			}
+		}// .image_overlay
+
+	}// #invUnitCarousel
+	#invUnitSliderTray {
+		.hidden-xs();
+		.hidden-sm();
+
+		position: relative;
+		margin-top: 4px;
+
+		.item {
+			> ul {
+				.make-row();
+				.clearfix;
+
+				margin: 0;
+				margin-left: -2px;
+				margin-right: -2px;
+				padding: 0;
+
+				> li {
+					.make-md-column(2);
+
+					padding-left: 2px;
+					padding-right: 2px;
+					list-style: none;
+
+					> div {
+						opacity: 0.75;
+
+						&:active, &:hover, &:focus {
+							opacity: 1;
+							background-color: transparent;
+						}
+						&:hover {
+							cursor: pointer;
+						}
+					}
+
+					&.active {
+						> div {
+							opacity: 1;
+						}
+					}
+				}
+			}
+		}// .item
+
+		.carousel-nav {
+			display: none;
+			position: static;
+			margin: auto;
+
+			a {
+				position: absolute;
+				display: block;
+				top: 0;
+				width: @grid-gutter-width;
+				height: 100%;
+				text-shadow: none;
+
+				&:hover {
+					span {
+						opacity: 1;
+					}
+				}
+
+				&.next {
+					right: 0;
+				}
+				&.prev {
+					left: 0;
+				}
+
+				> .fa {
+					position: absolute;
+					display: block;
+					top: 50%;
+					left: 50%;
+					font-size: @font-size-base;
+					margin-top: -@font-size-base / 2;
+					margin-left: -3px;
+					opacity: 0.75;
+				}
+			}
+		}// .carousel-nav
+
+		&:hover {
+			.carousel-nav {
+				display: block;
+			}
+		}
+	}// #invUnitSliderTray
+
+	.carousel {
+		.carousel-nav {
+			position: absolute;
+			display: none;
+			top: 50%;
+			z-index: 3;
+			margin-top: -@grid-gutter-width * 0.75;
+			width: 100%;
+
+			@media (max-width: @screen-xs-max) {
+				.sr-only;
+			}
+
+			.carousel-control {
+				width: @grid-gutter-width * 1.5;
+				height: @grid-gutter-width * 1.5;
+				opacity: 1;
+				text-shadow: none;
+
+				span {
+					position: absolute;
+					display: block;
+					top: 50%;
+					left: 50%;
+					font-size: @font-size-base;
+					margin-top: -@font-size-base / 2;
+					margin-left: -3px;
+					opacity: 0.75;
+				}
+
+				&.next {
+					right: 0;
+					left: initial;
+				}
+
+				&.prev {
+					left: 0;
+					right: initial;
+				}
+				&.pause {
+					right: @grid-gutter-width * 1.5 + 4px;
+
+					.fa {
+						margin-left: -6px;
+					}
+
+					.fa-pause {
+						display: block;
+					}
+					.fa-play {
+						display: none;
+					}
+				}
+
+				&:hover {
+					opacity: 1;
+
+					span {
+						opacity: 1;
+					}
+				}
+			}// .carousel-control
+		}// .carousel-nav
+
+		ul.carousel-indicators {
+			position: static;
+			bottom: initial;
+			left: initial;
+			width: 100%;
+			margin-left: 0;
+			padding-top: @grid-gutter-width / 3;
+
+			> li {
+				// calculates indicator border and active color based off @bg-secondary (standard inventory detail background color)
+				& when (lightness(@bg-secondary) > 50%) {
+					border-color: @black;
+					&.active {
+						background-color: @black;
+					}
+				} & when (lightness(@bg-secondary) <= 50%) {
+					border-color: @white;
+					&.active {
+						background-color: @white;
+					}
+				}
+
+			}
+
+			&.carousel-indicators-buttons {
+				@media (min-width: @screen-md-min) {
+					display: none;
+				}
+
+				margin-bottom: 0;
+				bottom: 0;
+			}
+		}
+	}// .carousel
+
+	.background-image-container {
+		padding-bottom: 75%;
+
+		.background-image {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			width: 100%;
+			height: 100%;
+			background-origin: content-box;
+			background-size: contain;
+			background-position: center center;
+			background-repeat: no-repeat;
+		}
+	}
+
+	// Inventory Unit Right Column
+	.invUnitColRight {
+		.make-xs-column(12);
+		.make-md-column(4);
+
+		@media (max-width: @screen-sm-max) {
+			margin-top: @grid-gutter-width / 2;
+		}
+		.textbuttons {
+			ul {
+				li {
+					&.invBikeSpecs, &.invCompareBike {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+
+	.unitPrice {
+		.make-row();
+		.clearfix;
+
+		h3 {
+			.make-xs-column(12);
+
+			margin: 0;
+		}
+		h2 {
+			.make-xs-column(12);
+
+			margin: 0;
+
+			@media (max-width: @screen-sm-max) {
+				margin-top: @grid-gutter-width / 6;
+			}
+			@media (min-width: @screen-md-min) {
+				text-align: right
+			}
+		}
+
+		.disclaimer {
+			text-align: right;
+			font-size: 11px;
+			padding: 0px 15px;
+		}
+
+	}// .unitPrice
+
+	.socialButtons {
+		.make-row();
+		.clearfix;
+
+		margin-top: @grid-gutter-width / 2;
+
+		.addthis_toolbox {
+			.make-xs-column(12);
+
+			a {
+				span {
+					opacity: .6;
+				}
+
+				&:hover {
+					span {
+						opacity: 1;
+					}
+				}
+			}
+
+			a.addthis_button_compact {
+				span.at15t_compact {
+					margin-right: 0;
+				}
+			}
+			a.addthis_button_print {
+				display: none;
+			}
+		}
+	}// .socialButtons
+
+	.invAutoCheck {
+		padding: 10px;
+
+		a {
+			img {
+				display: inline;
+				box-shadow:0;
+			}
+		}
+	}
+
+	#invUnitColors {
+		ul {
+			.clearfix;
+
+			padding-left: 0;
+			margin-left: -2px;
+			margin-right: -2px;
+
+			> li {
+				.make-xs-column(1);
+
+				float: left;
+				list-style: none;
+				padding-left: 2px;
+				padding-right: 2px;
+
+				img {
+					.img-responsive();
+				}
+			}
+		}
+	}// #invUnitColors
+
+	// Inventory Unit Info - Unit Details & Unit Highlights
+	.invUnitInfo {
+
+		width: 100%;
+		margin-top: @grid-gutter-width;
+		overflow: hidden;
+
+		.nav-tabs {
+			.hidden-xs();
+			.hidden-sm();
+			.clearfix;
+
+			margin: 0;
+
+			> li {
+				margin-bottom: 0;
+
+				&.active {
+					.panel-heading {
+						a {
+							font-weight: bold;
+						}
+					}
+				}
+
+				.panel-heading {
+					padding: 0;
+
+					a {
+						display: block;
+						font-size: @font-size-h4;
+						font-weight: normal;
+						padding: @grid-gutter-width / 2.5 @grid-gutter-width * 0.66;
+						margin: 0;
+						text-transform: uppercase;
+					}
+				}// .panel-heading
+			}
+		}// .nav-tabs
+	}// .invUnitInfo
+
+	.invUnitInfoTable {
+		@media (min-width: @screen-md-min) {
+			display: table;
+			width: 100%;
+		}
+		.invUnitInfoCols {
+			@media (min-width: @screen-md-min) {
+				display: table-row;
+			}
+		}
+	}
+
+	// Start VDP Unit Price area
+	.title-price-container {
+
+		.urgency-callout-container {
+			@media (min-width: @screen-md-min) {
+				justify-content: flex-end;
+			}
+			display: flex;
+			justify-content: flex-start;
+
+			.urgency-callout {
+				background: #2ea049;
+				color: #fff;
+				padding: 5px 10px;
+				position: relative;
+				z-index: 1;
+				bottom: -10px;
+				visibility: hidden;
+	
+				left: -9px;
+				right: auto;
+				border-radius: 3px 3px 3px 0;
+	
+				@media (min-width: @screen-md-min) {
+					right: -9px;
+					left: auto;
+					border-radius: 3px 3px 0 3px;
+				}
+			}
+
+			.urgency-callout:after {
+				content: "";
+				border: 5px solid transparent;
+				position: absolute;
+				bottom: -9px;
+
+				@media (min-width: @screen-md-min) {
+					right: 0;
+					left: auto;
+					border-top-color: #585858!important;
+					border-left-color: #585858!important;
+				}
+				@media (max-width: @screen-md-min) {
+					right: auto;
+					left: 0;
+					border-top-color: #585858!important;
+					border-right-color: #585858!important;
+				}
+			}
+		}
+
+		#price-box-container.active-promotions {
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			padding: 10px 8px;
+		}
+	}
+
+	.price-inline {
+		display: inline;
+	}
+
+	.price-box-align {
+		@media (min-width: @screen-md-min) {
+			text-align: right;
+		}
+		text-align: left;
+		margin: 5px 0px 5px 0px;
+	}
+
+	.price-box {
+		font-size: 24px;
+	}
+
+	.price-drop-alert {
+		text-align: center;
+		border: solid;
+		margin: 0px 5px 5px;
+		border: 1px solid #ddd;
+		padding: 3px;
+		background-color: #ebebeb;
+	}
+
+	.ml-10 {
+		margin-left: 10px;
+	}
+
+	.mt-0 {
+		margin-top: 0px!important;
+	}
+	// End VDP Unit Price area
+
+
+
+   .dspMake-HARLEY-DAVIDSON- .offer-bar , .dspMake-HARLEY-DAVIDSON .offer-bar {
+        border-bottom: 8px solid #FA6600;
+    }
+
+    .dspMake-INDIAN-MOTORCYCLE- .offer-bar, .dspMake-INDIAN-MOTORCYCLE .offer-bar {
+        border-bottom: 8px solid #862633;
+
+    }
+
+    .dspMake-BMW .offer-bar , .dspMake-BMW- .offer-bar {
+        border-bottom: 8px solid #0062ff;
+    }
+
+    .dspMake-HONDA- .offer-bar , .dspMake-HONDA .offer-bar {
+        border-bottom: 8px solid #E41D30;
+    }
+
+    .dspMake-BRP .offer-bar {
+        border-bottom: 8px solid #ffc72c;
+    }
+
+    .dspMake-CAN-AM.dspSubType-OFF-ROAD .offer-bar {
+        border-bottom: 8px solid #ffc72c;
+    }
+
+    .dspMake-EVINRUDE .offer-bar {
+        border-bottom: 8px solid #00245d;
+    }
+
+    .dspMake-SEA-DOO .offer-bar {
+        border-bottom: 8px solid #2cd5c4;
+    }
+
+    .dspMake-SKI-DOO .offer-bar {
+        border-bottom: 8px solid #ffc72c;
+    }
+
+    .dspMake-CAN-AM-.dspSubType-ON-ROAD .offer-bar {
+        border-bottom: 8px solid #e03c31;
+    }
+
+    .dspMake-AIRSTREAM .offer-bar {
+        border-bottom: 8px solid #006BA6;
+    }
+
+    .dspMake-AIRSTREAM .dspSubType-TRAVEL-TRAILERS .offer-bar {
+        border-bottom: 8px solid #006BA6;
+    }
+
+    .dspMake-AIRSTREAM .dspBrand-TOURING-COACHES .offer-bar {
+        border-bottom: 8px solid #49142C;
+    }
+
+    .dspMake-BOBCAT- .offer-bar, .dspMake-BOBCAT .offer-bar {
+        border-bottom: 8px solid #FF3600;
+    }
+
+    .dspMake-CASE-IH .offer-bar {
+        border-bottom: 8px solid #c10a27;
+    }
+
+    .dspMake-CLUB-CAR- .offer-bar {
+        border-bottom: 8px solid #93754f;
+    }
+
+    .dspMake-E-Z-GO .offer-bar {
+        border-bottom: 8px solid #0A2240;
+    }
+
+    .dspMake-GEM- .offer-bar , .dspMake-GEM .offer-bar {
+        border-bottom: 8px solid #0090ba;
+    }
+
+    .dspMake-HUSQVARNA- .offer-bar {
+        border-bottom: 8px solid #273a60;
+    }
+
+    .dspMake-INTERNATIONAL- .offer-bar {
+        border-bottom: 8px solid #f47820;
+    }
+
+    .dspMake-ISUZU-TRUCKS .offer-bar {
+        border-bottom: 8px solid #ee1b2e;
+    }
+
+    .dspMake-JOHN-DEERE.dspBodyType-EXCAVATOR .offer-bar {
+    border-bottom: 8px solid #ffde00
+    }
+
+    .dspMake-JOHN-DEERE.dspBodyType-LOADER .offer-bar {
+    border-bottom: 8px solid #ffde00
+    }
+
+    .dspMake-JOHN-DEERE.dspBodyType-SKID-STEERS .offer-bar {
+    border-bottom: 8px solid #ffde00
+    }
+
+    .dspMake-JOHN-DEERE.dspSubType-DUMP-TRUCK .offer-bar {
+    border-bottom: 8px solid #ffde00
+    }
+     
+    .dspMake-JOHN-DEERE.dspSubType-BACKHOE .offer-bar {
+    border-bottom: 8px solid #ffde00
+    }
+
+    .dspMake-JOHN-DEERE .offer-bar {
+    border-bottom: 8px solid #367c2b
+    }
+
+    .dspMake-KAWASAKI .offer-bar {
+        border-bottom: 8px solid #67cb33;
+    }
+
+    .dspMake-KUBOTA .offer-bar {
+        border-bottom: 8px solid #FF6600;
+    }
+
+    .dspMake-LIUGONG .offer-bar {
+        border-bottom: 8px solid #002D72;
+    }
+
+    .dspMake-MAHINDRA .offer-bar {
+        border-bottom: 8px solid #e31837 !important;
+    }
+
+    .dspMake-MALIBU-BOATS .offer-bar {
+        border-bottom: 8px solid #009ac7;
+    }
+
+    .dspMake-AXIS-WAKE-RESEARCH .offer-bar {
+        border-bottom: 8px solid #009ac7;
+    }
+
+    .dspMake-MAXXD-TRAILERS .offer-bar {
+        border-bottom: 8px solid #D0202E;
+    }
+
+    .dspMake-MERCURY-MARINE- .offer-bar {
+        border-bottom: 8px solid #ed1c28;
+    }
+
+    .dspMake-NEW-HOLLAND .offer-bar {
+        border-bottom: 8px solid #F7D417;
+    }
+
+    .dspMake-POLARIS- .offer-bar, .dspMake-POLARIS .offer-bar {
+        border-bottom: 8px solid #004e97;
+    }
+
+    .dspMake-POLARIS-SLINGSHOT- .offer-bar {
+        border-bottom: 8px solid #000000;
+    }
+
+    .dspMake-ASCEND-KAYAK .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-MAKO .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-REGENCY .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-TRACKER-BOATS .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-RANGER-BOATS .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-NITRO .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-SUN-TRACKER .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-TRITON .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-TAHOE .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+    .dspMake-TRACKER-OFFROAD .offer-bar {
+        border-bottom: 8px solid #0b3254;
+    }
+
+	.dspMake-CFMOTO .offer-bar {
+        border-bottom: 8px solid #009bb4;
+    }
+
+	.dspMake-ROXOR .offer-bar {
+        border-bottom: 8px solid #e31837 !important;
+    }
+
+	.offer-bar {
+		width: 100%;
+		display: block;
+		text-align: center;
+		background: #000;
+		color: #fff;
+		padding: 12px;
+		border-radius: 5px 5px 0 0;
+		font-size: 1.1em;
+		text-decoration: none;
+		border-bottom: 8px solid #ffd200;
+	}// .offer-bar
+
+	// Unit Details
+	#unitDetails {
+		@media (max-width: @screen-sm-max) {
+			width: 100%;
+			display: block;
+			padding: round(@grid-gutter-width / 2);
+		}
+		@media (min-width: @screen-md-min) {
+			width: percentage(8 / 12);
+			display: table-cell;
+			padding: round(@grid-gutter-width / 2) round(@grid-gutter-width * 0.67);
+			vertical-align: top;
+			overflow-y: auto;
+		}
+		.panel + .panel {
+			@media (min-width: @screen-md-min) {
+				margin-top: 0;
+			}
+		}
+	}// #unitDetails
+	.panel-group {
+		margin-bottom:0;
+	}
+	.panel {
+		.box-shadow(none);
+
+		background-color: transparent;
+
+		.panel-heading {
+			width: 100%;
+			text-transform: uppercase;
+			@media (min-width: @screen-md-min) {
+				display: none!important;
+			}
+
+			a {
+				display: block;
+				font-weight: bold;
+
+				&:hover, &:focus, &:active {
+					text-decoration: none;
+				}
+
+				&.collapsed {
+					font-weight: normal;
+				}
+			}
+		}// .panel-heading
+
+		.collapsing {
+			@media (min-width: @screen-md-min) {
+				-webkit-transition: none;
+				transition: none;
+			}
+		}
+
+		.panel-body {
+			padding: 0;
+
+			@media (max-width: @screen-sm-max) {
+				padding: @grid-gutter-width / 2 @grid-gutter-width / 6 @grid-gutter-width / 3 @grid-gutter-width / 6;
+			}
+		}
+
+		&.unitDetailsGallery {
+			ul {
+				.clearfix;
+
+				position: relative;
+				padding-left: 0;
+				margin-left: -@grid-gutter-width / 6;
+				margin-right: -@grid-gutter-width / 6;
+				margin-top: -@grid-gutter-width / 3;
+				margin-bottom: 0;
+
+				> li {
+					.make-xs-column(6);
+					.make-sm-column(4);
+					.make-lg-column(3);
+
+					list-style: none;
+					padding-left: @grid-gutter-width / 6;
+					padding-right: @grid-gutter-width / 6;
+					margin-top: @grid-gutter-width / 3;
+
+					@media (max-width: 500px) {
+						width: 100%;
+					}
+
+					a {
+						display: block;
+						width: 100%;
+						height: 100%;
+						background-origin: content-box;
+						background-size: cover;
+						background-position: center center;
+						background-repeat: no-repeat;
+						opacity: 1;
+
+						&:hover {
+							@media (min-width: @screen-md-min) {
+								opacity: 0.75;
+							}
+						}
+					}
+				}
+			}
+		}// &.unitDetailsGallery
+		&.unitDetailsVideosGallery {
+			.videoContainer {
+				margin-bottom: @grid-gutter-width * 0.66;
+				list-style: none;
+
+				a {
+					.make-row();
+					.clearfix;
+
+					display: block;
+
+					.videoImage {
+						.make-xs-column(12);
+						.make-sm-column(2);
+						.make-md-column(3);
+						
+						img {
+							width: 100%;
+							cursor: pointer;
+							&:hover {
+								outline: 1px solid @brand-primary;
+							}
+						}
+						@media (min-width: 768px) and (max-width: 991px) {
+							padding-right: 0px;
+						}
+						
+						.videoDuration {
+							position: absolute;
+							text-align: right;
+							font-weight: bold;
+						    bottom: 4px;
+							right: 19px;
+							width: auto;
+							height: 20px;
+							line-height: 20px;
+							padding-left: 5px;
+							padding-right: 5px;
+							font-size: 11px;
+							color: white;
+							background-color: rgba(1,1,1,0.5);
+						}
+						
+						/* Hidden for now, possible use later. */
+						.videoLikes {
+							display: none;
+							position: absolute;
+							text-align: right;
+							font-weight: bold;
+							bottom: 4px;
+							left: 19px;
+							width: auto;
+							height: 20px;
+							line-height: 20px;
+							padding-left: 5px;
+							padding-right: 5px;
+							font-size: 11px;
+							color: white;
+							background-color: rgba(1, 1, 1, 0.5);
+						}
+						@media (max-width: 991px) {
+							.videoLikes {
+								left: 4px;
+								bottom: 4px;
+							}
+							.videoDuration {
+								right: 4px;
+								bottom: 4px;
+							}
+						}
+						@media (max-width: 767px) {
+							.videoLikes {
+								left: 19px;
+								bottom: 4px;
+							}
+							.videoDuration {
+								right: 19px;
+								bottom: 4px;
+							}
+						}
+					}
+					.videoContent {
+						.make-xs-column(12);
+						.make-sm-column(10);
+						.make-md-column(9);
+
+						font-size: @font-size-small;
+
+						h3 {
+							margin-bottom: @grid-gutter-width / 4;
+							font-size: @font-size-base;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							
+							&.videoTitle {
+								font-weight: bold !important;
+								cursor: pointer;
+							}
+						}
+						
+						ul {
+							margin-bottom: @grid-gutter-width / 4;
+							padding-left: 0;
+
+							> li {
+								@media (max-width: 767px) {
+									& {
+										border-left: none;
+										padding-left: 0;
+										margin-left: 0;
+										float: left;
+										width: 100%;
+										padding-top: 1px;
+										padding-bottom: 3px;
+									}
+								}
+							
+								i {
+									font-size: 5px;
+									line-height: 16px;
+									position: relative;
+									left: -9px;
+									top: -2px;
+								}
+							
+								display: inline-block;
+								padding-left: @grid-gutter-width / 3;
+								margin-left: @grid-gutter-width / 3;
+								
+								&:first-child {
+									border-left: none;
+									padding-left: 0;
+									margin-left: 0;
+								}
+							}
+						}
+
+						label {
+							display: inline-block;
+							margin-right: @grid-gutter-width / 6;
+							margin-bottom: 0;
+							font-weight: normal;
+						}
+						@media (max-width: 767px){
+							.video-content-divider {
+								display: none;
+							}
+						}
+						.videoAuthor {
+							font-weight: bold;
+						}
+						
+						.videoDescription label, .videoUpdated, .videoRecorded, .videoFavoriteCount, .videoDescription label {
+							display: none;
+						}
+						
+						
+					}
+				}
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}// &.unitDetailsVideosGallery
+		&.unitSpecifications {
+			ul {
+				.make-row();
+				.clearfix;
+
+				padding-left: 0;
+
+				> li.unitSpec {
+					.make-xs-column(12);
+
+					display: table;
+					list-style: none;
+
+					&.unitSpecHeader {
+						font-size: 18px;
+						font-size: 1.5em;
+						font-weight: 700;
+					}
+
+					label, span {
+						display: table-cell;
+						vertical-align: top;
+						margin-bottom: 0;
+						padding: @grid-gutter-width / 6 @grid-gutter-width / 3;
+					}
+					label {
+						width: 40%;
+						font-weight: normal;
+					}
+					span {
+						width: 60%;
+						text-align: right;
+					}
+				}
+			}
+		}// &.unitSpecifications
+		&.unitPaymentCalculator {
+			.panel-body {
+				.make-row();
+				.clearfix;
+
+				form {
+					.make-xs-column(12);
+					.make-xs-column-offset(0);
+
+					> ul {
+						.double-column();
+
+						label {
+							font-weight: normal;
+						}
+
+						.paymentControl, .paymentEstimate {
+							.make-sm-column(12);
+						}
+						.paymentControl {
+							button {
+								.btn;
+
+								margin-right: @grid-gutter-width / 3;
+							}
+						}
+						.paymentEstimate {
+							margin-top: @grid-gutter-width / 2;
+						}
+					}
+
+					.fa {
+						margin-right: @grid-gutter-width / 6;
+						font-size: 16px;
+					}
+					.disclaimer {
+						margin-top: @grid-gutter-width / 6;
+					}
+				}
+			}
+		}// &.unitPaymentCalculator
+		&.unitShippingCalculator {
+			.panel-body {
+				.make-row();
+				.clearfix;
+
+				form {
+					.make-xs-column(12);
+					.make-xs-column-offset(0);
+
+					> ul {
+						.double-column();
+
+						label {
+							font-weight: normal;
+						}
+
+						.dvShipZIP {
+							.make-sm-column(12);
+
+							div {
+								button {
+									.btn;
+
+									margin-top: @grid-gutter-width / 4;
+								}
+							}
+						}
+						.dvMapResults {
+							.make-sm-column(12);
+
+							display: none;
+						}
+					}
+
+					.fa {
+						margin-right: @grid-gutter-width / 6;
+						font-size: 16px;
+					}
+					.disclaimer {
+						margin-top: @grid-gutter-width / 6;
+
+						li {
+							padding-bottom: 0;
+						}
+					}
+				}
+			}
+		}// &.unitShippingCalculator
+	}// .panel
+
+	// Unit Highlights
+	.unitHighlights {
+
+		@media (min-width: @screen-md-min) {
+			width: percentage(4 / 12);
+			display: table-cell;
+			padding: round(@grid-gutter-width / 2) round(@grid-gutter-width * 0.67);
+			vertical-align: top;
+		}
+		@media (min-width: @screen-sm-min) {
+			padding: round(@grid-gutter-width / 2) round(@grid-gutter-width * 0.67);
+		}
+		@media (max-width: @screen-xs-max) {
+			padding: round(@grid-gutter-width / 2) round(@grid-gutter-width * 0.67);
+		}
+
+		ul {
+			padding-left: 0;
+			margin-bottom: 0;
+
+			> li {
+				list-style: none;
+
+				label.lblUnitLabel {
+					display: inline-block;
+					width: 40%;
+					font-weight: normal;
+					vertical-align: top;
+				}
+				span.spnUnitValue  {
+					display: inline-block;
+					width: 60%;
+					font-weight: bold;
+					text-align: right;
+					vertical-align: top;
+				}
+
+				&.LiInvStatus {
+					.sr-only;
+				}
+			}
+		}
+
+		.LiInvFreightCharges {
+			display: none;
+		}
+
+		.LiInvAvailability {
+			span.spnUnitValue {
+				padding: 4px 8px;
+				border-radius: 4px;
+				color: @white;
+				background-color: @brand-primary;
+			}
+		}
+	}// .unitHighlights
+
+	// Inventory Unit Promotions
+	.invUnitPromotions {
+		position: relative;
+		height: auto;
+		padding-top: 10px;
+
+		#promotions {
+			position: absolute;
+			top: -55px;
+		}
+
+		#carousel {
+			margin-left: 48px;
+			margin-right: 48px;
+			overflow-x: hidden;
+			padding-bottom: 48px;
+
+			@media (max-width: 768px) {
+				margin-left: 0;
+				margin-right: 0;
+			}
+
+			.carousel-card {
+				border: 2px solid rgb(186, 186, 186);
+				border-radius: 4px;
+			}
+	
+			img {
+				display: flex;
+				max-width: 100%;
+				justify-content: center;
+				margin: auto;
+			}
+	
+			.carousel-item-title {
+				height: 80px;
+				max-width: 75ch;
+				display: -webkit-box;
+				overflow: hidden;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				font-size: x-large;
+				font-weight: bolder;
+				text-overflow: ellipsis;
+				padding: 14px 0px;
+				margin-bottom: 20px;
+			}
+	
+			.carousel-item-description {
+				height: 60px;
+				display: -webkit-box;
+				overflow: hidden;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				padding-bottom: 10px;
+				margin-bottom: 10px;
+			}
+
+			.vehicle-information {
+				padding: 0px 15px 15px 15px;
+	
+				@media (max-width: 1440px ) {
+					height: auto;
+				}
+	
+				@media (max-width: 1080px) {
+					height: 90%;
+				}
+	
+				@media (max-width: 768px) {
+					height: 80%;
+				}
+	
+				@media (max-width: 425px) {
+					height:auto;
+				}
+			}
+			
+			.view-offer-details-btn {
+				background-color: transparent;
+				border-color: transparent;
+				color: black;
+				padding-left: 0px;
+				margin: 10px 0px;
+				font: medium;
+				font-size: larger;
+				font-weight: bold;
+				cursor: pointer;
+			}
+
+			.swiper-button-prev, .swiper-button-next {
+				height: 20px;
+				
+				@media (max-width: 768px) {
+					display: none;
+				}
+			}
+
+			.swiper-button-prev {
+				background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E") !important;
+			}
+			  
+			.swiper-button-next {
+				background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E") !important;
+			}
+
+			.swiper-pagination-bullets {
+				bottom: unset;
+				margin-top: 10px;
+
+				.swiper-pagination-bullet {
+					height: 16px;
+					width: 16px;
+
+					&.swiper-pagination-bullet-active {
+						background: #000;
+					}
+				}
+			}
+
+			.swiper-wrapper {
+				height: unset;
+			}
+		}
+	}// .invUnitPromotions
+	
+	// Inventory Unit Recommendations
+	.invUnitRecommendations {
+		margin-top: @grid-gutter-width;
+
+		h3 {
+			margin-bottom: 0;
+		}
+
+		ul {
+			.make-row();
+			.clearfix;
+
+			padding-left: 0;
+			margin-top: @grid-gutter-width / 2;
+			margin-bottom: 0;
+
+			> li {
+				.make-xs-column(12);
+				.make-sm-column(4);
+				.make-md-column(3);
+
+				@media (min-width: @screen-lg-min) {
+					width: 20%;
+					*width: 20%;
+				}
+
+				&:nth-child(-n+5) {
+					@media (min-width: @screen-lg-min) {
+						display: block;
+					}
+				}
+				&:nth-child(-n+4) {
+					@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+						display: block;
+					}
+				}
+				&:nth-child(-n+3) {
+					@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+						display: block;
+					}
+				}
+				&:nth-child(-n+2) {
+					@media (max-width: @screen-xs-max) {
+						display: block;
+						margin-bottom: @grid-gutter-width / 3;
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+					}
+				}
+
+				display: none;
+				float: none;
+				list-style: none;
+
+				a {
+					display: block;
+					position: relative;
+				}
+
+				.vehicle-container {
+					position: relative;
+					padding-top: 75%;
+
+					.inv-img {
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						width: 100%;
+						height: 100%;
+						background-origin: content-box;
+						background-size: contain;
+						background-position: center top;
+						background-repeat: no-repeat;
+					}
+				}
+				.vehicle-title {
+					h3 {
+						padding-top: @grid-gutter-width / 3;
+						padding-bottom: @grid-gutter-width / 3;
+						margin: 0;
+						font-size: @font-size-base;
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+
+						span {
+							margin-right: @grid-gutter-width / 6;
+
+							&.StockNumber, &.Condition, &.BodySubType {
+								display: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}// .invUnitRecommendations
+
+	// Inventory Detail Footer
+	.InvDetailFooter {
+		.make-xs-column(12);
+
+		margin-top: @grid-gutter-width;
+	}
+
+	// Modal Slideshow Carousel Indicators
+	#modalGallery {
+		.modal-header {
+			min-height: 50px;
+
+			h2 {
+				display: none;
+			}
+		}
+		.carousel {
+			.carousel-nav {			
+				display: none;	
+				@media (min-width: @screen-sm-min) {
+					display: block;
+				}
+			}
+
+			.carousel-indicators-buttons {
+				display: none;
+				@media (min-width: @screen-md-min) {
+					display: block;
+				}
+			}
+		}
+	}
+
+	// Body Page Controls
+
+	.invUnitInfo {
+		ul.nav {
+			li {
+				a {
+					span.fa-caret-down, span.fa-caret-up {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+
+	#unitDetails {
+		.panel {
+			a {
+				.clearfix;
+
+				span {
+					float:right;
+
+					&.fa-caret-up {display: inline;}
+					&.fa-caret-down {display: none;}
+
+				}
+
+				&.collapsed {
+					.fa-caret-up {display: none;}
+					.fa-caret-down {display: inline;}
+				}
+			}
+		}
+	}
+
+	.unitSliderImg, .noImages {
+		display: none;
+	}
+
+	&.NOIMAGE {
+		.invUnitSlider {
+			display: table;
+
+			.noImages {
+				display: table-cell;
+				text-align: center;
+				vertical-align: middle;
+
+				@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+					height: 150px;
+				}
+				@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+					height: 450px;
+				}
+				@media (min-width: @screen-lg-min) {
+					height: 550px;
+				}
+
+				img {
+					margin: 0 auto;
+				}
+			}
+		}
+	}
+
+	&.NOPHOTOS {
+		.unitSliderImg {
+			display: block;
+		}
+		.carousel-nav, #invUnitSliderTray, #li-unitinfo-gallery, #unitDetailsGallery {
+			display: none;
+		}
+	}
+
+	// Videos Control
+	&.NOVIDEOS {
+		#li-unitinfo-videogallery, #unitDetailsVideosGallery {
+			display: none;
+		}
+	}
+
+	// Specifications Control
+	&.NOSPECIFICATIONS {
+		#li-unitinfo-specifications, #unitDetailsSpecifications {
+			display: none;
+		}
+	}
+
+	// Recommendations Control
+	&.NORECOMMENDATIONS {
+		.invUnitRecommendations {
+			display: none;
+		}
+	}
+
+	// Showroom Details Controls
+	&.xShowroomDetailsXml {
+		.backLink {
+			display: none;
+		}
+		.invUnitRecommendations {
+			display: none;
+		}
+	}
+
+	// EFS Banner
+    .financing-efs__link[data-financing="EFS"] {
+        .financing-efs-link-banner; // from mixins
+		.financing-efs__banner {
+			padding: 20px 30px 22px;
+			@media (max-width: @screen-sm-max) {
+				background-size: cover;
+			}
+			@media (min-width: @screen-md-min) {
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+		}
+		.financing-efs__title {
+			font-size: 24px;
+			@media (min-width: @screen-sm-min) {
+				font-size: 26px;
+			}
+			@media (min-width: @screen-lg-min) {
+				font-size: 34px;
+			}
+		}
+		.financing-efs__description {
+			font-size: 18px;
+		}
+    }
+    // EFS Text Button
+    .textbuttons .invGetFinancing .financing-efs__link {
+		.financing-efs-link-text;
+		@media (max-width: @screen-sm-max) {
+			background-size: cover;
+		}
+        .textbuttonIcon {
+            opacity: 0;
+        }
+    }
+}// body.InventoryDetail
+
+// Hides/Shows Payment and Shipping Calculator
+// Based on classes applied to body.
+body {
+
+	//These elements are shown on xs view
+	.unitPaymentCalculator , .unitShippingCalculator  {
+		display: none;
+	}
+	//These elements are shown only on sm - lg views
+	#li-unitinfo-payments, #li-unitinfo-delivery {
+		display: none;
+	}
+	&.ENABLEPAYMENTS {
+		.unitPaymentCalculator {
+			display: block;
+		}
+		#li-unitinfo-payments {
+			display: block;
+		}
+	}
+	&.ENABLESHIPPING {
+		.unitShippingCalculator {
+			display: block;
+		}
+		#li-unitinfo-delivery {
+			display: block;
+		}
+	}
+}
+
+
+//
+// More Unit Text
+// --------------------------------------------------
+
+.unitText {
+	position: relative;
+	min-height: 2em;
+
+	.morelessButton {
+		display: none;
+	}
+}
+
+.NOUNITTEXT {
+	.unitText {
+		display: none;
+	}
+}
+.MOREUNITTEXT {
+	.unitText {
+		padding-right: @grid-gutter-width / 2 + 45px !important;
+		overflow: hidden;
+		max-height: 2.5em;
+		
+		&.MORE {
+			max-height: none;
+
+			> div {
+				overflow: visible;
+				white-space: normal;
+				text-overflow: inherit;
+			}
+
+			.morelessButton {
+				.less {
+					display: inline;
+
+					&:hover {
+						cursor: pointer;
+					}
+				}
+				.more {
+					display: none;
+				}
+			}
+		}
+
+		> div {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		.morelessButton {
+			display: block;
+			position: absolute;
+			top: 0;
+			right: @grid-gutter-width / 2;
+			z-index: 2;
+
+			.more {
+				display: inline;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+			.less {
+				display: none;
+			}
+		}
+	}// .unitText
+}// .MOREUNITTEXT
+
+// strike through on price when discount price defined on a unit
+.DiscountPrice .unitPrice h2 {
+    text-decoration: line-through;
+}
+
+#li-unitinfo-advertisement, .unitDetailsAdvertisement {
+	display: none;
+}
+
+// custom details page panel/tabs
+body.ADVERTISEMENT {
+	#li-unitinfo-advertisement, .unitDetailsAdvertisement {
+		display: block;
+	}
+}

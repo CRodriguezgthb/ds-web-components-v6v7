@@ -1,0 +1,443 @@
+// last updated 3/6/18
+
+.navbar-styler() {
+	#main-nav {
+		border: 0;
+		border-radius: 0;
+		background: @nav-bg;
+		margin-bottom: 0;
+
+		& when (@nav-size = contained) {
+			.container;
+			@media (min-width: @grid-float-breakpoint) {
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
+
+		.navbar-collapse {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		.navbar-nav {
+			float: none;
+			font-size: 0;
+			margin: 0;
+			& when (@nav-size = full) {
+				.container;
+				padding-left: 0;
+				padding-right: 0;
+			}
+			> li {
+				@media (min-width: @grid-float-breakpoint) {
+					display: inline-block;
+					float: none;
+				}
+				>a {
+					font-size: @font-size-base;
+					padding-top: 0;
+					padding-bottom: 0;
+					//overrides bootstrap, specificity required
+					@media (max-width: (@grid-float-breakpoint - 1)) {
+						line-height: 40px;
+					}
+				}
+				//header text color
+				&, &:focus {
+					> a, > a:focus {
+						color: @nav-text;
+						background-color: transparent;
+					}
+				}
+				//header open/hover/focus text color
+				&.open, &:hover {
+					> a, > a:hover, > a:focus {
+						background: @nav-bg-hover;
+						color: @nav-text-hover;
+					}
+					.dropdown-menu {
+						border: none;
+						border-radius: 0;
+						padding-top: 0;
+						padding-bottom: 0;
+						min-width: 250px;
+						font-size: @font-size-base;
+						>li {
+							>a {
+								//dropdown colors
+								background: @nav-dropdown-bg;
+								color: @nav-dropdown-text;
+								line-height: 30px;
+								&:hover, &:active, &:focus {
+									background: @nav-dropdown-bg-hover;
+									color: @nav-dropdown-text-hover;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.hamburger-styler(@flex-justify: flex-end) {
+	@total-space-between: @burger-bar-spacing + @burger-bar-height;
+	.navbar-header{
+		.container;
+		display: flex;
+		justify-content: @flex-justify;
+		align-items: center;
+		&:before,
+		&:after {
+			content: normal;
+		}
+		@media (min-width: (@grid-float-breakpoint)) {
+			display: none;
+		}
+		.navbar-toggle {
+			margin: 0;
+			padding: 0;
+			position: relative;
+			border-radius: 0;
+			transition: all .25s ease-in-out;
+			background: @burger-bg;
+			border-width: @burger-border-width;
+
+			width: @burger-bar-width + @burger-padding-horiz*2;
+			height: @burger-bar-height*3 + @burger-bar-spacing*2 + @burger-padding-vert*2;
+			.burger-bar {
+				position: absolute;
+				left: @burger-padding-horiz - @burger-border-width;
+				top: @burger-padding-vert + @burger-bar-height + @burger-bar-spacing - @burger-border-width;
+				display: inline-block;
+				transition: all 300ms;
+				width: @burger-bar-width;
+				height: @burger-bar-height;
+
+				&:before, &:after {
+					content: "";
+					position: absolute;
+					left: 0;
+					width: @burger-bar-width;
+					height: @burger-bar-height;
+				}
+
+				&:before {
+					transform: translateY(0) rotate(45deg);
+					transition: all 300ms;
+				}
+
+				&:after {
+					transform: translateY(0) rotate(-45deg);
+					transition: all 300ms;
+				}
+
+			}
+
+			// closed state
+			&.collapsed, &.collapsed:focus {
+				background: @burger-bg;
+				border-color: @burger-color;
+				.burger-bar {
+					background: @burger-color;
+					&:before, &:after {
+						transform: none;
+						background: @burger-color;
+					}
+					&:before {
+						transform: translateY(-@total-space-between);
+					}
+					&:after {
+						transform: translateY(@total-space-between);
+					}
+				}
+				&:hover {
+					border-color: @burger-color-active;
+					background: @burger-bg-active;
+					.burger-bar {
+						&, &:before, &:after {
+							background: @burger-color-active;
+						}
+					}
+				}
+			}
+			// open state
+			&, &:hover, &:focus, &:active {
+				background: @burger-bg-active;
+				border-color: @burger-color-active;
+				.burger-bar {
+					&:before, &:after {
+						background: @burger-color-active;
+					}
+				}
+			}
+		}
+	}
+}
+
+.nav-headers-override(@nav-bg-override: @nav-bg; @nav-bg-hover-override: @nav-bg-hover; @nav-text-override: @nav-text; @nav-text-hover-override: @nav-text-hover) {
+	#main-nav {
+		background: @nav-bg-override;
+		.navbar-nav {
+			> li {
+				//header text color
+				&, &:focus {
+					> a, a:focus {
+						color: @nav-text-override;
+					}
+				}
+				//header open/hover/focus text color
+				&.open, &:hover {
+					> a, > a:hover, > a:focus {
+						background: @nav-bg-hover-override;
+						color: @nav-text-hover-override;
+					}
+				}
+			}
+		}
+	}
+}
+
+.nav-dropdowns-override(@nav-dropdown-bg-override: @nav-dropdown-bg; @nav-dropdown-text-override: @nav-dropdown-text; @nav-dropdown-bg-hover-override: @nav-dropdown-bg-hover; @nav-dropdown-text-hover-override: @nav-dropdown-text-hover) {
+	#main-nav {
+		.navbar-nav {
+			> li {
+				&.open, &:hover {
+					.dropdown-menu {
+						li {
+							a {
+								//dropdown colors
+								background: @nav-dropdown-bg-override;
+								color: @nav-dropdown-text-override;
+								line-height: 30px;
+								&:hover, &:active, &:focus {
+									background: @nav-dropdown-bg-hover-override;
+									color: @nav-dropdown-text-hover-override;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+.hamburger-override(@burger-color-override: @burger-color; @burger-bg-override: @burger-bg; @burger-color-active-override: @burger-color-active; @burger-bg-active-override: @burger-bg-active; @burger-border-width-override: @burger-border-width; @burger-bar-width-override: @burger-bar-width; @burger-bar-height-override: @burger-bar-height; @burger-bar-spacing-override: @burger-bar-spacing; @burger-padding-vert-override: @burger-padding-vert; @burger-padding-horiz-override: @burger-padding-horiz) {
+	@total-space-between-override: @burger-bar-spacing-override + @burger-bar-height-override;
+	.navbar-header{
+		.navbar-toggle {
+			background: @burger-bg-override;
+			border-width: @burger-border-width-override;
+
+			width: @burger-bar-width-override + @burger-padding-horiz-override*2;
+			height: @burger-bar-height-override*3 + @burger-bar-spacing-override*2 + @burger-padding-vert-override*2;
+			.burger-bar {
+				left: @burger-padding-horiz-override - @burger-border-width-override;
+				top: @burger-padding-vert-override + @burger-bar-height-override + @burger-bar-spacing-override - @burger-border-width-override;
+				width: @burger-bar-width-override;
+				height: @burger-bar-height-override;
+
+				&:before, &:after {
+					width: @burger-bar-width-override;
+					height: @burger-bar-height-override;
+				}
+			}
+
+			// closed state
+			&.collapsed, &.collapsed:focus {
+				background: @burger-bg-override;
+				border-color: @burger-color-override;
+				.burger-bar {
+					background: @burger-color-override;
+					&:before, &:after {
+						background: @burger-color-override;
+					}
+					&:before {
+						transform: translateY(-@total-space-between-override);
+					}
+					&:after {
+						transform: translateY(@total-space-between-override);
+					}
+				}
+				&:hover {
+					border-color: @burger-color-active-override;
+					background: @burger-bg-active-override;
+					.burger-bar {
+						&, &:before, &:after {
+							background: @burger-color-active-override;
+						}
+					}
+				}
+			}
+			// open state
+			&, &:hover, &:focus, &:active {
+				background: @burger-bg-active-override;
+				border-color: @burger-color-active-override;
+				.burger-bar {
+					&:before, &:after {
+						background: @burger-color-active-override;
+					}
+				}
+			}
+		}
+	}
+}
+
+.menu-dropdowns-to-left(@numb-menus, @screen-edge:@screen-sm-max) {
+   #main-nav {
+      .navbar-nav {
+         >li {
+            &:nth-last-child(-n+@{numb-menus}) {
+               .dropdown-menu {
+                  @media (min-width: @grid-float-breakpoint) and (max-width: @screen-edge) {
+                     left: auto;
+                     right: 0;
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+.navbar-height(@height) {
+	#main-nav {
+		min-height: @height;
+		@media (max-width: (@grid-float-breakpoint - 1)) {
+			.navbar-header {
+				height: @height;
+			}
+		}
+		@media (min-width: @grid-float-breakpoint) {
+			.navbar-nav {
+				> li {
+					> a {
+						line-height: @height;
+					}
+				}
+			}
+		}
+	}
+}
+
+//absolutely positions the hamburger menu
+.absolutely-hamburger(@max-view, @top, @right, @left) {
+	@media (max-width: @max-view) {
+		#main-nav {
+			min-height: 0;
+			.navbar-header {
+				position: relative;
+				height: auto;
+				.navbar-toggle {
+					position: absolute;
+					top: @top;
+					right: @right;
+					left: @left;
+					margin: 0;
+				}
+			}
+		}
+	}
+}
+
+// styles navbar top level border height, width, style, color
+.navbar-border-styler( @border-height, @border-width, @border-style, @border-color){
+	@media (min-width: (@grid-float-breakpoint)) {
+		.navbar-nav {
+			> li {
+				margin-left: @border-width;
+				position: relative;
+
+				&:before {
+					content:"";
+					display: block;
+					height: @border-height;
+					position: absolute;
+					top:0;
+					bottom:0;
+					left: -(@border-width);
+					margin: auto 0;
+					border-left: @border-width @border-style @border-color;
+				}
+
+				&:first-child {
+					margin-left:0;
+
+					&:before {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+//styles navbar dropdown decoration
+// parameters: font-awesome icon, ,size, default color, hover color, position from right
+.navbar-dropdown-decoration-styler(@icon, @icon-size, @icon-color, @icon-hover-color, @right) {
+	.navbar-nav {
+		.dropdown {
+			> a {
+				position: relative;
+				&:after {
+					content: @icon;
+					font-family: FontAwesome, 'iconmonstr-iconic-font';
+					font-size: @icon-size;
+					color: @icon-color;
+					padding-left: 5px;
+					line-height: inherit;
+					display: inline-block;
+					vertical-align: middle;
+					@media (min-width: (@grid-float-breakpoint)) {
+						position: absolute;
+						top: 0;
+						bottom: 0;
+						right: @right;
+					}
+				}
+			}
+			&.open, &:hover {
+				> a {
+					&:after {
+						color: @icon-hover-color;
+					}
+				}
+			}
+		}
+	}
+}
+
+//decorative underline on navbar header hover
+.navbar-hover-underline(@line-height; @position; @separation; @line-color; @breakpoint: @grid-float-breakpoint) {
+	@media (min-width: @breakpoint) {
+		#main-nav .navbar-nav {
+			>li {
+				>a {
+					position: relative;
+					&:before {
+						transition: 0.4s width ease;
+						.size(0px, @line-height);
+						content: "";
+						display: block;
+						position: absolute;
+						left: 0;	right: 0;
+						@{position}: @separation;
+						background: @line-color;
+						margin: 0 auto;
+					}
+				}
+				&:hover, &:focus, &.open {
+					>a {
+						&:before {
+							width: 100%;
+						}
+					}
+				}
+			}
+		}
+	}
+}

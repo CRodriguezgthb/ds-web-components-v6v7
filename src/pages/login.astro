@@ -1,0 +1,64 @@
+---
+export const prerender = false;
+
+import Layout from '../layouts/Layout.astro';
+
+const accessToken = Astro.cookies.get('sb-access-token');
+const refreshToken = Astro.cookies.get('sb-refresh-token');
+
+if (accessToken && refreshToken) {
+	return Astro.redirect('/admin');
+}
+
+const error = Astro.url.searchParams.get('error');
+const errorMessages: Record<string, string> = {
+	missing_fields: 'Ingresa tu correo y contraseña.',
+	invalid_credentials: 'Correo o contraseña incorrectos.',
+};
+---
+
+<Layout title="Iniciar sesión">
+	<main class="login">
+		<form action="/api/auth/signin" method="post">
+			<h1>Iniciar sesión</h1>
+			{error && <p class="error">{errorMessages[error] ?? 'Ocurrió un error, intenta de nuevo.'}</p>}
+			<label for="email">Correo</label>
+			<input type="email" name="email" id="email" required autocomplete="email" />
+			<label for="password">Contraseña</label>
+			<input type="password" name="password" id="password" required autocomplete="current-password" />
+			<button type="submit">Entrar</button>
+		</form>
+	</main>
+</Layout>
+
+<style>
+	.login {
+		display: flex;
+		min-height: 100vh;
+		align-items: center;
+		justify-content: center;
+	}
+	form {
+		display: flex;
+		width: 320px;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+	.error {
+		color: #b91c1c;
+		margin: 0;
+	}
+	input {
+		padding: 0.5rem;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+	}
+	button {
+		padding: 0.6rem;
+		border: none;
+		border-radius: 4px;
+		background: #111827;
+		color: white;
+		cursor: pointer;
+	}
+</style>

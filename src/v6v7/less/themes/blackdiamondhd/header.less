@@ -1,0 +1,436 @@
+// last updated 3/6/18
+
+#header {
+	background-color: @index-secondary;
+	position: relative;
+	z-index: 3;
+	color: @white;
+	box-shadow: 0px 2px 2px 0px fade(@black,32%);
+	body[class=""] &, body[class|="EDITING"] & { box-shadow: none; }
+}
+
+.header-container {
+	// logo position (left, center, or right); flexbox align-items
+	.header-layout(none; center);
+	.flex-wrap(wrap);
+	.container;
+	position: relative;
+	padding-top: 12px;
+	padding-left: 0;
+	padding-right: 0;
+	@media(min-width:@screen-sm-min){ 
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	@media(min-width:@screen-lg-min){ 
+		padding-top: 15px;
+		padding-bottom: 13px;
+		padding-left: 320px;
+	}
+	@media(min-width:@screen-xl-min){ 
+		padding-left: 374px;
+		padding-right: 45px; 
+	}
+}
+
+.header-brand {
+	margin-left: 16px;
+	margin-right: auto;
+	@media(min-width:@screen-sm-min){ 
+		margin-left: 0px;
+		margin-right: 33px;
+	}
+	@media(min-width:@screen-lg-min){ 
+		position: absolute;
+		top: 15px;
+		left:0;
+		margin-right: 0;
+	}
+	a {
+		display: inline-block;
+		position: relative;
+		z-index: 2;
+		img {
+			max-width: 130px;
+			@media(min-width:@screen-sm-min){ max-width: 194px; }
+			@media(min-width:@screen-lg-min){ max-width: 281px; }
+		}
+	}
+}
+
+.header-phone, .header-address {
+	&__link {
+		.transition(0.3s background-color, 0.3s color;);
+		display: inline-block;
+		width: 45px;
+		height: 45px;
+		line-height: 42px;
+		border: 1px solid;
+		background-color: transparent;
+		text-align: center;
+		color: @white;
+		font-size: 20px;
+		>span{ display: none; }
+		&:hover, &:active, &:focus{
+			background-color: @white;
+			color: @index-secondary;
+		}
+	}
+}
+
+.header-phone {
+	&:not(.header-phone--mobile){
+		display: none;
+		@media(min-width:@screen-md-min){ 
+			display: block; 
+			margin-left: 39px;
+		}
+	}
+	&__link {
+		@media(min-width:@screen-sm-min){ 
+			width: 57px;
+			height: 57px;
+			line-height: 54px;
+		}
+		@media(min-width:@screen-md-min){ 
+			width: auto;
+			height: auto;
+			line-height: 1;
+			border: none;
+			text-align: left;
+		}
+		.fa{
+			@media(min-width:@screen-md-min){ display: none; }
+		}
+		>span{
+			@media(min-width:@screen-md-min){ display: block; }
+		}
+		.line-1{
+			text-transform: uppercase;
+			font-weight: 700;
+			font-size: 10px;
+			letter-spacing: (300em)/1000;
+			margin-bottom: -1px;
+		}
+		.line-2{
+			font-weight: 900;
+			font-size: 20px;
+		}
+		&:hover, &:active, &:focus{
+			@media(min-width:@screen-md-min){ 
+				background-color: transparent;
+				color: @index-primary;
+			}
+		}
+	}
+}
+
+.header-address {
+	margin-left: 8px;
+	margin-right: 14px;
+	@media(min-width:@screen-sm-min){ 
+		border-left: 1px solid lighten(@black, 18);
+		margin-left: 33px;
+		margin-right: auto;
+		padding-left: 33px;
+	}
+	@media(min-width:@screen-md-min){ 
+		.display-flex;
+		.flex-justify-content(flex-end);
+		.flex-align-items(center);
+		border-left: none;
+		margin-left: auto;
+		margin-right: 0;
+		padding-left: 0;
+
+	}
+	> span {
+		display: none;
+		@media(min-width:@screen-sm-min){ 
+			display: block;
+			font-size: 14px;
+			line-height: 20px;
+			color: @index-tertiary;
+		}
+		@media(min-width:@screen-md-min){ 
+			display: inline-block; 
+			position: relative;
+		}
+		&.line-1{
+			position: relative;
+			padding-right: 10px;
+			margin-right: 10px;
+			@media(min-width:@screen-md-min) and (max-width:@screen-lg-max){ 
+				max-width: 172px;
+			}
+			&:after{
+				@media(min-width:@screen-md-min){ 
+					.display-flex;
+					.flex-justify-content(center);
+					.flex-align-items(center);
+					content: "|";
+					position: absolute;
+					top:0;
+					right:0;
+					bottom:0;
+				}
+			}
+		}
+		&.line-2{
+			position: relative;
+			padding-right: 14px;
+			margin-right: 15px;
+			@media(min-width:@screen-md-min) and (max-width:@screen-lg-max){ 
+				max-width: 101px;
+			}
+			&:after{
+				
+				@media(min-width:@screen-md-min){ 
+					.display-flex;
+					.flex-justify-content(center);
+					.flex-align-items(center);
+					content: "|";
+					position: absolute;
+					top:0;
+					right:0;
+					bottom:0;
+				}
+			}
+		}
+	}
+	&__link {
+		border-color: @index-primary;
+		color: @index-primary;
+		font-size: 14px;
+		@media(min-width:@screen-sm-min){ 
+			width: auto;
+			height: auto;
+			margin-top: 6px;
+			line-height: 1;
+			border: none;
+		}
+		@media(min-width:@screen-md-min){ margin-top: 0; }
+		>span{
+			@media(min-width:@screen-sm-min){ 
+				display: inline-block;
+				padding-left: 7px;
+				font-weight: 700;
+				text-transform: uppercase;
+			}
+		}
+		&:hover, &:active, &:focus{
+			background-color: @index-primary;
+			color: @index-secondary;
+			@media(min-width:@screen-sm-min){ 
+				background-color: transparent;
+				color: @white;
+			}
+		}
+	}
+}
+
+.header-social {
+	display: none;
+	@media(min-width:@screen-md-min){ 
+		display: block;
+		position: absolute;
+		right:0;
+		bottom: -61px;
+		z-index: 1;
+	}
+	@media(min-width:@screen-xl-min){ right: 26px; }
+}
+
+#header .navbar-header {
+	.flex-basis(100%);
+	max-width:100%;
+	width: auto;
+	height: 45px;
+	margin-top: 10px;
+	background-color: @index-primary;
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+	@media(min-width:@screen-sm-min){ 
+		.flex-basis(auto);
+		max-width:none;
+		height: auto;
+		margin-top: 0;
+		background-color: transparent;
+	}
+	.navbar-toggle { //hamburger
+		@media(min-width:@screen-sm-min){ 
+			width: 148px;
+			height: 57px;
+			padding-left: 38px;
+			padding-top: 2px;
+		}
+		.burger-bar{
+			@media(min-width:@screen-sm-min){ 
+				top: 26px;
+				left: 34px;
+			}
+			&, &:before, &:after{
+				box-shadow: 0px -2px 0px fade(@black, 50);
+			}
+		}
+		&:after{
+			@media(min-width:@screen-sm-min){ 
+				.transition(0.3s color, 0.3s text-shadow;);
+				content: "Menu";
+				text-shadow: 0px -2px 0px fade(@black, 50);
+				text-transform: uppercase;
+				font-weight: 700;
+				color: @white;
+			}
+		}
+		&:hover, &:not(.collapsed){
+			.burger-bar{
+				&, &:before, &:after{ box-shadow: none; }
+			}
+			&:after{ 
+				color: @index-secondary;
+				text-shadow: none;
+			}
+		}
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////
+/////////////////////  	N A V B A R 	////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+// call stylers
+.navbar-styler;
+
+// param to position self
+.hamburger-styler(center);
+
+// nav open above
+@grid-float-breakpoint: @screen-md-min;
+
+.navbar-height(90px);
+
+// navbar size: full or contained
+@nav-size: full;
+
+// COLORS & BURGER--------------------------------------------------------------
+// THESE ARE SIMPLY PLACEHOLDERS - USE COLORS THAT MAKE SENSE!
+// header-level styles
+@nav-bg: @white;
+@nav-bg-hover: @index-primary;
+@nav-text: contrast(@nav-bg, @white, @black);
+@nav-text-hover: contrast(@nav-bg-hover, @white, @black);
+
+// dropdown styles
+@nav-dropdown-bg: contrast(@nav-bg-hover, darken(@nav-bg-hover, 10%), lighten(@nav-bg-hover, 10%));
+@nav-dropdown-text: contrast(@nav-dropdown-bg, @white, @black);
+@nav-dropdown-bg-hover: contrast(@nav-dropdown-bg, darken(@nav-dropdown-bg, 10%), lighten(@nav-dropdown-bg, 10%));
+@nav-dropdown-text-hover: contrast(@nav-dropdown-bg-hover, @white, @black);
+
+// hamburger styles
+@burger-bg: transparent;
+@burger-bg-active: transparent;
+@burger-border-width: 0px;
+@burger-color: @white;
+@burger-color-active: @index-secondary;
+
+@burger-bar-width: 17px;
+@burger-bar-height: 3px;
+@burger-bar-spacing: 3px;
+
+@burger-padding-vert: 10px;
+@burger-padding-horiz: 10px;
+
+// mixins to override variables for specific viewports
+// uncomment, set needed variables only (remove others), and wrap mixin in media query
+
+// @media (min-width: @screen-sm-min) {
+// 	.nav-headers-override(
+// 		@nav-bg-override: @index-primary;
+// 		@nav-bg-hover-override: @index-secondary;
+// 		@nav-text-override: @index-primary-text;
+// 		@nav-text-hover-override: @index-secondary-text
+// 	);
+// }
+
+// @media (min-width: @screen-sm-min) {
+// 	.nav-dropdowns-override(
+// 		@nav-dropdown-bg-override: @index-primary;
+// 		@nav-dropdown-text-override: @index-primary-text;
+// 		@nav-dropdown-bg-hover-override: @index-secondary;
+// 		@nav-dropdown-text-hover-override: @index-secondary-text
+// 	);
+// }
+
+@media (min-width: @screen-sm-min) {
+	.hamburger-override(
+		@burger-color-override: @white;
+		@burger-bg-override: @index-primary;
+		@burger-color-active-override: @index-secondary;
+		@burger-bg-active-override: @white;
+		@burger-border-width-override: 0px;
+		@burger-bar-width-override: 26px;
+		@burger-bar-height-override: 4px;
+		@burger-bar-spacing-override: 5px;
+		@burger-padding-vert-override: 0;
+		@burger-padding-horiz-override: 0;
+	);
+}
+
+// DECORATIONS ----------------------------------------------------------------
+
+// styles navbar top level border height, width, style, color
+// .navbar-border-styler(50%, 1px, dotted, @white);
+
+// styles navbar dropdown decoration
+// params: font-awesome icon, font-size, default color, hover color, position from right
+.navbar-dropdown-decoration-styler("+", 14px, @index-primary, @nav-text-hover, 8px);
+
+// adds decorative underline to navbar headers on hover/open
+// params: line height, position, separation, color, breakpoint:@grid-float-breakpoint
+// .navbar-hover-underline(3px; bottom; 15px; @nav-text-hover);
+//
+// LAYOUT TWEAKS ---------------------------------------------------------------
+//
+// absolutely positions the hamburger menu - use only if really needed!
+// IT IS PREFERABLE TO MOVE .NAVBAR-HEADER INTO .HEADER-CONTAINER AND LET IT FLEX WITH OTHER FLEX-ITEMS
+// params: max view width, .navbar-toggle {top}, .navbar-toggle {right}, .navbar-toggle {left}
+// .absolutely-hamburger(@grid-float-breakpoint - 1, -@navbar-height, 15px, auto);
+
+// keeps right-most dropdowns from creating horizontal scrollbar by swinging open to the left
+// params: number of menus affected, max viewport width when turned on (defaults to @screen-sm-max if empty) {
+.menu-dropdowns-to-left(0, 1900px);
+
+#main-nav {
+	min-height: 0;
+	.navbar-nav {
+		@media (min-width: @grid-float-breakpoint) {
+			text-align: left; //navbar alignment
+			padding-right: 150px;
+		}
+		@media(min-width:@screen-lg-min){ padding-left: 300px; }
+		@media(min-width:@screen-xl-min){ padding-left: 354px; }
+		>li {
+			>a {
+				//navbar headers
+				text-transform: uppercase;
+				font-weight: 700;
+				@media (min-width: @grid-float-breakpoint) { padding: 0 20px; }
+				.fa{
+					display: none;
+					@media (min-width: @grid-float-breakpoint) { 
+						display: inline-block; 
+						font-weight: 400;
+					}
+				}
+				>span{
+					@media (min-width: @grid-float-breakpoint) { display: none; }
+				}
+				&:after{ font-family: @font-family-sans-serif; }
+			}
+		}
+	}
+}

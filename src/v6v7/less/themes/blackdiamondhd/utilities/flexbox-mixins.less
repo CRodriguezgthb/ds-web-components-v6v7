@@ -1,0 +1,378 @@
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+// DO NOT MODIFY THESE MIXINS
+
+// flexbox mixins
+// if modification is desired, create unique mixins instead.
+
+
+.display-flex() {
+	display: -webkit-box; //iOS6, Safari 3.1-6
+	display: -ms-flexbox; //IE10
+	display: -webkit-flex; //android 4.3, IE mobile, Safari
+	display: flex;
+}
+.display-inline-flex() {
+	display: ~"-webkit-inline-flex";
+	display: ~"-ms-inline-flexbox"; // IE10 uses -ms-flexbox
+	display: ~"-ms-inline-flex"; // IE11
+	display: inline-flex;
+}
+
+.flex-display(@display: flex) {
+	display: ~"-webkit-@{display}";
+	display: ~"-ms-@{display}box"; // IE10 uses -ms-flexbox
+	display: ~"-ms-@{display}"; // IE11
+	display: @display;
+}
+
+// flex-wrap
+//@wrap can be: nowrap | wrap | wrap-reverse
+.flex-wrap(@wrap) {
+	// Old Android and IE10 syntaxes
+	& when (@wrap = nowrap) {
+		-webkit-box-lines: single; //Old webkit fixes for android until at least 4.2
+		-ms-flex-wrap: none; // IE10 - special syntax for nowrap
+	}
+	& when not (@wrap = nowrap) {
+		-ms-flex-wrap: @wrap; //IE10
+	}
+	& when (@wrap = wrap) {
+		-webkit-box-lines: multiple;
+	}
+
+	-webkit-flex-wrap: @wrap;
+	flex-wrap: @wrap;
+}
+
+// flex container w/ row direction
+.flex-row() {
+	.display-flex();
+	.flex-direction(row);
+}
+
+// flex container w/ column direction
+.flex-column() {
+	.display-flex();
+	.flex-direction(column);
+}
+
+// flex-direction
+// @direction can be: row | row-reverse | column | column-reverse
+.flex-direction(@direction) {
+	//Old webkit fixes for android until at least 4.2
+	& when (@direction = column) {
+		-webkit-box-orient: vertical;
+	}
+	& when (@direction = row) {
+		-webkit-box-orient: horizontal;
+	}
+	& when not (@direction = column) {
+		& when not (@direction = row) {
+			-webkit-box-orient: @direction;
+		}
+	}
+
+	-webkit-flex-direction: @direction; //android 4.3, IE mobile, Safari
+	-ms-flex-direction: @direction; //IE10
+	flex-direction: @direction;
+}
+
+// Flex Direction and Wrap
+// - applies to: flex containers
+// <flex-direction> || <flex-wrap>
+.flex-flow(@flow) {
+	-webkit-flex-flow: @flow;
+	-moz-flex-flow: @flow;
+	-ms-flex-flow: @flow;
+	flex-flow: @flow;
+}
+
+// justify-content
+// @justify can be: flex-start | flex-end | center | space-between | space-around
+.flex-justify-content(@justify) {
+	// IE10 specific syntax
+	& when (@justify = flex-start) {
+		-ms-flex-pack: start;
+	}
+	& when (@justify = flex-end) {
+		-ms-flex-pack: end;
+	}
+	& when (@justify = center) {
+		-ms-flex-pack: center;
+	}
+	& when (@justify = space-between) {
+		-ms-flex-pack: justify;
+	}
+	& when (@justify = space-around) {
+		-ms-flex-pack: distribute;
+	}
+
+	-webkit-box-pack: @justify;
+	-webkit-justify-content: @justify; //android 4.3, Safari
+	-ms-justify-content: @justify; //IE mobile
+	justify-content: @justify
+}
+
+// align-items
+// @align-item can be: flex-start | flex-end | center | baseline | stretch
+.flex-align-items(@align-item) {
+	//IE10 specific syntax
+	& when (@align-item = flex-start) {
+		-ms-flex-align: start;
+	}
+	& when (@align-item = flex-end) {
+		-ms-flex-align: end;
+	}
+	& when not (@align-item = flex-start) {
+		& when not (@align-item = flex-end) {
+			-ms-flex-align: @align-item;
+		}
+	}
+	-webkit-box-align: @align-item; //android 4.2
+	-webkit-align-items: @align-item; //android 4.3, Safari
+	-ms-align-items: @align-item; //IE mobile
+	align-items: @align-item;
+}
+
+// align-content
+// @align-content can be: flex-start | flex-end | center | space-between | space-around | stretch
+.flex-align-content(@align-content) {
+	//IE10 specific syntax
+	& when (@align-content = flex-start) {
+		-ms-flex-line-pack: start;
+	}
+	& when (@align-content = flex-end) {
+		-ms-flex-line-pack: end;
+	}
+	& when (@align-content = stretch) {
+		-ms-flex-line-pack: stretch;
+	}
+
+	-webkit-align-content: @align-content;  //android 4.3, Safari
+	-ms-align-content: @align-content;      //IE mobile
+	align-content: @align-content;
+}
+
+// orders children of a display flex element
+// takes a single param that must be predefined as an array
+// imagine this is our html:
+// <section>
+// 	<div>A</div>
+// 	<div>B</div>
+// 	<div>C</div>
+// </section>
+// and we want it to render as B C A
+// the array we define for this mixin should look as follows:
+// @myFlexArray: 2,3,1;
+.flex-children-order(@o){
+  @t: length(@o);
+  @i: 1;
+
+  .orderChildren(@o, @i, @t) when(@i =< @t) {
+    @n: extract(@o,@i);
+
+    > *:nth-child(@{n}) {
+      .order(@i);
+    }
+    .orderChildren(@o, @i + 1, @t); // recursively calls the mixin
+  }
+  .orderChildren(@o, @i, @t); // 1st call to the closure-mixin
+}
+
+
+/////////////////////////
+// flex-box's children //
+/////////////////////////
+// defines flex property with prefixes.
+// none | [ 'flex-grow' 'flex-shrink' || 'flex-basis' ]
+// flex-grow: number;     (default 0)
+// flex-shrink: number    (default 1)
+// flex-basis: length | auto
+// When using this and @value is (0 0 auto) add -webkit-box-flex: 0; - remove ? reconfigure
+// When using this and @value is (1 1 auto) add -webkit-box-flex: 1; - remove ? reconfigure
+.flex(@value) {
+	-webkit-box-flex: @value; //iOS6, Safari 3.1-6
+	-webkit-flex:  @value; //android 4.3, IE mobile, Safari
+	-ms-flex:  @value; //IE10
+	flex:  @value;
+}
+
+// Flex grow factor
+// - applies to: flex items
+// <number>
+.flex-grow(@grow: 0) {
+  -webkit-flex-grow: @grow;
+      -ms-flex-grow: @grow;
+          flex-grow: @grow;
+}
+
+// Flex shrink factor
+// - applies to: flex items
+// <number>
+.flex-shrink(@shrink: 1) {
+  -webkit-flex-shrink: @shrink;
+      -ms-flex-shrink: @shrink;
+          flex-shrink: @shrink;
+}
+
+// defines the oder in which the flex-box children should render.
+.order(@order) { // <number>
+	-webkit-box-ordinal-group: @order; //iOS 6-, Safari 3.1-6 */
+	-ms-flex-order: @order; //IE10
+	-webkit-order: @order; //android 4.3, IE mobile, Safari
+	order: @order;
+}
+
+//align-self
+//@align-self can be: auto | flex-start | flex-end | center | baseline | stretch
+.align-self(@align-self) {
+	// IE10 specific syntax
+	& when (@align-self = flex-start) {
+		-ms-flex-item-align: start;
+	}
+	& when (@align-self = flex-end) {
+		-ms-flex-item-align: end;
+	}
+	& when not (@align-self = flex-start) {
+		& when not (@align-self = flex-end) {
+			// for the other 4 possible values
+			-ms-flex-item-align: @align-self;
+		}
+	}
+
+	-webkit-align-self: @align-self; //android 4.3, Safari
+	-ms-align-self: @align-self; //IE mobile
+	align-self: @align-self;
+}
+
+.flex-basis(@b) {
+	-webkit-flex-basis: @b;
+	-ms-flex-basis: @b;
+	flex-basis: @b;
+}
+
+
+//FLEXBOX GRID MIXINS
+.flex-grid-row(@xs-spacing: 15px; @sm-spacing: @xs-spacing; @md-spacing: @sm-spacing; @lg-spacing: @md-spacing;) {
+   .display-flex;
+   .flex-wrap(wrap);
+
+   margin-right: -@xs-spacing;
+   margin-left: -@xs-spacing;
+   > * {
+      padding-left: @xs-spacing;
+      padding-right: @xs-spacing;
+   }
+   @media (min-width: @screen-sm-min) {
+      margin-right: -@sm-spacing;
+      margin-left: -@sm-spacing;
+      > * {
+         padding-left: @sm-spacing;
+         padding-right: @sm-spacing;
+      }
+   }
+   @media (min-width: @screen-md-min) {
+      margin-right: -@md-spacing;
+      margin-left: -@md-spacing;
+      > * {
+         padding-left: @md-spacing;
+         padding-right: @md-spacing;
+      }
+   }
+   @media (min-width: @screen-lg-min) {
+      margin-right: -@lg-spacing;
+      margin-left: -@lg-spacing;
+      > * {
+         padding-left: @lg-spacing;
+         padding-right: @lg-spacing;
+      }
+   }
+}
+
+.flex-col-base {
+	position: relative;
+	min-height: 1px; // Prevent columns from collapsing when empty
+	width: auto;
+	-webkit-box-flex: 0;
+}
+
+//variable width, auto-calculating based on natural width of content
+.flex-col-auto {
+	.flex-col-base;
+	//layout
+	-webkit-flex: 0 0 auto;
+		 -ms-flex: 0 0 auto;
+			  flex: 0 0 auto;
+}
+
+
+//making flexbox grid columns
+.flex-make-xs-column(@col) {
+   .flex-col-base;
+   -webkit-flex: 0 0 percentage(@col / 12);
+   -ms-flex: 0 0 percentage(@col / 12);
+   flex: 0 0 percentage(@col / 12);
+   max-width: percentage(@col / 12);
+}
+.flex-make-sm-column(@col) {
+   @media (min-width: @screen-sm-min) {
+      .flex-col-base;
+      -webkit-flex: 0 0 percentage(@col / 12);
+      -ms-flex: 0 0 percentage(@col / 12);
+      flex: 0 0 percentage(@col / 12);
+      max-width: percentage(@col / 12);
+   }
+}
+.flex-make-md-column(@col) {
+   @media (min-width: @screen-md-min) {
+      .flex-col-base;
+      -webkit-flex: 0 0 percentage(@col / 12);
+      -ms-flex: 0 0 percentage(@col / 12);
+      flex: 0 0 percentage(@col / 12);
+      max-width: percentage(@col / 12);
+   }
+}
+.flex-make-lg-column(@col) {
+   @media (min-width: @screen-lg-min) {
+      .flex-col-base;
+      -webkit-flex: 0 0 percentage(@col / 12);
+      -ms-flex: 0 0 percentage(@col / 12);
+      flex: 0 0 percentage(@col / 12);
+      max-width: percentage(@col / 12);
+   }
+}
+.flex-make-xl-column(@col) {
+   @media (min-width: @screen-xl-min) {
+      .flex-col-base;
+      -webkit-flex: 0 0 percentage(@col / 12);
+      -ms-flex: 0 0 percentage(@col / 12);
+      flex: 0 0 percentage(@col / 12);
+      max-width: percentage(@col / 12);
+   }
+}
+
+.flex-make-columns(@xs-col, @sm-col: @xs-col, @md-col: @sm-col, @lg-col: @md-col, @xl-col: @lg-col) {
+   .flex-make-xs-column(@xs-col);
+   .flex-make-sm-column(@sm-col);
+   .flex-make-md-column(@md-col);
+   .flex-make-lg-column(@lg-col);
+   .flex-make-xl-column(@xl-col);
+}

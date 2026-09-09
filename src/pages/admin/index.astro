@@ -1,0 +1,43 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import AdminNav from '../../components/AdminNav.astro';
+
+const user = Astro.locals.user;
+---
+
+<Layout title="Admin">
+	<main class="admin">
+		<header>
+			<h1>Admin</h1>
+			<form action="/api/auth/signout">
+				<button type="submit">Cerrar sesión</button>
+			</form>
+		</header>
+		<AdminNav />
+		<p>Sesión iniciada como {user?.email}</p>
+		<a href="/admin/users/new">Crear cuenta de admin</a>
+	</main>
+</Layout>
+
+<style>
+	.admin {
+		max-width: 640px;
+		margin: 2rem auto;
+		padding: 0 1rem;
+	}
+	header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	button {
+		padding: 0.4rem 0.8rem;
+		border: none;
+		border-radius: 4px;
+		background: #111827;
+		color: white;
+		cursor: pointer;
+	}
+</style>

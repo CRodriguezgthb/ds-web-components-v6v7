@@ -1,0 +1,338 @@
+//
+// Mixins
+// --------------------------------------------------
+
+.vcard {
+	.sr-only();
+}
+
+.ul-zero-out() {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+
+// Text Mixins
+.talign (@align) {
+	text-align: @align;
+}
+.ttransform (@transform) {
+	text-transform: @transform;
+}
+.custom-dropdown(@icon; @color; @font-size; @height-of-select) {
+	position: relative;
+	&:after {
+		content: @icon;
+		font-family: FontAwesome;
+		color: @color;
+		position: absolute;
+		right: 10px;
+		bottom: 0;
+		line-height: @height-of-select;
+		font-size: @font-size;
+		pointer-events: none;
+	}
+	select {
+		// remove arrow
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		&::-ms-expand {
+			display: none; // for IE11
+		}
+	}
+}
+
+// place on .formField or similar parent of input & .label text
+// REQUIRED: label > input + .label
+// @input-type: radio, checkbox
+.custom-input(@input-type) {
+	position: relative;
+	input {
+		// Hide input; leave in place for greater browser compatibility
+		// DO NOT USE visibility:hidden or display:none
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		margin-top: 0; // override
+	}
+	.label, // forms
+	.value, // inventory
+	.controller { // inventory category
+		display: inline-block;
+		text-align: left;
+		font-size: 16px;
+		font-weight: normal;
+		cursor: pointer;
+		&:before {
+			// Custom unchecked
+			content: '';
+			position: absolute;
+			pointer-events: none;
+		}
+		&:after {
+			// Custom checked
+			content: '\f00c';
+			font-family: FontAwesome;
+			position: absolute;
+			text-align: center;
+			font-size: 14px;
+			color: @brand-secondary;
+			opacity: 0;
+			// invisible input clickable through custom input
+			pointer-events: none;
+		}
+	}
+	label.controller { // treat the clickable label as a block instead of inline-block so there is more room for the click event to fire.
+		display: block;
+	}
+	.controller { // inventory category
+		cursor: auto;
+	}
+	& when (@input-type = radio) {
+		input[type=radio] {
+			// Position hidden input
+			top: 3px;
+			left: 30px;
+			width: 26px;
+			height: 26px;
+		}
+		// :focus accesibility for tabbing
+		input[type=radio]:focus + .label, input[type=radio]:focus + .value {
+			&:before {
+				border-color: @med-gray;
+				box-shadow: 0 0 7px @black;
+			}
+		}
+		input[type=radio]:checked + .label, input[type=radio]:checked + .value {
+			&:before {
+				background-color: @black;
+				border-color: transparent;
+			}
+			&:after {
+				opacity: 1;
+			}
+		}
+		input[type="radio"]:checked:focus + .label, input[type="radio"]:checked:focus + .value {
+			&:before {
+				box-shadow: 0 0 7px @black;
+				border-color: transparent;
+			}
+		}
+		.label, .value {
+			padding-left: 80px;
+			&:before {
+				// Custom unchecked
+				top: 3px;
+				left: 30px;
+				width: 26px;
+				height: 26px;
+				border-radius: 50%;
+				border: 3px solid @light-gray;
+				background: @white;
+			}
+			&:after {
+				// Custom checked
+				top: 3px;
+				left: 30px;
+				width: 26px;
+				height: 26px;
+				line-height: 26px;
+			}
+		}
+	}
+	& when (@input-type = checkbox) {
+		input[type=checkbox] {
+			// Position hidden input
+			top: 3px;
+			left: 0px;
+			width: 16px;
+			height: 16px;
+		}
+		// :focus accesibility for tabbing
+		input[type=checkbox]:focus + .label,
+		input[type=checkbox]:focus + .value,
+		input[type=checkbox]:focus + .controller {
+			&:before {
+				border-color: @med-gray;
+				box-shadow: 0 0 7px @black;
+			}
+		}
+		input[type=checkbox]:checked + .label,
+		input[type=checkbox]:checked + .value,
+		input[type=checkbox]:checked + .controller {
+			&:before {
+				background-color: @black;
+				border-color: transparent;
+			}
+			&:after {
+				opacity: 1;
+			}
+		}
+		input[type="checkbox"]:checked:focus + .label,
+		input[type="checkbox"]:checked:focus + .value,
+		input[type="checkbox"]:checked:focus + .controller {
+			&:before {
+				box-shadow: 0 0 7px @black;
+				border-color: transparent;
+			}
+		}
+		.label,
+		.value {
+			padding-left: 30px;
+			&:before {
+				// Custom unchecked
+				top: 3px;
+				left: 0px;
+				width: 16px;
+				height: 16px;
+				border: 3px solid @light-gray;
+				background: @white;
+			}
+			&:after {
+				// Custom checked
+				top: 3px;
+				left: 0px;
+				width: 16px;
+				height: 16px;
+				line-height: 16px;
+			}
+		}
+		// Inventory Category Only:
+		input[type=checkbox].group-filter {
+			top: 13px;
+		}
+		.controller {
+			margin-left: 30px;
+			&:before {
+				// Custom unchecked
+				top: 3px;
+				left: -30px;
+				width: 16px;
+				height: 16px;
+				border: 3px solid @light-gray;
+				background: @white;
+			}
+			&:after {
+				// Custom checked
+				top: 3px;
+				left: -30px;
+				width: 16px;
+				height: 16px;
+				line-height: 16px;
+			}
+		}
+	}
+}
+
+// Financing EFS v6 Base Styles
+@efs-primary: #37C35A;
+@efs-background: #444 url("https://cdn.dealerspike.com/imglib/inventory/efs/financing-efs-bg.jpg");
+
+.financing-efs-link-banner() {
+    position: relative;
+    display: block;
+    &:hover, &:active, &:focus {
+		.financing-efs__banner:before {
+			background-color: fade(black, 20%);
+		}
+        .financing-efs__title:after {
+			transform: translateX(5px);
+			color: white;
+		}
+    }
+    .financing-efs__banner {
+        background: @efs-background;
+        background-position: 70% center;
+        color: white;
+		line-height: 1.3;
+		&:before {
+			transition: .2s background-color ease-in-out;
+			content: '';
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: fade(black, 0%);
+		}
+    }
+    .financing-efs__title {
+		position: relative;
+        margin: 0;
+        padding: 0;
+        font-weight: 700;
+        text-transform: uppercase;
+        &:after {
+			transition: .2s transform ease-in-out,
+						.2s color ease-in-out;
+			transform: translateX(0);
+            content: '\f105'; // angle-right
+            font-family: FontAwesome;
+            float: right;
+            color: @efs-primary;
+        }
+    }
+    .financing-efs__description {
+		position: relative;
+        margin: 0;
+        padding: 0;
+        font-weight: 300;
+        strong {
+            font-weight: 700;
+            > span {
+                color: @efs-primary;
+                text-transform: uppercase;
+                font-style: oblique;
+                font-size: 125%;
+                line-height: 1;
+                vertical-align: bottom;
+                letter-spacing: 0.04em;
+                padding-right: 0.1em;
+            }
+        }
+    }
+}
+.financing-efs-link-text() {
+    background: @efs-background;
+    background-position: 90% 40%;
+    color: white;
+    &:hover, &:active, &:focus {
+		&:before {
+			background-color: fade(black, 20%);
+		}
+        .textbuttonContent {
+            color: white;
+        }
+		.textbuttonArrow {
+			transform: translateX(3px);
+			color: white;
+		}
+	}
+	&:before {
+		transition: .2s background-color ease-in-out;
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		display: block; // override clearfix
+		background-color: fade(black, 0%);
+	}
+    .textbuttonContent {
+		position: relative;
+        color: white;
+    }
+    .textbuttonArrow {
+		transition: .2s transform ease-in-out,
+					.2s color ease-in-out;
+		transform: translateX(0);
+		margin-right: 0;
+		color: @efs-primary;
+		font-weight: bold;
+        &:before {
+            content: '\f105'; // angle-right
+        }
+    }
+}

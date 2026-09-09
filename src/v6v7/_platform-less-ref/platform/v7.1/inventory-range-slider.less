@@ -1,0 +1,231 @@
+.filter-group__content--slider {
+    // padding-top: 20px;
+    // padding-bottom: 10px;
+
+    &__wrapper {
+        position: relative;
+        padding-top: 30px;
+        padding-left: 15px;
+        padding-right: 15px;
+        max-width: 100%;
+        * {
+            -webkit-font-smoothing: antialiased;
+        }
+    }
+    .filter__slider.ds-range-slider {
+        margin-top: 25px;
+        margin-bottom: 0;
+    }
+
+    .ds-range-slider__wrapper {
+        position: relative;
+    }
+
+    .ticks-wrapper {
+        position: relative;
+        width: 100%;
+        height: 10px;
+        margin-bottom: 5px;
+        overflow: hidden;
+
+        svg {
+            display: block;
+            width: 100%;
+            height: 10px; //20px;
+            // opacity: .5;
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+        .cls-1 {
+            fill: none;
+            stroke: @filter-bg-text-subtle;
+            stroke-miterlimit: 5px; //10;
+            stroke-width: 5px; //4;
+            &:nth-child(even) {
+                stroke-dasharray: 5px;
+            }
+            @media (min-width: @screen-md-min) {
+                // narrow sidebar
+                stroke-width: 10px;
+            }
+        }
+    }
+
+
+    .bubble {
+        width: 60px;
+        height: 60px;
+        background-color: transparent;
+        position: absolute;
+        bottom: 0; // 11px;
+        padding-bottom: 12px; // increase clickable area
+        backface-visibility: hidden; 
+
+        transition: transform .25s ease-in-out;
+        cursor: col-resize;
+        @media (min-width: @screen-md-min) {
+            bottom: 6px;
+            height: 40px;
+        }
+
+        // &:hover {
+        //     cursor: col-resize;
+        // }
+        // &--active {
+        //     transform: scale(1.2);
+        // }
+
+        input {
+            box-sizing: border-box;
+            border-radius: 3px;
+            width: 100%;
+            padding: 0 5px;
+            height: 100%;
+            border: 1px solid @filter-range-handle;
+            background-color: @filter-bg;
+            color: @filter-bg-text;
+        }
+
+        &.bubble-in {
+            -webkit-transform: translateX(-23%);
+            transform: translateX(-23%);
+            left: 0;
+            z-index: 3;
+            &:hover, &:active, &:focus {
+                @media (min-width: @screen-md-min) {
+                    -webkit-transform: translate(-23%, -3px);
+                    transform: translate(-23%, -3px);
+                }
+            }
+        }
+
+        &.bubble-out {
+            // Must be set differently b/c of left/right positioning instead of left 0/left 100
+            -webkit-transform: translateX(23%);
+            -webkit-font-smoothing: subpixel-antialiased; // fixes text blurring on hover
+            transform: translateX(23%);
+            right: 0;
+            z-index: 4;
+            &:hover, &:active, &:focus {
+                @media (min-width: @screen-md-min) {
+                    -webkit-transform: translate(23%, -3px);
+                    -webkit-font-smoothing: subpixel-antialiased; // fixes text blurring on hover
+                    transform: translate(23%, -3px);
+                }
+            }
+        }
+        &:active, &:focus, &:hover {
+            z-index: 5; // active handle over inactive handle
+        }
+    }
+
+    .bubble__box__input {
+        height: 100%;
+    }
+
+    .bubble__box {
+        transition: transform .25s ease-in-out;
+        position: relative;
+        transform-origin: bottom;
+        width: 100%;
+        height: 40px;
+        border-radius: 3px;
+        .display-flex;
+        .flex-align-items(center);
+        .flex-justify-content(center);
+        text-align: center;
+        font-size: 13px;
+        background-color: @filter-range-handle;
+        color: contrast(@filter-range-handle, @black, @white);
+        box-shadow: 0 0 3px 0 @filter-bg;
+        @media (min-width: @screen-md-min) {
+            height: 32px;
+        }
+
+        &:hover, &:active { // hover for firefox
+            @media (max-width: @screen-sm-max) {
+                -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+            }
+        }
+
+        &__value {
+            // opacity: .9;
+            -moz-user-select: none; /* Firefox */
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+
+            pointer-events: none; // allow scale on android
+            @media (min-width: @screen-md-min) {
+                pointer-events: auto; // allow dbl click for input on larger devices
+            }
+        }
+
+        &__triangle {
+            transition: bottom .25s ease-in-out;
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+
+            transform-origin: top;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 9px 9px 0 9px;
+            border-color: @filter-range-handle transparent transparent transparent;
+        }
+    }
+}
+
+.scale-wrapper {
+
+    &__bar {
+        position: relative;
+        height: 15px;
+        border: 1px solid @filter-bg-variant-strong;
+        background-color: @white;
+        border-radius: 3px;
+        overflow: hidden;
+        @media (min-width: @screen-md-min) {
+            height: 10px;
+        }
+    }
+
+    &__handle {
+        opacity: 0;
+        height: 100%;
+        width: 5px;
+        position: absolute;
+        z-index: 2;
+
+        &:hover, &:active, &:focus {
+            cursor: col-resize;
+            // opacity: .5;
+        }
+    }
+
+    &__handle-in {
+        left: 0;
+    }
+
+    &__handle-out {
+        right: 0;
+    }
+
+    &__track {
+        position: absolute;
+        height: 100%;
+        width: 50px;
+        left: 30px;
+        z-index: 1;
+        background: @filter-primary;
+
+        &:hover {
+            cursor: move;
+        }
+    }
+}

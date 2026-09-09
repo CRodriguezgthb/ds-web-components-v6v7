@@ -1,0 +1,281 @@
+//
+//  Content Core
+// -----------------------
+
+// Content Header
+.content-header {
+	
+	@media (max-width: @screen-xs-max) {
+		padding: 0;
+	}
+	
+	@media (max-width: @screen-sm-max) {
+		h1 {
+			margin-top: 0;
+		}
+	}
+	
+	.content-header-image {
+		.hidden-xs();
+		
+		display: block;
+		margin: 0px auto;
+	}
+}
+
+// Column Layout
+.content-3-col {
+	.make-xs-column(12);
+	.make-sm-column(3);
+}
+
+.content-4-col {
+	.make-xs-column(12);
+	.make-sm-column(4);
+}
+
+.content-6-col {
+	.make-xs-column(12);
+	.make-sm-column(6);	
+}
+
+.content-8-col {
+	.make-xs-column(12);
+	.make-sm-column(8);
+}
+
+.content-9-col {
+	.make-xs-column(12);
+	.make-sm-column(9);
+}
+
+.content-12-col {
+	.make-xs-column(12);
+}
+
+.content-big-image {
+	.hidden-xs();
+}
+
+.center-text {
+	text-align: center;
+}
+
+// all images on internal pages are by default responsive
+.xcontent {
+	img{
+		.img-responsive;
+		height: auto !important;
+	}
+}
+
+// for containers which hold images that should not be responsive
+.non-resp-images {
+	img {
+		display: inline-block;
+		display: inline;
+		max-width: none;
+		width: auto;
+		max-height: none;
+	}
+}
+
+// structure for templated pages
+.dst-block {
+	padding-top: round(@grid-gutter-width / 2);
+	padding-bottom: round(@grid-gutter-width / 2);
+
+	&, .dst-header {
+		.clearfix;
+	}
+
+	&[class*=dst-img] {
+
+		&[class*=img-l] {
+			.dst-content {
+				> .dsImageContainer {
+					@media (min-width: @screen-md-min) {
+						float: left;
+						padding-right: round(@grid-gutter-width / 2);
+						max-width: percentage(3/12);
+					}
+				}
+			}			
+		}
+
+		&[class*=img-r] {
+			.dst-content {
+				> .dsImageContainer {
+					@media (min-width: @screen-md-min) {
+						float: right;
+						padding-left: round(@grid-gutter-width / 2);
+						max-width: percentage(3/12);
+					}
+				}
+			}
+		}
+
+		.dsImageContainer {
+			position: relative;
+			z-index: 2;
+			margin: 0 auto;
+		}
+		.dsImageContainer + * {
+			position: relative;
+			z-index: 1;
+		}
+	}
+	> .dsImageContainer {
+		padding-bottom: round(@grid-gutter-width / 2);
+	}
+
+	.dst-row {
+		.row;
+
+		.dst-col-9 {
+			.make-sm-column(12);
+			.make-md-column(9);
+		}
+		.dst-col-8 {
+			.make-sm-column(12);
+			.make-md-column(8);
+		}
+		.dst-col-6 {
+			.make-sm-column(12);
+			.make-md-column(6);
+		}
+		.dst-col-4 {
+			.make-sm-column(12);
+			.make-md-column(4);
+		}
+		.dst-col-3 {
+			.make-sm-column(12);
+			.make-md-column(3);
+		}
+	}
+}
+
+iframe.store-map {
+	width: 100%;
+	max-width: 400px;
+	display: block;
+	margin: 0px auto;
+	
+	@media (max-width: @screen-xs-max) {
+		height: 244px;
+	}
+	@media (min-width: @screen-sm-min) {
+		height: 300px;
+	}
+	@media (min-width: @screen-md-min) {
+		height: 352px;
+	}
+	@media (min-width: @screen-lg-min) {
+		height: 432px;
+	}
+}
+
+.two-columns {
+	.make-row();
+	.clearfix;
+	
+	padding-left: 0;
+	
+	li {
+		.make-xs-column(12);
+		.make-sm-column(6);
+		list-style: none;
+		
+		img {
+			display: block;
+			margin: 0px auto;
+		}
+		h4 {
+			color: @brand-primary;
+			margin: @grid-gutter-width/3;
+			text-align: center;
+		}
+		
+		p {
+			padding: 0 @grid-gutter-width/2 @grid-gutter-width/3;
+		}
+		
+		&.store-map {
+			width: 100%;
+			
+			@media (max-width: @screen-xs-max) {
+				height: 244px;
+			}
+			@media (min-width: @screen-sm-min) {
+				height: 300px;
+			}
+			@media (min-width: @screen-md-min) {
+				height: 352px;
+			}
+			@media (min-width: @screen-lg-min) {
+				height: 432px;
+			}
+		}
+	}
+}
+.content-hours {
+	.make-row();
+	.clearfix();
+	padding-left:0;
+	
+	h3 {
+		max-width: 300px; 
+		margin: 0px auto;
+		text-align: left;
+		
+		@media (max-width: @screen-sm-max) {
+			text-align: center;
+		}
+	}
+	
+	li {
+		.make-xs-column(12);
+		list-style: none;
+	}
+	
+	dl {
+		.clearfix;
+		
+		max-width: 300px; 
+		margin: 0px auto;
+		
+		dt {
+			float: left;
+			width:50%;
+			
+		}
+		dd {
+			float: left;
+			width:50%;
+		}
+	}
+}
+
+
+// the CTA buttons on xinv list, showroow list and their respective details pages & modals
+// styles that apply to all instances of this element
+.textbuttons {
+	li.textbutton  {
+		&.disabled {
+			.opacity(0.5);
+			pointer-events: none;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+	}
+}
+.unit-text-tax{
+	margin-right:3px;
+}
+.unit-text-tax:empty{
+	display:none;
+}

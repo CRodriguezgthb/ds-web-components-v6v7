@@ -1,0 +1,389 @@
+// Mixins
+@dealer1ColBreakpoint: @screen-xs-min;
+
+.staff-page-container {
+	.container-fluid();
+}
+
+.StaffImage {
+	height:0;
+	padding-top:123%;
+	width:100%;
+	background-size:cover;
+	background-position:50%;
+	background-repeat:no-repeat;
+	overflow:hidden;
+	img {
+		display:none;
+	}
+	@media print {
+		padding-top:0;
+		height:auto;
+		.border-radius(0);
+		img {
+			display:block;
+			width:100%;
+			height:auto;
+		}
+	}
+}
+
+
+.staffgroup {
+	clear:both;
+	.make-row();
+	box-sizing: border-box;
+}
+
+.group-wrap {
+	clear:both;
+	width:100%;
+	display: inline-block; 
+	margin-bottom:30px;
+	.trigger { //h3
+		margin:0;
+		font-size:20px;
+		line-height:1em;
+		cursor:pointer;
+		.toggle-indicator {
+			float:right;
+		}
+		.toggle-indicator:before {
+			display: inline-block;
+			text-align:right;
+			content: '\f078';
+			font-family: 'FontAwesome';
+			font-weight:300;
+			font-size:16px;
+		}
+	}
+	&.toggle-open .trigger .toggle-indicator:before {
+		content: '\f077';
+	}
+}
+
+.staffperson {
+	float:left;
+	display:block;
+	margin:(@grid-gutter-width * 0.5) 0 0 0;
+	box-sizing: border-box;
+	.make-xs-column(6);
+	.make-sm-column(4);
+	.make-md-column(4);
+	.make-lg-column(3);
+	@media all and (max-width:@dealer1ColBreakpoint) {
+		clear:left;  
+	}
+	
+	// clear fixes for responsive width columns
+	@media all and (max-width :@dealer1ColBreakpoint) {
+		/* Extra Small Devices, Phones- two columns */ 
+		.make-xs-column(12);
+		& { clear:left; }
+	}
+
+	@media all and (max-width : 580px) and (min-width: (@dealer1ColBreakpoint + 1px)) {
+		/* Small Devices, Tablets 3 columns */
+		.make-xs-column(6);
+		&:nth-child(2n +1) { clear:left; }
+	}
+	
+	@media all and (max-width : 767px) and (min-width: 581px) {
+		/* Small Devices, Tablets 3 columns */
+		.make-xs-column(4);
+		&:nth-child(3n +1) { clear:left; }
+	}
+	
+	@media all and (max-width : 991px) and (min-width:768px) {
+		/* Medium Devices, Desktops */
+		&:nth-child(3n +1) { clear:left; }
+	}
+
+	@media all and (max-width:1199px) and (min-width:992px) {
+		/* Large Devices	3 columns */
+		&:nth-child(3n +1) { clear:left; }
+	}
+	
+	@media all and (min-width:1200px) {
+		/* Largest Devices, Wide Screens	4 columns */
+		&:nth-child(4n +1) { clear:left; }
+	}
+	
+	.name-title {
+		padding:.5em 0;
+		h4 {
+			margin:0;
+		}
+		h5 {
+			margin:0;
+		}
+	}
+	.image {
+		.StaffImage;
+	}
+	.additional {
+		position:relative;
+	}
+	.staffperson-more {
+		display:none;
+		@media print {
+			display:block;
+			.image-wrap, .contact, .contactform, .name-title {
+				display:none;
+			}
+		}
+	}
+	.has-modal .additional-toggle.image:before {
+		content:'i';
+		display:block;
+		width:26px;
+		height:26px;
+		margin:0;
+		padding:0;
+		line-height:24px;
+		text-align:center;
+		border-radius:13px;
+		color:#fff;
+		font-family:Georgia, Times, serif;
+		font-style:italic;
+		border:solid 2px #fff;
+		font-size:19px;
+		position:absolute;
+		bottom:10px;
+		right:10px;
+		background-color:rgba(0,0,0,.3);
+		cursor:pointer;
+		z-index:999;
+	}
+}
+
+
+#StaffModal .modal-content {
+	.container-fluid();
+}
+
+#modalStaff .staff-modal-wrap {
+	.make-row();
+	&.has-image {
+		.dealerModal2col;
+		@media screen and (max-width:@dealer1ColBreakpoint) {
+			.dealerModal1col;
+		}
+	}
+	&:not(.has-image) {
+		.dealerModal1col;
+	}
+	.details {
+		h3 {
+			margin-top:0px;
+		}
+	}
+	.phone {
+		margin:(@grid-gutter-width * 0.5) 0;
+	}
+	.contactform form {
+		margin:0;
+		width:100%;
+		.submitBlock {
+			li {
+				width:auto;
+				@media screen and (max-width:@dealer1ColBreakpoint) {
+					float:none;
+					padding-right:0;
+					padding-left:0;
+					button {
+					}
+				}
+			}
+			.submitButton {
+			}
+			.cancelButton, .resetButton {
+				padding-right:0;
+			}
+			.resetButton {
+				display:none;
+			}
+			button {
+				padding:.5em 1em;
+				
+				width:auto;
+			}
+		}
+	}
+	.label {
+		display:none;
+	}
+	.email { 
+		text-align:right;
+		float:right;
+		padding-right:0;
+	}
+}
+
+.dealerModal2col {
+	.details-wrap {
+		.make-xs-column(9);
+		.make-sm-column(8);
+		.details {
+			min-height:210px;
+		}
+		.form {
+			min-height: 145px;
+		}
+	}
+	.contact {
+		clear:both;
+	}
+	.image-wrap {
+		.make-xs-column(3);
+		.make-sm-column(4);
+		padding-right:0;
+		padding-bottom:0;
+	}
+	.image {
+		.StaffImage;
+		max-width:100%;
+	}
+}
+.dealerModal1col {
+	.image-wrap {
+		.make-xs-column(12);
+		padding-bottom:10px;
+	}
+	.details-wrap {
+		.make-xs-column(12);
+	}
+	.contact {
+		// .make-xs-column(12);
+		// .make-xs-column-offset(0);
+	}
+}
+
+
+
+
+
+
+
+
+// Base Theme defaults
+
+.staff-page-container {
+	.container-fluid();
+}
+
+#StaffModal .modal-content {
+	.container-fluid();
+}
+
+.group-wrap {
+	border:solid 1px @brand-secondary;
+	.calc-border-color-by-value(@bg-secondary,10%);
+	.border-radius(6px);
+	margin-bottom:@grid-gutter-width;
+	> * {
+		padding:0 (@grid-gutter-width * 0.5);
+	}
+	h3 {
+		.calc-background-and-text-by-value(@bg-secondary,5%);
+		.calc-border-color-by-value(@bg-secondary,10%);
+		text-align:center;
+		padding:.5em (@grid-gutter-width * 0.5);
+		border-bottom-width:0px;
+		border-bottom-style:solid;
+		font-weight:bold;
+	}
+	.trigger {
+		line-height:.9em;
+		.border-radius(6px);
+		.toggle-indicator {
+			.calc-text-color(@bg-secondary, 55%);
+		}
+	}
+	&.toggle-open {
+		.trigger {
+			.border-radius(6px 6px 0 0);
+			border-bottom-width:1px;
+			.toggle-indicator:before {
+				content: '\f077';
+			}
+		}
+	}
+}
+
+.staff-modal-wrap, .staffperson {
+	.image {
+		.border-radius(8px);
+		border:solid 2px @brand-primary;
+	}
+	.details {
+		h3, h4 {
+			font-weight:bold;
+		}
+		h3 {
+			margin:0;
+		}
+	}
+}
+.group {
+	padding:0 (@grid-gutter-width * 0.5);
+}
+
+.staffperson {
+	.name-title {
+		text-align:center;
+		h4, h5 {
+			font-weight:bold;
+		}
+		h4 {
+			font-size: 18px;
+		}
+		h5 {
+			.calc-text-color(@bg-secondary);
+			font-size:14px;
+		}
+	}
+	.label {
+		.border-radius(0);
+		padding:0;
+		border:solid 0px transparent;
+	}
+}
+
+#modalStaff {
+	.modal-message {
+		.calc-text-color(@bg-secondary);
+	}
+}
+
+.staff-modal-wrap {
+	.details-wrap {
+		.details {
+			.calc-text-color(@bg-secondary);
+			.name-title {
+				h4 {
+					.calc-text-color(@bg-secondary);
+				}
+			}
+		}
+	}
+	.contactform, .contact {
+		button, .btn {
+			.btn;
+			.btn-default;
+			width:auto;
+		}
+		.submitButton button, .contact-button {
+			.btn;
+			.btn-primary;
+		}
+	}
+	.contactform form {
+		.submitBlock {
+			button {
+				&#btnReset, &#btnCancel {
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,462 @@
+/* Styles for the component editor island. A companion stylesheet rather than
+   an Astro <style> block because Astro's scoped styles only reach elements in
+   the .astro template, not the DOM a React island renders. Follows the
+   existing DepthText.tsx / DepthText.css pattern. */
+
+.editor {
+	max-width: 1400px;
+	margin: 2rem auto;
+	padding: 0 1rem;
+}
+
+.editor-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.editor-header a {
+	color: #6b7280;
+	text-decoration: none;
+	font-size: 0.9rem;
+}
+
+.editor-header h1 {
+	margin: 0.25rem 0 0;
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+.editor-actions {
+	display: flex;
+	gap: 0.6rem;
+	flex-shrink: 0;
+}
+
+.editor-actions button,
+.code-pane-toolbar button {
+	padding: 0.55rem 1.1rem;
+	border: 1px solid #111827;
+	border-radius: 4px;
+	background: #111827;
+	color: white;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.editor-actions button:disabled,
+.code-pane-toolbar button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.editor-actions button.danger {
+	background: white;
+	border-color: #b91c1c;
+	color: #b91c1c;
+}
+
+.editor-error,
+.preview-error,
+.code-pane-error {
+	margin: 0.75rem 0 0;
+	padding: 0.6rem 0.85rem;
+	border-radius: 4px;
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	color: #b91c1c;
+	font-size: 0.875rem;
+	/* Compiler messages arrive pre-formatted with meaningful line breaks. */
+	white-space: pre-wrap;
+}
+
+/* --- Metadata strip: author, last change, and the reference snippet ----- */
+
+.editor-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 2rem;
+	margin: 1rem 0 0;
+	padding: 0.75rem 1rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 6px;
+	background: #f9fafb;
+	font-size: 0.8125rem;
+}
+
+.editor-meta div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	min-width: 0;
+}
+
+.editor-meta dt {
+	color: #6b7280;
+	font-weight: 600;
+}
+
+.editor-meta dd {
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-width: 0;
+}
+
+.editor-meta code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	background: white;
+	border: 1px solid #e5e7eb;
+	border-radius: 3px;
+	padding: 0.1rem 0.35rem;
+	overflow-wrap: anywhere;
+}
+
+.editor-copy {
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	background: white;
+	color: #111827;
+	font: inherit;
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 0.15rem 0.5rem;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+.editor-tab-help {
+	margin: 0.75rem 0 0;
+	padding: 0.6rem 0.75rem;
+	border-radius: 4px;
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	color: #4b5563;
+	font-size: 0.8125rem;
+	line-height: 1.55;
+}
+
+.editor-tab-help code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	background: white;
+	border: 1px solid #e5e7eb;
+	border-radius: 3px;
+	padding: 0.05rem 0.25rem;
+}
+
+.editor-title {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	margin: 1.25rem 0;
+	max-width: 420px;
+	font-weight: 600;
+	font-size: 0.875rem;
+}
+
+.editor-title input {
+	padding: 0.55rem;
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	font: inherit;
+	font-weight: 400;
+}
+
+/* Code on the left, live result on the right. Collapses to stacked below
+   1100px, where two columns would leave neither one usable. */
+.editor-split {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 1.5rem;
+	align-items: start;
+}
+
+@media (max-width: 1100px) {
+	.editor-split {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+.editor-tabs {
+	display: flex;
+	gap: 0.25rem;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.editor-tabs button {
+	padding: 0.5rem 1rem;
+	border: none;
+	background: none;
+	color: #6b7280;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	border-bottom: 2px solid transparent;
+}
+
+.editor-tabs button.active {
+	color: #111827;
+	border-bottom-color: #111827;
+}
+
+.code-pane-toolbar {
+	display: flex;
+	justify-content: flex-end;
+	padding: 0.6rem 0;
+}
+
+.code-pane-toolbar button {
+	padding: 0.35rem 0.8rem;
+	font-size: 0.8125rem;
+	background: white;
+	color: #111827;
+	border-color: #d1d5db;
+}
+
+.preview-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	/* Lines up with the tab row across the split so both columns start level. */
+	border-bottom: 1px solid #e5e7eb;
+	padding-bottom: 0.5rem;
+}
+
+.preview-header h2 {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.preview-controls {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.preview-controls button {
+	padding: 0.35rem 0.9rem;
+	border: 1px solid #111827;
+	border-radius: 4px;
+	background: #111827;
+	color: white;
+	font: inherit;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.preview-controls button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Says the preview no longer matches the editor, which is the one downside of
+   compiling on demand instead of on every keystroke. */
+.preview-stale {
+	padding: 0.15rem 0.45rem;
+	border-radius: 3px;
+	background: #fffbeb;
+	border: 1px solid #fde68a;
+	color: #92400e;
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+.preview-empty {
+	margin: 0.6rem 0 0;
+	padding: 2rem 1rem;
+	border: 1px dashed #d1d5db;
+	border-radius: 4px;
+	text-align: center;
+	color: #6b7280;
+	font-size: 0.875rem;
+}
+
+.preview-frame {
+	width: 100%;
+	/* Matches the editor pane height so the two columns stay balanced. */
+	height: 438px;
+	margin-top: 0.6rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 4px;
+	background: white;
+}
+
+.preview-note {
+	margin: 0.75rem 0 0;
+	padding: 0.5rem 0.75rem;
+	border-radius: 4px;
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	color: #6b7280;
+	font-size: 0.8125rem;
+}
+
+/* --- Variables panel ---------------------------------------------------- */
+
+.editor-right {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	min-width: 0;
+}
+
+.variables-panel {
+	border: 1px solid #e5e7eb;
+	border-radius: 6px;
+	padding: 1rem;
+}
+
+.variables-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.variables-header h3 {
+	margin: 0;
+	font-size: 0.9375rem;
+	font-weight: 700;
+}
+
+.variables-header button {
+	padding: 0.3rem 0.7rem;
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	background: white;
+	font: inherit;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.variables-help {
+	margin: 0.4rem 0 0.9rem;
+	color: #6b7280;
+	font-size: 0.8125rem;
+	line-height: 1.5;
+}
+
+.variables-empty {
+	margin: 0;
+	color: #9ca3af;
+	font-size: 0.8125rem;
+}
+
+.variables-missing {
+	margin-bottom: 0.9rem;
+	padding: 0.6rem 0.75rem;
+	border-radius: 4px;
+	background: #fffbeb;
+	border: 1px solid #fde68a;
+	color: #92400e;
+	font-size: 0.8125rem;
+}
+
+.variables-missing p {
+	margin: 0 0 0.5rem;
+	line-height: 1.5;
+}
+
+.variables-missing ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+}
+
+.variables-missing li {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+	background: white;
+	border: 1px solid #fde68a;
+	border-radius: 4px;
+	padding: 0.15rem 0.35rem;
+}
+
+.variables-missing button {
+	border: none;
+	background: none;
+	color: #92400e;
+	font: inherit;
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-decoration: underline;
+	cursor: pointer;
+	padding: 0;
+}
+
+.variables-row {
+	display: grid;
+	/* Name and value share the space; the remove button stays intrinsic. */
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+	gap: 0.4rem;
+	margin-bottom: 0.4rem;
+}
+
+.variables-row input {
+	padding: 0.4rem 0.5rem;
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.8125rem;
+	min-width: 0;
+}
+
+.variables-remove {
+	border: 1px solid #e5e7eb;
+	border-radius: 4px;
+	background: white;
+	color: #b91c1c;
+	font-size: 1rem;
+	line-height: 1;
+	width: 2rem;
+	cursor: pointer;
+}
+
+.variables-global {
+	margin-top: 0.9rem;
+	font-size: 0.8125rem;
+}
+
+.variables-global summary {
+	cursor: pointer;
+	color: #6b7280;
+	font-weight: 600;
+}
+
+.variables-global ul {
+	list-style: none;
+	margin: 0.6rem 0;
+	padding: 0;
+}
+
+.variables-global li {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.25rem 0;
+	border-bottom: 1px solid #f3f4f6;
+}
+
+.variables-global code,
+.variables-missing code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.75rem;
+}
+
+.variables-global span {
+	color: #6b7280;
+	/* Long paths must not push the name off the row. */
+	overflow-wrap: anywhere;
+	text-align: right;
+}

@@ -1,0 +1,494 @@
+// V7.1 Inventory List - Digital Retailing Styles
+// These styles are only included when CONFIG_ENABLE_DIGITAL_RETAILING=True
+// --------------------------------------------------
+
+// Payment Genie widget injected content - V7 VLP (matching V6 theme)
+body.InventoryList .drs-ovgn11 {
+	background-color: white !important;
+	border-radius: 17px 17px 0px 0px !important;
+}
+
+// Digital Retailing widget wrapper (appears before button list)
+// Styles apply when body has both .v7-inventory-list and .digital-retailing-enabled classes
+body.digital-retailing-enabled .v7-inventory-list,
+.v7-inventory-list.digital-retailing-enabled {
+    .vehicle-button__wrapper--digital-retailing {
+        margin-bottom: 4px;
+        
+        // When DR widget exists, hide the 3rd button in the list
+        &:has(.invDigitalRetailing, .rider-widget, a.rider-widget, .drs-ovgn11, [data-testid="RiderWidget"]) ~ .v7list-vehicle__button-list {
+            // On mobile, ensure buttons stay side-by-side
+            @media (max-width: @screen-xs-max) {
+                .flex-wrap(wrap);
+                
+                .v7list-vehicle__button-item {
+                    &:first-child,
+                    &:nth-child(2) {
+                        .flex(1 1 calc(50% - 2px));
+                        max-width: calc(50% - 2px);
+                    }
+                }
+            }
+            
+            .v7list-vehicle__button-item {
+                &:nth-child(3) {
+                    &:not(.v7list-vehicle__button-item--upgrade):not(.invUpgrade):not(:has(.vehicle-button--upgrade)) {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+    
+    // List View (desktop): When DR widget exists, show first 2 CTAs side-by-side
+    @media (min-width: @screen-sm-min) {
+        .v7list-results.listview {
+            .vehicle-button__wrapper--digital-retailing {
+                &:has(.invDigitalRetailing, .rider-widget, a.rider-widget, .drs-ovgn11, [data-testid="RiderWidget"]) ~ .v7list-vehicle__button-list {
+                    margin-top: 12px;
+                    .display-flex;
+                    .flex-wrap(wrap);
+                    gap: 4px;
+
+                    .v7list-vehicle__button-item {
+                            // WIDGET CONTEXT: Explicitly set first & second items to 50-50
+                            // This MUST override the non-widget rule's first-child 100% setting
+                            &:first-child,
+                            &:nth-child(2) {
+                                .flex(1 1 calc(50% - 2px));
+                                max-width: calc(50% - 2px);
+                                min-width: 0;
+                                margin: 0;
+                            }
+
+                            // With widget present, only the next two CTAs share row 2.
+                            // Any additional CTA starts a new full-width row.
+                            &:nth-child(n+3) {
+                                .flex(1 1 100%);
+                                max-width: 100%;
+                                margin: 0;
+                            }
+
+                        // Ensure button text is centered in middle of button
+                        .vehicle-button {
+                            .display-flex;
+                            .flex-justify-content(center);
+                            .flex-align-items(center);
+
+                            .vehicle-button__text {
+                                .display-flex;
+                                .flex-justify-content(center);
+                                .flex-align-items(center);
+                                .flex-direction(row);
+                                gap: 4px;
+                                width: 100%;
+                                text-align: center;
+                            }
+                        }
+
+                        &.v7list-vehicle__button-item--upgrade,
+                        &.invUpgrade,
+                        &:has(.vehicle-button--upgrade) {
+                            display: block;
+                            .flex(1 1 100%);
+                            max-width: 100%;
+                            width: 100%;
+                            margin-top: 4px;
+
+                            .vehicle-button {
+                                width: 100%;
+                                margin-left: 0;
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    
+    // Grid View: When DR widget exists, first 2 buttons side-by-side
+    .v7list-results:not(.listview) {
+        .vehicle-button__wrapper--digital-retailing {
+            &:has(.invDigitalRetailing, .rider-widget, a.rider-widget, .drs-ovgn11, [data-testid="RiderWidget"]) ~ .v7list-vehicle__button-list {
+                gap: 4px;
+
+                .v7list-vehicle__button-item {
+                    &:first-child,
+                    &:nth-child(2) {
+                        .flex(1 1 calc(50% - 2px));
+                        max-width: calc(50% - 2px);
+                        margin-bottom: 0;
+
+                        .vehicle-button {
+                            margin: 0;
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Grid View Specific: Digital Retailing widget styling
+    .v7list-results:not(.listview) {
+        .vehicle-button__wrapper--digital-retailing {
+            .flex(1 1 100%);
+            width: 100%;
+            max-width: 100%;
+            float: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+            
+            // Fix for incorrectly structured template (LI inside wrapper)
+            > .v7list-vehicle__button-item {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: block;
+                .flex(1 1 100%);
+                width: 100%;
+                max-width: 100%;
+                float: none;
+            }
+            
+            // Grid View: The DR widget itself
+            .invDigitalRetailing,
+            .rider-widget,
+            a.rider-widget {
+                display: block;
+                width: 100%;
+                max-width: 360px !important;
+                margin-left: auto;
+                margin-right: auto;
+                justify-content: center;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
+        }
+
+        // Grid View: Payment summary layout tweaks
+        .rider-widget:has(.rider-widget-payment),
+        a.rider-widget:has(.rider-widget-payment) {
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
+        }
+
+        .rider-widget-payment {
+            padding: 10px 12px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .rider-widget-payment-summary {
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .rider-widget-payment-summary .rider-widget-payment-summary-monthly,
+        .rider-widget-payment-summary .rider-widget-payment-summary-description,
+        .rider-widget-payment-summary > [data-testid="RiderWidget__Description"] {
+            .flex(0 1 auto);
+            min-width: 0;
+        }
+
+        .rider-widget-payment-summary .rider-widget-payment-summary-description {
+            .flex(1 1 auto);
+        }
+
+        .rider-widget-payment-summary > [data-testid="RiderWidget__Description"] {
+            .flex(1 1 auto);
+            width: auto;
+        }
+
+        .rider-widget-payment-summary-description li,
+        .rider-widget-payment-summary > [data-testid="RiderWidget__Description"] li {
+            white-space: nowrap;
+        }
+
+        .rider-widget-payment-summary-description {
+            margin-top: 0;
+            padding-left: 4px;
+        }
+    }
+    
+    // Digital Retailing link/button styles (matching V6 theme)
+    .digitalRetailing-list,
+    a.digitalRetailing-list {
+        font-size: 12px;
+        cursor: pointer;
+    }
+    
+    // RiderWidget button - match primary button color and font family/style/size from .v7-inventory-list .vehicle-button
+    .rider-widget-button,
+    [data-testid="RiderWidget__Button"] {
+        background-color: @inv-primary !important; // Match primary button background color
+        //font-family: @inv-font-body; // Match .v7-inventory-list #main font family
+        font-family: @font-family-title-v7 !important; // Match .textbuttonContent font family
+        font-style: normal; // Match default font style
+        font-weight: bold !important; // Match default font weight from #modalBox .unitLeadButtons
+        font-size: @font-size-base !important; // Match .v7-inventory-list .vehicle-button font size (dynamic, typically 14px)
+        border: 0;
+        border-radius: 999px;
+        box-sizing: border-box;
+        color: contrast(@inv-primary, @black, @white);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 20px;
+        text-decoration: none;
+        width: 100%;
+        
+        // Remove focus styles
+        &:focus,
+        &:focus-visible,
+        &:focus-within {
+            box-shadow: none;
+            outline: none;
+        }
+    }
+
+    // RiderWidget payment summary (Show Payment = On)
+    .rider-widget-payment {
+        background-color: white;
+        border: 1px solid @inv-bg-variant-strong;
+        border-radius: 20px 20px 0 0;
+        padding: 12px 14px;
+        color: @black;
+    }
+
+    .rider-widget-payment,
+    .rider-widget-payment-summary,
+    .rider-widget-payment-summary-monthly-label,
+    .rider-widget-payment-summary-monthly-amount,
+    .rider-widget-payment-summary-monthly-amount-value,
+    .rider-widget-payment-summary-monthly-amount-label,
+    .rider-widget-payment-summary-description {
+        text-align: left;
+    }
+
+    .rider-widget-payment-summary,
+    .rider-widget-payment-summary-monthly-amount,
+    .rider-widget-payment-summary-monthly-amount-value,
+    .rider-widget-payment-summary-monthly-amount-label,
+    .rider-widget-payment-summary-description,
+    .rider-widget-payment-summary-description li,
+    .rider-widget-payment-summary-description li::before,
+    [data-testid="RiderWidget__Description"],
+    [data-testid="RiderWidget__Description"] li,
+    [data-testid="RiderWidget__Description"] li::before {
+        color: @black;
+    }
+
+    .rider-widget-payment-summary {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .rider-widget-payment-summary > * {
+        text-align: left;
+    }
+
+    .rider-widget-payment-summary .rider-widget-payment-summary-monthly {
+        text-align: center;
+        width: auto;
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .rider-widget-payment-summary .rider-widget-payment-summary-description {
+        width: auto;
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .rider-widget-payment-summary-monthly-label {
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.45;
+        letter-spacing: -0.02em;
+        text-transform: none;
+        color: rgb(52, 144, 20);
+        white-space: nowrap;
+    }
+
+    .rider-widget-payment-summary-monthly-amount {
+        font-size: 22px;
+        font-weight: 700;
+        color: @black;
+    }
+
+    .rider-widget-payment-summary-monthly-amount-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: @black;
+    }
+
+    [data-testid="RiderWidget__MonthlyPayment"] {
+        font-weight: 800;
+    }
+
+    .rider-widget-payment-summary-monthly-amount-label {
+        font-size: 14px;
+        font-weight: normal;
+        color: @black;
+    }
+
+    .rider-widget-payment-summary-description {
+        margin-top: 6px;
+        font-size: 12px;
+        color: @black;
+        font-weight: normal;
+
+        ul {
+            display: block;
+            margin: 0;
+            padding-left: 18px;
+            list-style: none;
+        }
+
+        li {
+            position: relative;
+            margin: 2px 0;
+            padding-left: 10px;
+            line-height: 1.4;
+            white-space: nowrap;
+            float: none !important;
+            display: block;
+            width: 100%;
+        }
+
+        li::before {
+            content: "\25E6";
+            position: absolute;
+            left: 0;
+            top: 0.7em;
+            transform: translateY(-50%);
+            line-height: 1;
+            color: @black;
+        }
+    }
+
+    .rider-widget:has(.rider-widget-payment) .rider-widget-button,
+    .rider-widget:has(.rider-widget-payment) [data-testid="RiderWidget__Button"],
+    .rider-widget:has(.rider-widget-payment) button,
+    .rider-widget:has(.rider-widget-payment) .rider-widget-button-css-0,
+    a.rider-widget:has(.rider-widget-payment) .rider-widget-button,
+    a.rider-widget:has(.rider-widget-payment) [data-testid="RiderWidget__Button"],
+    a.rider-widget:has(.rider-widget-payment) button,
+    a.rider-widget:has(.rider-widget-payment) .rider-widget-button-css-0 {
+        margin-top: 0;
+        min-height: 44px;
+        padding: 10px 22px;
+        border-radius: 0 0 20px 20px !important;
+    }
+
+    .rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) .rider-widget-button,
+    .rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) [data-testid="RiderWidget__Button"],
+    .rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) button,
+    a.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) .rider-widget-button,
+    a.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) [data-testid="RiderWidget__Button"],
+    a.rider-widget:not(:has(.rider-widget-payment)):not(:has(.drs-ovgn11)) button {
+        border-radius: 4px !important;
+        min-height: 52px;
+        padding: 10px 20px;
+    }
+    // RiderWidget description - match body.inventorydetails .unitHighlights ul>li span.spnUnitValue styles
+	[data-testid="RiderWidget__Description"] {
+		font-family: @font-family-text-v7 !important; // Match spnUnitValue font family: 'Open Sans', Helvetica, Arial, sans-serif
+		font-style: normal !important; // Match default font style
+        display: block;
+        font-weight: normal !important;
+		
+		// Apply font size and font family to all span elements inside nested li elements
+		li span {
+			font-family: @font-family-text-v7 !important;
+			font-size: @font-size-base !important; // Use base font size for nested li span elements
+            font-weight: normal !important;
+		}
+	}
+    [data-testid="RiderWidget__Description"] ul {
+        display: block;
+        margin: 0;
+        padding-left: 18px;
+        list-style: none;
+    }
+
+    [data-testid="RiderWidget__Description"] li {
+        position: relative;
+        display: block;
+        padding-left: 10px;
+        line-height: 1.4;
+        white-space: normal;
+        margin: 2px 0;
+    }
+
+    [data-testid="RiderWidget__Description"] li::before {
+        content: "\25E6";
+        position: absolute;
+        left: 0;
+        top: 0.7em;
+        transform: translateY(-50%);
+        line-height: 1;
+        color: @black;
+    }
+    // Responsive font sizes (matching V6 theme)
+    @media (max-width: 1199px) {
+        .digitalRetailing-list,
+        a.digitalRetailing-list {
+            font-size: 9px;
+        }
+    }
+    
+    // Mobile View: Digital Retailing widget styling
+    @media (max-width: @screen-xs-max) {
+        .digitalRetailing-list,
+        a.digitalRetailing-list {
+            font-size: 14px;
+        }
+        
+        .vehicle-button__wrapper--digital-retailing {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0;
+            
+            // Fix for incorrectly structured template (LI inside wrapper)
+            > .v7list-vehicle__button-item {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            
+            // Mobile: The DR widget itself (rendered by JavaScript)
+            .invDigitalRetailing,
+            .rider-widget,
+            a.rider-widget {
+                display: block !important;
+                max-width: 360px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                margin-bottom: 0;
+            }
+        }
+
+        // Mobile-only: remove extra gap between widget and CTA list
+        .vehicle-button__wrapper--digital-retailing + .v7list-vehicle__button-list {
+            margin-top: 4px;
+        }
+    }
+}

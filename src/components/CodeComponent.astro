@@ -1,0 +1,197 @@
+---
+/**
+ * Renders one stored component — live example plus its source — anywhere.
+ *
+ * This is the escape hatch from the database-driven navigation: the pages and
+ * subpages in /admin are the site's main structure, but a developer can also
+ * hand-write an Astro page and pull in whatever components it needs:
+ *
+ *   ---
+ *   import CodeComponent from '../components/CodeComponent.astro';
+ *   ---
+ *   <CodeComponent id="1" />
+ *
+ * `id` is the component's short `ref` number, shown in the editor. It is a
+ * separate sequential column precisely so this tag stays writable by hand; the
+ * uuid primary key would not be.
+ *
+ * Everything here runs on the server. The source is highlighted by Astro's
+ * built-in <Code /> (Shiki), so the code listing ships zero client JavaScript;
+ * the only client-side thing on the page is the preview iframe itself.
+ */
+import { Code } from 'astro:components';
+import { supabase } from '../lib/supabase';
+import { loadPreviewSettingsCached, loadGlobalVariables } from '../lib/settings';
+import { buildPreviewDocument, PREVIEW_SANDBOX } from '../lib/preview';
+import { compileComponentLess } from '../lib/less-server';
+import { mergeVariables, resolveAsp } from '../lib/asp';
+
+interface Props {
+	/** The component's `ref` number. Accepts a string so id="1" reads naturally. */
+	id: string | number;
+	/** Set false to show only the live example, without the source listing. */
+	showCode?: boolean;
+	/** Height of the preview frame. Components vary wildly, so it is a prop. */
+	height?: string;
+}
+
+const { id, showCode = true, height = '520px' } = Astro.props;
+
+// The anon client: components are public-read, and these pages are public.
+const { data: component } = await supabase
+	.from('components')
+	.select('ref, title, asp_code, less_code, js_code, mixins_code, variables, created_by_email, updated_at')
+	.eq('ref', Number(id))
+	.maybeSingle();
+
+// A missing ref is a developer typo in hand-written markup, so it needs to be
+// visible on the page rather than silently rendering nothing.
+const [settings, globalVariables] = component
+	? await Promise.all([loadPreviewSettingsCached(supabase), loadGlobalVariables(supabase)])
+	: [null, null];
+
+const compiled = component
+	? await compileComponentLess(
+			component.less_code ?? '',
+			settings!.previewLessVariables,
+			component.mixins_code ?? '',
+		)
+	: null;
+
+const resolved = component
+	? resolveAsp(
+			component.asp_code ?? '',
+			mergeVariables(globalVariables!, component.variables ?? {}),
+		)
+	: null;
+
+const srcDoc =
+	component && compiled && resolved
+		? buildPreviewDocument(
+				{ markup: resolved.code, css: compiled.css, jsCode: component.js_code ?? '' },
+				settings!,
+			)
+		: '';
+
+/** Only the languages this component actually uses get a listing. */
+const listings = component
+	? (
+			[
+				{ label: 'ASP', lang: 'html' as const, code: component.asp_code },
+				{ label: 'LESS', lang: 'less' as const, code: component.less_code },
+				{ label: 'Mixins', lang: 'less' as const, code: component.mixins_code },
+				{ label: 'JS', lang: 'js' as const, code: component.js_code },
+			] as const
+		).filter((listing) => listing.code && listing.code.trim())
+	: [];
+---
+
+{
+	!component ? (
+		<p class="code-component-missing">
+			No existe ningún componente con <code>id="{id}"</code>. El número es el campo
+			<strong> Referencia</strong> que muestra el editor.
+		</p>
+	) : (
+		<section class="code-component">
+			<header>
+				<h2>{component.title}</h2>
+				<p class="code-component-meta">
+					Referencia <code>{component.ref}</code>
+					{component.created_by_email && <> · por {component.created_by_email}</>}
+					{' · actualizado '}
+					{new Date(component.updated_at).toLocaleDateString('es-MX', { dateStyle: 'medium' })}
+				</p>
+			</header>
+
+			{compiled?.error && (
+				<p class="code-component-error">
+					El LESS de este componente no compila: {compiled.error.message}
+				</p>
+			)}
+
+			<!--
+				Same sandbox as the editor's preview: `allow-scripts` without
+				`allow-same-origin`, so the component's JS runs but cannot reach
+				this page's DOM or cookies.
+			-->
+			<iframe
+				title={`Ejemplo de ${component.title}`}
+				class="code-component-frame"
+				style={`height: ${height}`}
+				sandbox={PREVIEW_SANDBOX}
+				srcdoc={srcDoc}
+			/>
+
+			{
+				showCode &&
+					listings.map((listing) => (
+						<details class="code-component-source">
+							<summary>{listing.label}</summary>
+							<Code code={listing.code!} lang={listing.lang} theme="github-dark" />
+						</details>
+					))
+			}
+		</section>
+	)
+}
+
+<style>
+	.code-component {
+		margin: 2rem 0;
+	}
+	.code-component header {
+		margin-bottom: 0.75rem;
+	}
+	.code-component h2 {
+		margin: 0;
+		font-size: 1.25rem;
+		font-weight: 700;
+	}
+	.code-component-meta {
+		margin: 0.25rem 0 0;
+		color: #6b7280;
+		font-size: 0.8125rem;
+	}
+	.code-component-meta code,
+	.code-component-missing code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		background: #f3f4f6;
+		border-radius: 3px;
+		padding: 0.05rem 0.3rem;
+	}
+	.code-component-frame {
+		width: 100%;
+		border: 1px solid #e5e7eb;
+		border-radius: 6px;
+		background: white;
+	}
+	.code-component-missing,
+	.code-component-error {
+		padding: 0.75rem 1rem;
+		border-radius: 6px;
+		background: #fef2f2;
+		border: 1px solid #fecaca;
+		color: #b91c1c;
+		font-size: 0.875rem;
+	}
+	.code-component-source {
+		margin-top: 0.6rem;
+		border: 1px solid #e5e7eb;
+		border-radius: 6px;
+		overflow: hidden;
+	}
+	.code-component-source summary {
+		padding: 0.5rem 0.85rem;
+		background: #f9fafb;
+		cursor: pointer;
+		font-size: 0.8125rem;
+		font-weight: 600;
+	}
+	.code-component-source :global(pre) {
+		margin: 0;
+		padding: 1rem;
+		overflow-x: auto;
+		font-size: 0.8125rem;
+	}
+</style>

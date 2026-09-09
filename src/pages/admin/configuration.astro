@@ -1,0 +1,155 @@
+---
+export const prerender = false;
+
+import { actions } from 'astro:actions';
+import Layout from '../../layouts/Layout.astro';
+import AdminNav from '../../components/AdminNav.astro';
+import { createUserClient } from '../../lib/supabase';
+import { loadPreviewSettings } from '../../lib/settings';
+
+const accessToken = Astro.cookies.get('sb-access-token')?.value;
+
+if (!accessToken) {
+	return Astro.redirect('/login');
+}
+
+const db = createUserClient(accessToken);
+const settings = await loadPreviewSettings(db);
+
+// No island here: a plain form posting to the action keeps this page working
+// without any client-side JavaScript.
+const result = Astro.getActionResult(actions.settings.save);
+---
+
+<Layout title="Configuration">
+	<main class="admin">
+		<header>
+			<h1>Configuration</h1>
+			<a href="/admin">&larr; Volver al dashboard</a>
+		</header>
+		<AdminNav current="configuration" />
+
+		<p class="intro">
+			Estos valores definen el entorno en el que se renderiza la vista previa de cada
+			componente, para que se comporte igual que la plataforma real.
+		</p>
+
+		{result?.error && <p class="error">No se pudo guardar: {result.error.message}</p>}
+		{result && !result.error && <p class="ok">Configuración guardada.</p>}
+
+		<form method="POST" action={actions.settings.save}>
+			<label for="previewCssUrls">Hojas de estilo externas</label>
+			<p class="help">
+				Una URL por línea, inyectadas como <code>&lt;link&gt;</code> solo en la vista previa —
+				nunca en este admin. Aquí van las fuentes de iconos y cualquier CSS externo que la
+				plataforma cargue en su <code>&lt;head&gt;</code> (Font Awesome, iconmonstr). Las
+				<code>//</code> se fijan a <code>https:</code> automáticamente.
+			</p>
+			<textarea id="previewCssUrls" name="previewCssUrls" rows="4" spellcheck="false"
+				>{settings.previewCssUrls.join('\n')}</textarea
+			>
+
+			<label for="previewJsUrls">Scripts</label>
+			<p class="help">
+				Una URL por línea, cargados antes del JS del componente. Aquí va jQuery. El JS
+				vainilla no necesita nada extra: funciona igual con o sin jQuery cargado, así que no
+				hay que separarlos.
+			</p>
+			<textarea id="previewJsUrls" name="previewJsUrls" rows="3" spellcheck="false"
+				>{settings.previewJsUrls.join('\n')}</textarea
+			>
+
+			<label for="previewLessVariables">Variables del sitio (LESS)</label>
+			<p class="help">
+				Solo las variables que <strong>cambian de un sitio a otro</strong>:
+				<code>@black</code>, <code>@index-primary</code>, <code>@img-path</code>. Los mixins y
+				las variables de plataforma <strong>ya no van aquí</strong>: se leen de los archivos
+				reales en <code>src/v6v7/_platform-less-ref</code> al compilar, así que
+				<code>.container</code>, <code>.transition()</code> o <code>@screen-lg-min</code>
+				funcionan sin declarar nada. Si un componente usa una variable de tema que no está
+				aquí, la compilación falla y verás el error en el editor.
+			</p>
+			<textarea id="previewLessVariables" name="previewLessVariables" rows="10" spellcheck="false"
+				>{settings.previewLessVariables}</textarea
+			>
+
+			<button type="submit">Guardar configuración</button>
+		</form>
+	</main>
+</Layout>
+
+<style>
+	.admin {
+		max-width: 760px;
+		margin: 2rem auto;
+		padding: 0 1rem;
+	}
+	header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	header a {
+		color: #6b7280;
+		text-decoration: none;
+	}
+	.intro {
+		color: #4b5563;
+	}
+	.error,
+	.ok {
+		padding: 0.6rem 0.85rem;
+		border-radius: 4px;
+		font-size: 0.875rem;
+	}
+	.error {
+		background: #fef2f2;
+		border: 1px solid #fecaca;
+		color: #b91c1c;
+	}
+	.ok {
+		background: #ecfdf5;
+		border: 1px solid #a7f3d0;
+		color: #047857;
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		margin-top: 1.5rem;
+	}
+	label {
+		font-weight: 700;
+		margin-top: 1.5rem;
+	}
+	.help {
+		margin: 0.35rem 0 0.5rem;
+		color: #6b7280;
+		font-size: 0.8125rem;
+		line-height: 1.5;
+	}
+	.help code {
+		background: #f3f4f6;
+		padding: 0.05rem 0.3rem;
+		border-radius: 3px;
+	}
+	textarea {
+		padding: 0.6rem;
+		border: 1px solid #d1d5db;
+		border-radius: 4px;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.8125rem;
+		resize: vertical;
+	}
+	button {
+		align-self: flex-start;
+		margin-top: 1.75rem;
+		padding: 0.6rem 1.2rem;
+		border: none;
+		border-radius: 4px;
+		background: #111827;
+		color: white;
+		font: inherit;
+		font-weight: 600;
+		cursor: pointer;
+	}
+</style>

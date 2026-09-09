@@ -1,0 +1,44 @@
+// Bootstrap Core
+@import "/bootstrap-v3.2.0/bootstrap.less";
+
+// Fonts Core
+@import (css) url("https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300");
+
+// Theme Settings
+@import "mixins.less";
+@import "v7/shim.less";
+
+// Dealer Spike Core
+// - General
+@import "featured-inventory.less";
+@import "forms.less";
+@import "modals.less";
+@import "slideshow.less";
+@import "share-modal.less";
+
+// - Page
+@import "calendar.less";
+@import "content-pages.less";
+@import "v7/default-variables.less";
+@import "v7/inventory-detail.less";
+@import "v7/inventory-detail-digital-retailing.less"; // Digital Retailing styles - only applied when .digital-retailing-enabled class is present
+@import "inventory-detail.less"; // included for Showroom styling fix
+//@import "v7/inventory-shim.less";
+@import "v7.1/inventory-list.less";
+@import "v7.1/inventory-list-digital-retailing.less"; // Digital Retailing styles - only applied when .digital-retailing-enabled class is present
+@import "v7.1/inventory-list-facebook.less";
+@import "inventory-map.less";
+@import "print-detail.less";
+@import "showroom.less";
+@import "testimonials.less";
+@import "staff.less";
+@import "ecommerce.less";
+@import "blog.less";
+@import "showroom-detail.less";
+
+// reconfigure - place in content-pages.less for v7
+.center-image { margin: 0 auto; }
+
+.refine-search-container {
+    display: none !important;
+}

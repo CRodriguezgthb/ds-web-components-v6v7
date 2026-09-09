@@ -1,0 +1,477 @@
+//
+// Mixins
+// --------------------------------------------------
+
+//////////////////////////
+// vendor prefix mixins //
+//////////////////////////
+
+// bootstrap does not provide an equivalent
+// possibly bc IE9 requires MS matrix filter zoom to scale.
+.transform(@t) {
+  -webkit-transform: @t;
+  -ms-transform: @t;
+  transform: @t;
+}
+
+// not super well supported - just beware.
+// none | text |  all
+.user-select(@u) {
+  -webkit-user-select: @u;
+  -moz-user-select: @u;
+  -ms-user-select: @u;
+  user-select: @u;
+}
+
+////////////////////////
+// Font Awesome stuff //
+////////////////////////
+.faIcon(@size: 26px) { // do not adjust default size
+  font: normal normal normal @size FontAwesome;
+  width: @size;
+  height: @size;
+}
+
+
+
+///////////////////
+// custom mixins //
+///////////////////
+
+.absolutely() {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left:0;
+  margin: auto;
+}
+
+.ellipsis() {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+// zeros out ul margin, padding and list-style
+.ul-zero-out() {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+
+.appearance (@value) {
+	-webkit-appearance: @value;
+	   -moz-appearance: @value;
+	        appearance: @value;
+}
+
+
+// truncates text on specified line, line-height must be px value to work correctly.
+// this requires a secondary mixin for colors: .multi-line-ellipsis-colors() in the theme folder - reconfigure
+.multi-line-ellipsis(@num-lines, @line-height) {
+   @height: @num-lines * @line-height;
+
+  & { // on the element that calls this mixin
+    height: @height;
+    overflow: hidden;
+  }
+
+  &::before {
+    content: ' ';
+    float: left;
+    width: 5px;
+    height: @height;
+  }
+
+  > * {
+    float: right;
+    width: 100%;
+    margin-left: -5px;
+    line-height: @line-height;
+  }
+
+  &::after {
+    // content: '\2026';
+    content: '...';
+    pointer-events: none;
+    letter-spacing: 0.25em;
+    box-sizing: content-box;
+    float: right;
+    position: relative;
+    top: -@line-height;
+    left: 100%;
+    width: 3em;
+    margin-left: -3em;
+    padding-right: 5px;
+    line-height: @line-height;
+    text-align: right;
+    transform: translateX(-5px);
+  }
+}
+
+// assigns color to muliline-ellipsis - separated to keep layout and colors apart
+.multi-line-ellipsis-color(@bg-color, @text-color, @text-color-hover: @text-color) {
+	& {
+    background-color: @bg-color;
+  }
+
+  > *, &::after {
+    color: @text-color;
+  }
+
+  &::after {
+    background: @bg-color;
+    background: -moz-linear-gradient(to right,  fade(@bg-color, 0%) 0%,fade(@bg-color, 60%) 35%,fade(@bg-color, 100%) 55%,fade(@bg-color, 100%) 100%);
+    background: -webkit-linear-gradient(to right,  fade(@bg-color, 0%) 0%,fade(@bg-color, 60%) 35%,fade(@bg-color, 100%) 55%,fade(@bg-color, 100%) 100%);
+    background: linear-gradient(to right,  fade(@bg-color, 0%) 0%,fade(@bg-color, 60%) 35%,fade(@bg-color, 100%) 55%,fade(@bg-color, 100%) 100%);
+  }
+
+  &:hover {
+    > *, &::after {
+      color: @text-color-hover;
+    }
+  }
+}
+
+
+// fluid font-size with min and max values.
+// DO NOT MODIFY - if you need to tweak, copy this mixin and give it a new, unique name
+// this version intentionally uses pixels as its unit. this can however be modified to support other units.
+// beware of rounding issues when using other units, especially em and rem.
+.fluid-property(@property, @min, @max, @start:320, @end: 1200, @clip: true, @clipAtStart: true, @clipAtEnd: true) {
+  @multiplier: (@max - @min) / (@end - @start) * 100;
+  @adder: (@min * @end - @max * @start) / (@end - @start);
+  @m: @multiplier + 0vw; // adds unit to @multiplier
+  @a: @adder + 0px; // add unit to @adder
+  @formula: calc( ~'@{m} + @{a}');
+
+  & when (@clip) {
+    & when (@clipAtStart) {
+      @media (max-width: (@start + 0px)) { // creates a static font-size for small views
+        @{property}: @min + 0px;
+      }
+    }
+    & when (@clipAtEnd) {
+      @media (min-width: (@end + 0px)) { // creates a static font-size for large views
+        @{property}: @max + 0px;
+      }
+    }
+  }
+  @{property}: @formula;
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////
+///////////////////		 TEXT	 	////////////////////////////////
+////////////////////////////////////////////////////////////////////
+// calculates text color based on background color
+.calc-text-color(@background-color) {
+	& when (lightness(@background-color) > 50%) {
+		color: @black;
+	} & when  (lightness(@background-color) <= 50%) {
+		color: @white;
+	}
+}
+
+// calculates text color based on background color and adds opacity
+.calc-text-color(@background-color, @fade) {
+	& when (lightness(@background-color) > 50%) {
+		color: @black;
+		color: fade(@black, @fade);
+	} & when (lightness(@background-color) <= 50%) {
+		color: @white;
+		color: fade(@white, @fade);
+	}
+} 
+
+// calcs text color and %rate of shading (lighten or darken)
+.calc-text-by-value(@text-color, @degree-of-shading) {
+	&  when (lightness(@text-color) > 50%) {
+		color: darken(@text-color, @degree-of-shading);
+	} &  when (lightness(@text-color) <= 50%) {
+		color: lighten(@text-color, @degree-of-shading);
+	}
+}
+
+// Calculates Placeholder Text Color
+.calc-placeholder-color(@opacity, @background-color, @deg-change) {
+	& when (lightness(@background-color) > 50%) {
+		::-webkit-input-placeholder { /* WebKit browsers */
+			.calc-text-color(darken(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+		:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		   .calc-text-color(darken(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+		::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   .calc-text-color(darken(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+		:-ms-input-placeholder { /* Internet Explorer 10+ */
+		   .calc-text-color(darken(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+	} & when (lightness(@background-color) <= 50%) {
+		::-webkit-input-placeholder { /* WebKit browsers */
+			.calc-text-color(lighten(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+		:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		   .calc-text-color(lighten(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+		::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   .calc-text-color(lighten(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+		:-ms-input-placeholder { /* Internet Explorer 10+ */
+		   .calc-text-color(lighten(@background-color, @deg-change));
+			opacity: @opacity;
+		}
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////
+/////////////////		BACKGROUND STUFF	 	////////////////////
+////////////////////////////////////////////////////////////////////
+
+// calculates background color (to @black or @white) for child element
+// example of this is .icon-bar in header.less
+.calc-background-as-BW(@parents-background-color) {
+	& when (lightness(@parents-background-color) > 50%){
+		background-color: @black;
+	} & when (lightness(@parents-background-color) <= 50%){
+		background-color: @white;
+	}
+}
+
+// calcs background color and %rate of shading (lighten or darken)
+.calc-background-by-value(@parents-background-color,@degree-of-shading) {
+	& when (lightness(@parents-background-color) > 50%) {
+		background-color: darken(@parents-background-color, @degree-of-shading);
+	} & when (lightness(@parents-background-color) <= 50%) {
+		background-color: lighten(@parents-background-color, @degree-of-shading);
+	}
+}
+
+// assigns background-image as well as background-size: cover
+// ie8/9 compatible 
+.background-size-cover(@img){
+    background: url('@{img-path}@{img}');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background: none\9;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{img-path}@{img}', sizingMethod='scale');
+}
+
+////////////////////////////////////////////////////////////////////
+///////////////		BACKGROUND COLOR AND TEXT COLOR	 	////////////
+////////////////////////////////////////////////////////////////////
+
+// takes background color and %rate of shading, determines whether to lighten or darken and also sets text color
+.calc-background-and-text-by-value(@parents-background-color,@degree-of-shading) {
+	& when (lightness(@parents-background-color) > 50%) {
+		background-color: darken(@parents-background-color, @degree-of-shading);
+		.calc-text-color(darken(@parents-background-color, @degree-of-shading));
+	} & when (lightness(@parents-background-color) <= 50%) {
+		background-color: lighten(@parents-background-color, @degree-of-shading);
+		.calc-text-color(lighten(@parents-background-color, @degree-of-shading));
+	}
+}
+
+// takes background color and %rate of shading, determines whether to lighten or darken and also sets text color
+.calc-background-by-deg-and-text-with-fade(@parents-background-color,@degree-of-shading, @fade) {
+	& when (lightness(@parents-background-color) > 50%) {
+		background-color: darken(@parents-background-color, @degree-of-shading);
+		.calc-text-color(darken(@parents-background-color, @degree-of-shading), @fade);
+	} & when (lightness(@parents-background-color) <= 50%) {
+		background-color: lighten(@parents-background-color, @degree-of-shading);
+		.calc-text-color(lighten(@parents-background-color, @degree-of-shading), @fade);
+	}
+}
+
+
+
+// calculates whether to darken/lighten background color by 6% based on parent's background color
+.calc-background-lighten-or-darken(@parents-background-color) {
+	& when (lightness(@parents-background-color) > 50%){
+		background-color: darken(@parents-background-color, 6%);
+		.calc-text-color(darken(@parents-background-color, 6%));
+	} & when (lightness(@parents-background-color) <= 50%){
+		background-color: lighten(@parents-background-color, 6%);
+		.calc-text-color(lighten(@parents-background-color, 6%));
+	}
+}
+
+// calculates whether to darken/lighten background color by 12% based on parent's background color
+.calc-background-xtra-lighten-or-darken(@parents-background-color) {
+	& when (lightness(@parents-background-color) > 50%){
+		background-color: darken(@parents-background-color, 12%);
+		.calc-text-color(darken(@parents-background-color, 12%));
+	} & when (lightness(@parents-background-color) <= 50%){
+		background-color: lighten(@parents-background-color, 12%);
+		.calc-text-color(lighten(@parents-background-color, 12%));
+	}
+}
+
+// intentionally made in place of BS default gradient mixin
+.gradient-simple-vertical(@top-bg, @bottom-bg) {
+	background: @bottom-bg; /* Old browsers */ // color for text calculated against bottom color
+	background: -moz-linear-gradient(top,  @top-bg 0%, @bottom-bg 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@top-bg), color-stop(100%,@bottom-bg)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  @top-bg 0%,@bottom-bg 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  @top-bg 0%,@bottom-bg 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  @top-bg 0%,@bottom-bg 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  @top-bg 0%,@bottom-bg 100%); /* W3C */
+}
+
+.gradient-two-tone-vertical(@top-bg, @bottom-bg) {
+	background: @bottom-bg; /* Old browsers */
+	background: -moz-linear-gradient(top,  @top-bg 0%, @top-bg 50%, @bottom-bg 50%, @bottom-bg 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@top-bg), color-stop(50%,@top-bg), color-stop(50%,@bottom-bg), color-stop(100%,@bottom-bg)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  @top-bg 0%,@top-bg 50%,@bottom-bg 50%,@bottom-bg 100%); /* W3C */
+}
+
+////////////////////////////////////////////////////////////////////
+///////////////////		BORDER STUFF	 	////////////////////////
+////////////////////////////////////////////////////////////////////
+
+// border mixin that calculates border color by 10% based on background color of the element
+.calc-border-color(@background-color) {
+	& when (lightness(@background-color) <= 50%) {
+		border-color: (lighten(@background-color, 10%));
+	} & when (lightness(@background-color) > 50%) {
+		border-color: (darken(@background-color, 10%));
+	}
+}
+
+// border mixin that calculates border color by value defined in second parameter based on background color of the element
+.calc-border-color-by-value(@background-color, @degree-of-shading) {
+	& when (lightness(@background-color) <= 50%) {
+		border-color: lighten(@background-color, @degree-of-shading);
+	} & when (lightness(@background-color) > 50%) {
+		border-color: darken(@background-color, @degree-of-shading);
+	}
+}
+
+// calculates text color based on background color
+.calculate-border-color-as-BW(@background-color) {
+	& when (lightness(@background-color) > 50%) {
+		border-color: @black;
+	} & when (lightness(@background-color) <= 50%) {
+		border-color: @white;
+	}
+}
+
+// calculates text color based on background color and adds fade
+.calculate-border-color-as-BW(@background-color, @fade) {
+	&  when (lightness(@background-color) > 50%) {
+		border-color: @black;
+		border-color: fade(@black, @fade);
+	} & when (lightness(@background-color) <= 50%) {
+		border-color: @white;
+		border-color: fade(@white, @fade);
+	}
+}
+
+// calculates border color, width and style
+.calc-border(@width, @style, @background-color) {
+	border-width: @width;
+	border-style: @style;
+	.calc-border-color(@background-color);
+}
+
+// calculates border color (with fade), width and style
+.calc-border(@width, @style, @background-color, @fade) {
+	border-width: @width;
+	border-style: @style;
+	.calc-border-color(@background-color, @fade);
+}
+
+// for hover and focus: calculates background color and adjusts text color if necessary
+.calc-hover-color(@background-color) {
+	& when (lightness(@background-color) <= 50%) {
+		@new-background-color: lighten(@background-color, 6%);
+		&:hover, &:focus {
+			background-color: @new-background-color;
+			.calc-text-color(@new-background-color);
+		}	
+	} & when (lightness(@background-color) > 50%) {
+		@new-background-color: darken(@background-color, 6%);
+		&:hover, &:focus {
+			background-color: @new-background-color;
+			.calc-text-color(@new-background-color);
+		}
+	}
+}
+
+// border-radius with vendor prefixes
+.border-radius(@i) {
+	-webkit-border-radius: @i;
+	-moz-border-radius: @i;
+	border-radius: @i;
+}
+
+////////////////////////////////////////////////////////////////////
+///////////////		xtestimonials styler	 	////////////////////
+////////////////////////////////////////////////////////////////////
+.rating-styler(@contrast-color, @i: 1) when ( @i <= 5 ) {
+	@e: percentage((( @i * 12) + 40)/100);
+	@color: fade(@contrast-color, @e);
+	
+	.TestimonialRating {
+		span.rate@{i} {
+			&:before{
+				color: @color;
+			}
+		}
+	}
+	.rating-styler(@contrast-color, @i + 1);
+}
+
+////////////
+// iFrame //
+////////////
+
+.responsive-iframe(@width, @height){
+    position: relative;
+    padding-bottom: 100% * (@height/@width);
+    height: 0;
+    overflow: hidden;
+
+    iframe{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+///////////////////////////
+// various layout mixins // 
+///////////////////////////
+
+// sets element to container edge without being inside .container
+.fit-to-container-edge(@side) {
+	@media (min-width: @screen-sm-min) {
+		margin-@{side}: 50%;
+		@{side}: -720px / 2;
+	}
+
+	@media (min-width: @screen-md-min) {
+		@{side}: -940px / 2;
+	}
+
+	@media (min-width: @screen-lg-min) {
+		@{side}: -1140px / 2;
+	}
+}

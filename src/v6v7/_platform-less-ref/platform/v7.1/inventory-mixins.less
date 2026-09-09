@@ -1,0 +1,318 @@
+// ==================================================================
+// MIXINS ===========================================================
+// ==================================================================
+
+// FLEXIBLE CUSTOM SELECT
+// Place on direct parent of <select>
+.custom-select(@icon; @color; @font-size; @height-of-select; @border-width: 1px; @parent-padding-right: 0px) {
+	position: relative;
+	&:before {
+		content: @icon;
+		font-family: FontAwesome;
+		color: @color;
+		position: absolute;
+		right: @parent-padding-right + 10px;
+		top: @border-width;
+		line-height: @height-of-select - (2 * @border-width);
+		font-size: @font-size;
+		pointer-events: none;
+		text-align: center;
+	}
+	select {
+		// Remove arrow
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		&::-ms-expand {
+			display: none; // IE10 / IE11
+		}
+	}
+}
+
+// CUSTOM CHECKBOX
+// Place on <label> (direct parent of checkbox)
+.custom-checkbox(@text-class-name; @primary-color; @unchecked-bg: @white; @checked-bg: @black; @input-size: 14px; @border-radius: 3px; @border-color: transparent; @border-width: 1px) {
+	position: relative;
+	input {
+		// Hide input; leave in place for greater browser compatibility
+		// DO NOT USE visibility:hidden or display:none
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		margin-top: 0; // override
+
+		// Position hidden input
+		top: 0;
+        // bottom: 0;
+		left: 0;
+        // margin-top: auto;
+        // margin-bottom: auto;
+		width: @input-size;
+		height: @input-size;
+	}
+	// :focus accesibility for tabbing
+	input:focus + .@{text-class-name},
+    input:active + .@{text-class-name} {
+        // unchecked focus
+		&:before {
+			border-color: @primary-color;
+			border-width: @border-width + 1px;
+		}
+	}
+	input:checked:focus + .@{text-class-name},
+    input:checked:active + .@{text-class-name} {
+        // checked focus
+		&:before {
+			border-color: @primary-color;
+			background-color: @primary-color;
+		}
+		&:after {
+			color: contrast(@primary-color, @black, @white);
+		}
+	}
+	input:checked + .@{text-class-name} {
+		// checked all
+		&:before {
+			background-color: @checked-bg;
+		}
+		&:after {
+			opacity: 1;
+		}
+	}
+
+	.@{text-class-name} {
+		display: inline-block;
+        padding-left: @input-size + 5px;
+		text-align: left;
+		font-weight: normal;
+        line-height: @input-size;
+		cursor: pointer;
+		&:before,
+		&:after {
+			// Custom inputs
+			position: absolute;
+			top: 0px;
+            // bottom: 0;
+            left: 0px;
+            // margin-top: auto;
+            // margin-bottom: auto;
+			width: @input-size;
+			height: @input-size;
+            .border-radius(@border-radius);
+			pointer-events: none;
+		}
+		&:before {
+			// Custom input box
+			content: '';
+            border: @border-width solid @border-color;
+			background-color: @unchecked-bg;
+		}
+		&:after {
+			// Custom input check mark
+			content: '\f00c';
+			font-family: FontAwesome;
+			padding-left: 1px;
+			text-align: center;
+			font-size: @input-size - (2 * @border-width);
+			line-height: @input-size; // - (2 * @border-width);
+			color: contrast(@checked-bg, @black, @white);
+			opacity: 0;
+		}
+	}
+}
+
+// Requires a max-width on the parent
+.single-line-truncate() {
+	max-width: 100%;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.v7-button(@bg-color) {
+	position: relative;
+	border: none;
+	.border-radius(4px);
+	background-color: @bg-color;
+	font-family: @inv-font-title;
+	font-weight: 700;
+	padding-left: 10px;
+	padding-right: 10px;
+    text-align: center;
+	&:before {
+		// gradient
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		.border-radius(4px);
+		.v7-button-gradient(@bg-color);
+	}
+}
+
+.v7-button-primary() {
+	border: none;
+	background-color: @inv-primary;
+	color: @inv-primary-text;
+	text-shadow: 1px 1px 1px fade(contrast(@inv-primary-text), 30%);
+	text-transform: uppercase;
+	&:hover, &:active, &:focus {
+		background-color: @inv-primary-variant;
+		color: @inv-primary-variant-text;
+	}
+}
+.v7-button-secondary() {
+	border: 1px solid @inv-bg-variant-strong;
+	background-color: @inv-bg;
+	color: @inv-bg-text;
+	&:hover, &:active, &:focus {
+		background-color: @inv-bg-variant;
+		color: @inv-bg-text;
+	}
+}
+
+.v7-unit-gradient(@bg-color) {
+	& when (lightness(@bg-color) >= 15%) {
+		// shadow only
+		@color: @black;
+		background: -moz-linear-gradient(top, fade(@color, 0%) 0%, fade(@color, 0%) 50%, fade(@color, 1%) 75%, fade(@color, 5%) 100%);
+		background: -webkit-linear-gradient(top, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 1%) 75%,fade(@color, 5%) 100%);
+		background: linear-gradient(to bottom, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 1%) 75%,fade(@color, 5%) 100%);
+	}
+}
+
+.v7-button-gradient(@bg-color) {
+	& when (lightness(@bg-color) >= 15%) {
+		// bottom shadow
+		@color: black;
+		background: -moz-linear-gradient(top, fade(@color, 0%) 0%, fade(@color, 0%) 50%, fade(@color, 2%) 75%, fade(@color, 8%) 100%);
+		background: -webkit-linear-gradient(top, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 2%) 75%,fade(@color, 8%) 100%);
+		background: linear-gradient(to bottom, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 2%) 75%,fade(@color, 8%) 100%);
+	}
+	& when  (lightness(@bg-color) < 15%) {
+		// top highlight
+		@color: white;
+		background: -moz-linear-gradient(bottom, fade(@color, 0%) 0%, fade(@color, 0%) 50%, fade(@color, 2%) 75%, fade(@color, 8%) 100%);
+		background: -webkit-linear-gradient(bottom, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 2%) 75%,fade(@color, 8%) 100%);
+		background: linear-gradient(to top, fade(@color, 0%) 0%,fade(@color, 0%) 50%,fade(@color, 2%) 75%,fade(@color, 8%) 100%);
+	}
+}
+
+.v7-button-with-icon(@icon; @color; @translate: -0.1em) {
+// place on :before of button text span
+	-webkit-transform: translateY(@translate);
+	transform: translateY(@translate);
+	display: inline-block;
+	vertical-align: middle;
+	content: @icon;
+	font-family: FontAwesome;
+	font-weight: normal;
+	font-size: smaller;
+	line-height: inherit;
+	color: @color;
+}
+.v7-button-icon(@color; @translate: -0.05em) {
+	// place on button icon
+	-webkit-transform: translateY(@translate);
+	transform: translateY(@translate);
+	display: inline-block;
+	font-size: smaller;
+	line-height: inherit;
+	color: @color;
+}
+
+.placeholder-text-color(@text-color; @hover-color) {
+	&::-webkit-input-placeholder { /* WebKit browsers */
+		transition: color .25s ease-in-out;
+		color: @text-color;
+	}
+	&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		transition: color .25s ease-in-out;
+		color: @text-color;
+	}
+	&::-moz-placeholder { /* Mozilla Firefox 19+ */
+		transition: color .25s ease-in-out;
+	    color: @text-color;
+	}
+	&:-ms-input-placeholder { /* Internet Explorer 10+ */
+		transition: color .25s ease-in-out;
+	    color: @text-color;
+	}
+	&:hover, &:active, &:focus {
+		&::-webkit-input-placeholder { /* WebKit browsers */
+			color: @hover-color;
+		}
+		&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+			color: @hover-color;
+		}
+		&::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   color: @hover-color;
+		}
+		&:-ms-input-placeholder { /* Internet Explorer 10+ */
+		   color: @hover-color;
+		}
+	}
+}
+
+.v7list-info-overlay() {
+	// Specs Overlay Panel
+	.v7list-vehicle__more-content {
+		transition: visibility .4s step-end;
+		height: ~"calc(100% + 4px)";
+		visibility: hidden;
+
+		position: absolute;
+		z-index: 3;
+		top: -2px; // border width
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+
+		&.is-open {
+			transition: visibility .4s step-start;
+			height: ~"calc(100% + 4px)";
+			visibility: visible;
+
+			.v7list-vehicle__more-collapse {
+				-webkit-transform: translateY(0%);
+				transform: translateY(0%);
+			}
+		}
+	}
+	.v7list-vehicle__more-collapse {
+		.display-flex;
+		.flex-direction(column);
+
+		transition: transform .4s ease-in-out;
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
+		height: 100%;
+		min-height: 100%;
+		background-color: fade(@filter-bg-variant, 97%);
+		overflow: hidden;
+
+		.v7list-vehicle__view-all {
+			margin-top: auto; // Move CTA to bottom
+		}
+	}
+}
+
+.v7-filter-list-wrap(@list-item-class) {
+	// place on ul of filter list
+	// set filter items 2-across
+	.display-flex;
+	.flex-wrap(wrap);
+	.@{list-item-class} {
+		.flex(0 1 auto);
+		width: 50%;
+	}
+}
+
+.skew(@deg) {
+	-ms-transform: skew(@deg);
+	-webkit-transform: skew(@deg);
+	transform: skew(@deg);
+}

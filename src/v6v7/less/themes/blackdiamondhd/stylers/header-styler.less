@@ -1,0 +1,33 @@
+.header-layout(@logo-position, @vert-align) {
+	.display-flex;
+	.flex-justify-content(space-between);
+	.flex-align-items(@vert-align);
+	&:before,
+	&:after {
+		display: none; //safari flexbox bug
+	}
+
+	& when (@logo-position = left) {
+		.header-brand {
+			margin-right: auto;
+		}
+	}
+	& when (@logo-position = center) {
+		> * {
+			.flex(1);
+			&:last-child {
+				text-align: right;
+			}
+		}
+		.header-brand {
+			.flex(0 0 auto);
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+	& when (@logo-position = right) {
+		.header-brand {
+			margin-left: auto;
+		}
+	}
+}

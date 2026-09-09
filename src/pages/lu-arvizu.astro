@@ -1,10 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Counter from '../components/Counter.tsx';
+
+import Counter from '../components/Counter.vue';
 ---
+
+<html lang="en">
+  <body>
+    <h1>My Astro & Vue Site Lu Arvizu</h1>
+    
+    <!-- IMPORTANT: Add a client directive for interactivity -->
+    <Counter client:load />
+  </body>
+</html>
 
 <Layout title="LeadVenture">
 	<main class="flex min-h-screen flex-col items-center justify-center gap-6">
 		<h1 class="text-3xl font-bold">Lu Arvizu</h1>
 	</main>
 </Layout>
+
+

@@ -1,0 +1,58 @@
+---
+export const prerender = false;
+
+import Layout from '../../../../../layouts/Layout.astro';
+import AdminNav from '../../../../../components/AdminNav.astro';
+import ComponentEditor from '../../../../../components/admin/ComponentEditor';
+import { createUserClient } from '../../../../../lib/supabase';
+import { loadPreviewSettingsCached, loadGlobalVariables } from '../../../../../lib/settings';
+
+const { adminSlug } = Astro.params;
+const accessToken = Astro.cookies.get('sb-access-token')?.value;
+
+if (!accessToken) {
+	return Astro.redirect('/login');
+}
+
+const db = createUserClient(accessToken);
+
+const { data: page } = await db
+	.from('pages')
+	.select('id, title, admin_slug')
+	.eq('admin_slug', adminSlug)
+	.maybeSingle();
+
+if (!page) {
+	return Astro.redirect('/admin/pages');
+}
+
+const [settings, globalVariables] = await Promise.all([loadPreviewSettingsCached(db), loadGlobalVariables(db)]);
+---
+
+<Layout title={`Nuevo componente — ${page.title}`}>
+	<main>
+		<AdminNav current="pages" />
+		<!--
+			client:only is required, not a preference: CodeMirror needs a real
+			DOM and cannot be server-rendered.
+		-->
+		<ComponentEditor
+			client:only="react"
+			pageId={page.id}
+			pageTitle={page.title}
+			adminSlug={page.admin_slug}
+			settings={settings}
+			globalVariables={globalVariables}
+		>
+			<p slot="fallback">Cargando editor…</p>
+		</ComponentEditor>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 1400px;
+		margin: 2rem auto 0;
+		padding: 0 1rem;
+	}
+</style>

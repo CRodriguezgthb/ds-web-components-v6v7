@@ -1,0 +1,77 @@
+---
+// An example of a page a developer writes by hand.
+//
+// Nothing about this page lives in the database: it is not one of the pages or
+// subpages managed in /admin, it does not appear in that navigation, and it
+// will not be affected if someone reorganises them. The only thing it pulls
+// from the database is each component it references by number.
+//
+// Copy this file as a starting point for your own pages.
+import Layout from '../layouts/Layout.astro';
+import CodeComponent from '../components/CodeComponent.astro';
+
+// On demand, because the components it renders are read at request time.
+export const prerender = false;
+---
+
+<Layout title="Ejemplo de página manual">
+	<main>
+		<h1>Cómo armar tu propia página</h1>
+		<p class="lead">
+			Esta página no está en la base de datos. Es un archivo <code>.astro</code> normal que
+			importa <code>CodeComponent</code> y referencia los componentes que necesita por su
+			número. Los <em>pages</em> y <em>subpages</em> del admin son la navegación principal;
+			esto es la salida libre para documentar lo que quieras, como quieras.
+		</p>
+
+		<pre class="snippet"><code>---
+import CodeComponent from '../components/CodeComponent.astro';
+---
+
+&lt;CodeComponent id="1" /&gt;</code></pre>
+
+		<p class="lead">
+			El número es el campo <strong>Referencia</strong> que muestra el editor de cada
+			componente. Props opcionales: <code>showCode={false}</code> para mostrar solo el ejemplo
+			en vivo, y <code>height="700px"</code> para ajustar el alto del marco.
+		</p>
+
+		<CodeComponent id="1" />
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 900px;
+		margin: 2rem auto;
+		padding: 0 1rem;
+	}
+	h1 {
+		font-size: 1.75rem;
+		font-weight: 700;
+	}
+	.lead {
+		color: #4b5563;
+		line-height: 1.7;
+	}
+	code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		background: #f3f4f6;
+		border-radius: 3px;
+		padding: 0.05rem 0.3rem;
+		font-size: 0.875em;
+	}
+	.snippet {
+		background: #111827;
+		color: #e5e7eb;
+		padding: 1rem;
+		border-radius: 6px;
+		overflow-x: auto;
+		font-size: 0.8125rem;
+	}
+	.snippet code {
+		background: none;
+		padding: 0;
+		color: inherit;
+	}
+</style>
