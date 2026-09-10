@@ -78,6 +78,12 @@
       "version": "2.0.2",
       "framework": "astro",
       "registry": "default"
+    },
+    {
+      "name": "toast",
+      "version": "2.1.0",
+      "framework": "astro",
+      "registry": "default"
     }
   ],
   "tailwind": {

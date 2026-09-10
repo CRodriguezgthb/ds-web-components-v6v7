@@ -1,21 +1,74 @@
 ---
-// Pepe Pecas Pica Papas Con Un Pico
+import { ThemeToggle } from "@/components/starwind/theme-toggle";
+import "../styles/diego.css";
+import Layout from "../layouts/Layout.astro";
+import { Button } from "@/components/starwind/button";
+import { Toaster } from "@/components/starwind/toast";
 ---
 
----
-import '../styles/diego.css';
----
+<Layout title="LeadVenture">
+  <main
+    class="flex min-h-screen flex-col items-center justify-center gap-8 px-6 py-10"
+  >
+    <h1 class="text-3xl text-white text-shadow-red-700 font-bold">
+      ¡Hola Mundo HEHE :P!
+    </h1>
+    <p class="text-white text-shadow-red-700">
+      Este es mi primer proyecto con Astro, tenganme paciencia :'v
+    </p>
+    <h2 class="text-xl text-white text-shadow-red-700 font-bold">
+      Componente Toast
+    </h2>
+    <div class="flex flex-wrap gap-2">
+      <Button variant="outline" id="toast-default">Default</Button>
+      <Button variant="outline" id="toast-success">Success</Button>
+      <Button variant="outline" id="toast-error">Error</Button>
+      <Button variant="outline" id="toast-warning">Warning</Button>
+      <Button variant="outline" id="toast-info">Info</Button>
+      <Button variant="outline" id="toast-loading">Loading</Button>
+    </div>
+    <h2 class="text-xl text-white text-shadow-red-700 font-bold">
+      Componente Theme Toggle
+    </h2>
+    <ThemeToggle ariaLabel="Toggle theme" />
+  </main>
+  <Toaster position="bottom-right" />
+</Layout>
 
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deigos Page</title>
-  </head>
-  <body>
-    <main class="contenedor">
-      <h1>¡Hola Mundo HEHE :P!</h1>
-      <p>Este es mi primer proyecto con Astro, tenganme paciencia :'v</p>
-    </main>
-  </body>
-</html>
+<script>
+  import { toast } from "@/components/starwind/toast";
+
+  document.getElementById("toast-default")?.addEventListener("click", () => {
+    toast("Default Toast");
+  });
+
+  document.getElementById("toast-success")?.addEventListener("click", () => {
+    toast.success("Success!", {
+      description: "Your changes have been saved.",
+    });
+  });
+
+  document.getElementById("toast-error")?.addEventListener("click", () => {
+    toast.error("Error", {
+      description: "Something went wrong.",
+    });
+  });
+
+  document.getElementById("toast-warning")?.addEventListener("click", () => {
+    toast.warning("Warning", {
+      description: "Please review your input.",
+    });
+  });
+
+  document.getElementById("toast-info")?.addEventListener("click", () => {
+    toast.info("Info", {
+      description: "Here's some helpful information.",
+    });
+  });
+
+  document.getElementById("toast-loading")?.addEventListener("click", () => {
+    toast.loading("Loading...", {
+      description: "Please wait while we process your request.",
+    });
+  });
+</script>

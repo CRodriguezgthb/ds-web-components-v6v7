@@ -1,9 +1,8 @@
 ---
-import '../styles/global.css';
-import '../styles/starwind.css';
-import { ThemeInitScript } from '@starwind-ui/astro/theme';
-import Navbar from '../components/Navbar.astro';
-
+import "../styles/global.css";
+import "../styles/starwind.css";
+import { ThemeInitScript } from "@starwind-ui/astro/theme";
+import Navbar from "../components/Navbar.astro";
 
 interface Props {
 	title: string;
@@ -22,7 +21,7 @@ const { title } = Astro.props;
 		<ThemeInitScript />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class="bg-sky-500 dark:bg-black">
 		<Navbar />
 		<slot />
 	</body>
