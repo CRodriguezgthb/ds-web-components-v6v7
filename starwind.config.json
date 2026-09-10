@@ -12,6 +12,54 @@
       "version": "1.2.0",
       "framework": "astro",
       "registry": "default"
+    },
+    {
+      "name": "theme-toggle",
+      "version": "2.0.0",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "button",
+      "version": "3.0.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "alert-dialog",
+      "version": "2.0.2",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "input",
+      "version": "2.0.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "native-select",
+      "version": "1.1.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "popover",
+      "version": "2.1.0",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "select",
+      "version": "2.1.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "color-picker",
+      "version": "2.1.0",
+      "framework": "astro",
+      "registry": "default"
     }
   ],
   "tailwind": {
