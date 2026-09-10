@@ -1,9 +1,116 @@
 ---
 import Layout from '../layouts/Layout.astro';
+//starwind test button
+import { Button } from "@/components/starwind/button";
+//starwind test popover
+//import { Button } from "@/components/starwind/button";
+import { Input } from "@/components/starwind/input";
+import { Label } from "@/components/starwind/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/starwind/popover";
+//starwind test table
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell, TableCaption, TableFoot } from "@/components/starwind/table";
+//starwind test tabs
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/starwind/tabs";
+
 ---
 
 <Layout title="LeadVenture">
 	<main class="flex min-h-screen flex-col items-center justify-center gap-6">
 		<h1 class="text-3xl font-bold">Pedro Ruiz Page</h1>
+		
+		<div class="flex flex-col item-center justify-center gap-6">
+			<h3 class="text-2xl font-bold">button</h3>
+			<Button>Save</Button>
+			<Button href="#api-reference" variant="outline">View API</Button>
+		</div>
+
+		<div class="flex flex-col item-center justify-center gap-6">
+			<h3 class="text-2xl font-bold">Popover</h3>
+			<Popover>
+				<PopoverTrigger asChild>
+					<Button variant="outline">Open popover</Button>
+				</PopoverTrigger>
+				<PopoverContent class="w-80">
+					<PopoverHeader>
+					<PopoverTitle>Dimensions</PopoverTitle>
+					<PopoverDescription>
+						Set the dimensions for the layer.
+					</PopoverDescription>
+					</PopoverHeader>
+					<div class="grid gap-2 px-0.5">
+					<div class="grid grid-cols-3 items-center gap-3">
+						<Label for="popover-width">Width</Label>
+						<Input id="popover-width" value="100%" class="col-span-2 h-8" />
+					</div>
+					<div class="grid grid-cols-3 items-center gap-3">
+						<Label for="popover-max-width">Max. width</Label>
+						<Input id="popover-max-width" value="300px" class="col-span-2 h-8" />
+					</div>
+					<div class="grid grid-cols-3 items-center gap-3">
+						<Label for="popover-height">Height</Label>
+						<Input id="popover-height" value="25px" class="col-span-2 h-8" />
+					</div>
+					<div class="grid grid-cols-3 items-center gap-3">
+						<Label for="popover-max-height">Max. height</Label>
+						<Input id="popover-max-height" value="none" class="col-span-2 h-8" />
+					</div>
+					</div>
+				</PopoverContent>
+			</Popover>
+		</div>
+		
+		<div class="flex flex-col item-center justify-center gap-6">
+			<h3 class="text-2xl font-bold">table</h3>
+			<Table class="max-w-md mx-auto">
+				<TableCaption>Example of a simple table</TableCaption>
+				<TableHeader>
+					<TableRow>
+					<TableHead>Name</TableHead>
+					<TableHead>Email</TableHead>
+					<TableHead>Status</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow>
+					<TableCell>Ada Lovelace</TableCell>
+					<TableCell>ada@starwind.dev</TableCell>
+					<TableCell>Active</TableCell>
+					</TableRow>
+					<TableRow>
+					<TableCell>Grace Hopper</TableCell>
+					<TableCell>grace@starwind.dev</TableCell>
+					<TableCell>Inactive</TableCell>
+					</TableRow>
+				</TableBody>
+				<TableFoot>
+					<TableRow>
+					<TableCell colspan="3">Total: 2 users</TableCell>
+					</TableRow>
+				</TableFoot>
+			</Table>
+		</div>
+
+		<div class="flex flex-col item-center justify-center gap-6">
+			<h3 class="text-2xl font-bold">tabs</h3>
+			<Tabs defaultValue="astro" class="max-w-[400px]">
+				<TabsList>
+					<TabsTrigger value="astro">Astro</TabsTrigger>
+					<TabsTrigger value="next">Next.js</TabsTrigger>
+				</TabsList>
+				<TabsContent value="astro">
+					Build fast websites, faster with Astro's next-gen island architecture.
+				</TabsContent>
+				<TabsContent value="next">
+					The React framework for production-grade applications that scale.
+				</TabsContent>
+			</Tabs>
+		</div>
 	</main>
 </Layout>
