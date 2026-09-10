@@ -1,17 +1,46 @@
 ---
-import "../styles/global.css";
+import Layout from '../layouts/Layout.astro';
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "@/components/starwind/alert-dialog";
+import { Button } from "@/components/starwind/button";
+import { ColorPicker } from "@/components/starwind/color-picker";
+
+const swatches = [
+  { value: "#ef4444", label: "Red" },
+  { value: "#f59e0b", label: "Amber" },
+  { value: "#10b981", label: "Emerald" },
+  { value: "#0ea5e9", label: "Sky" },
+  { value: "#8b5cf6", label: "Violet" },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Ulisess Arce Talamantes Pull Request</title>
-	</head>
-	<body>
-		<h1 class="text-8xl font-bold underline">This Is My Pull Request</h1>
-	</body>
-</html>
+<Layout title="LeadVenture">
+	<main class="flex min-h-screen flex-col items-center justify-center gap-8 px-6 py-10">
+		<h1 class="text-3xl font-bold">Ulisess Arce Talamantes</h1>
+		<h3 class="text-3xl font-bold">Alerts!</h3>
+		<AlertDialog>
+			<AlertDialogTrigger asChild>
+				<Button variant="outline">Send</Button>
+			</AlertDialogTrigger>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+				<AlertDialogTitle>Alert Message</AlertDialogTitle>
+				<AlertDialogDescription>
+					Hi! This is an Alert!
+				</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+				<AlertDialogCancel>Cancel</AlertDialogCancel>
+				<AlertDialogAction>Continue</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
+		<h3 class="text-3xl font-bold">Color Picker</h3>
+		<ColorPicker
+		label="Select Your Color:"
+		name="brand-color"
+		defaultValue="#ff000080"
+		alpha
+		swatches={swatches}
+		/>
+	</main>
+</Layout>
