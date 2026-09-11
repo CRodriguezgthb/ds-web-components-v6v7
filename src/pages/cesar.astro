@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Counter from '../components/Counter.tsx';
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell, TableCaption, TableFoot } from "@/components/starwind/table";
+import { Skeleton } from "@/components/starwind/skeleton";
+import { Switch } from "@/components/starwind/switch";
 ---
 
 <Layout title="LeadVenture">
@@ -9,5 +12,89 @@ import Counter from '../components/Counter.tsx';
 		<h2 class="bg-red-500 text-4xl text-green-900 p-4">
 		¡Si ves esto con fondo rojo y letra grande, Tailwind funciona!
 		</h2>
+
+		<Switch id="default" label="Default" variant="default" defaultChecked />
+		<Switch id="primary" label="Primary" variant="primary" defaultChecked />
+		<Switch id="secondary" label="Secondary" variant="secondary" defaultChecked />
+		<Switch id="info" label="Info" variant="info" defaultChecked />
+		<Switch id="success" label="Success" variant="success" defaultChecked />
+		<Switch id="warning" label="Warning" variant="warning" defaultChecked />
+		<Switch id="error" label="Error" variant="error" defaultChecked />
+
+		<Switch id="small" label="Small" size="sm" />
+		<Switch id="medium" label="Medium" size="md" />
+		<Switch id="large" label="Large" size="lg" />
+
+		<div class="mt-8 space-y-4">
+			<h2 class="text-xl font-semibold">Switch Event Test</h2>
+
+			<div class="space-y-4">
+				<Switch id="test-switch" label="Test Switch" variant="primary" />
+
+				<div id="status-display" class="text-muted-foreground text-sm">
+				Switch is currently: <span class="text-foreground font-medium">apagado</span>
+				</div>
+			</div>
+		</div>
+
+		<script>
+		const root = document.querySelector<HTMLElement>("#test-switch");
+		const output = document.querySelector<HTMLElement>("#status-display span");
+
+		root?.addEventListener("starwind:checked-change", (event) => {
+			const { checked } = (event as CustomEvent<{ checked: boolean }>).detail;
+			if (output) output.textContent = checked ? "encendido" : "apagado";
+		});
+		</script>
+
+		<Table class="max-w-md mx-auto">
+		<TableCaption>Example of a simple table</TableCaption>
+		<TableHeader>
+			<TableRow>
+			<TableHead>Name</TableHead>
+			<TableHead>Email</TableHead>
+			<TableHead>Status</TableHead>
+			</TableRow>
+		</TableHeader>
+		<TableBody>
+			<TableRow>
+			<TableCell>Ada Lovelace</TableCell>
+			<TableCell>ada@starwind.dev</TableCell>
+			<TableCell>Active</TableCell>
+			</TableRow>
+			<TableRow>
+			<TableCell>Grace Hopper</TableCell>
+			<TableCell>grace@starwind.dev</TableCell>
+			<TableCell>Inactive</TableCell>
+			</TableRow>
+		</TableBody>
+		<TableFoot>
+			<TableRow>
+			<TableCell colspan="3">Total: 2 users</TableCell>
+			</TableRow>
+		</TableFoot>
+		</Table>
+
+		<div class="flex items-center space-x-4">
+			<Skeleton class="h-12 w-12 rounded-full" />
+			<div class="space-y-2">
+				<Skeleton class="h-4 w-[250px]" />
+				<Skeleton class="h-4 w-[200px]" />
+			</div>
+		</div>
+		<div class="flex flex-col space-y-3">
+			<Skeleton class="h-[125px] w-[250px] rounded-xl" />
+			<div class="space-y-2">
+				<Skeleton class="h-4 w-[250px]" />
+				<Skeleton class="h-4 w-[200px]" />
+			</div>
+		</div>
+		<div class="space-y-2 w-[250px]">
+			<Skeleton class="h-8 w-full" />
+			<Skeleton class="h-8 w-full" />
+			<Skeleton class="h-8 w-full" />
+			<Skeleton class="h-8 w-full" />
+			<Skeleton class="h-8 w-full" />
+		</div>
 	</main>
 </Layout>

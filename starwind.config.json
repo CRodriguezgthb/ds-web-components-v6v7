@@ -84,6 +84,18 @@
       "version": "2.1.0",
       "framework": "astro",
       "registry": "default"
+    },
+    {
+      "name": "skeleton",
+      "version": "1.3.0",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "switch",
+      "version": "2.0.1",
+      "framework": "astro",
+      "registry": "default"
     }
   ],
   "tailwind": {
